@@ -4,8 +4,10 @@ HTML/CSS/JS thuần, không cần build. Thứ tự trên trang:
 
 1. **Section 1 – Về Sun Group + Hệ sinh thái** (Figma node `1:183`)
 2. Section 2 – placeholder: div trắng cao 1080px (đang có người khác làm)
-3. **Section 3 – Viết nên bản giao hưởng cho mỗi vùng đất** (Figma page "section 3", frame `10:1692` + storyboard)
+3. **Section 3 – Viết nên bản giao hưởng cho mỗi vùng đất** (Figma page "section 3", frame `10:1692` + storyboard) – bản **bấm vào cục**
 4. Section 4 – placeholder: div trắng cao 1080px (đang có người khác làm)
+5. **Section 5 – cùng design section 3, bản CUỘN** (không cần bấm, chuyển động bám theo cuộn) – để so sánh 2 kiểu
+6. Section 6 – placeholder: div trắng cao 1080px
 
 ## Cấu trúc
 
@@ -79,10 +81,27 @@ Hoặc không dùng GitHub: `npx vercel` (preview) và `npx vercel --prod` (prod
 - **Mobile/tablet (< 1024px):** dải cục vuốt ngang tự nhiên, bấm vào mở màn chi tiết toàn màn hình, vuốt lên/trái để sang ảnh kế.
 - Code: CSS ở cuối thẻ `<style>`, JS ở khối `Section 3` cuối thẻ `<script>`. Dữ liệu chủ đề + ảnh nằm trong mảng `TOPICS`.
 
+## Section 5 – Bản giao hưởng, kiểu cuộn (không cần bấm)
+
+- Cùng giao diện và ảnh với section 3, chỉ khác cách tương tác: không có nút bấm, section được ghim và **mọi chuyển động
+  bám theo vị trí cuộn** – cuộn chậm thì chạy chậm, dừng tay thì đứng yên, cuộn ngược thì tua ngược (có làm mượt nhẹ
+  để con lăn chuột từng nấc vẫn trơn).
+- Trình tự: lúc section trồi lên, dải cục chạy ngang vào chỗ → cục 1 tách chữ/hình, vòm nở thành ảnh toàn màn hình
+  → cuộn tiếp là lướt qua các ảnh của chủ đề (lớp ảnh mới phủ từ phải sang, parallax 5%, viền sáng vàng)
+  → ảnh thu về đúng khung cục 1 → dải chạy ngang đưa cục 2 vào → … → cục 5 → cuộn tiếp là sang section 6.
+- Các chặng gối lên nhau (vòm đáp xuống cục trong lúc dải bắt đầu chạy, cục kế nhấc lên khi dải còn đang hãm),
+  nên cuộn đều tay thì luôn có thứ đang chuyển động.
+- Cục đã xem xong sẽ hiện ảnh cuối của chủ đề (đúng ảnh vừa thu về khung).
+- Độ dài cuộn: chỉnh `SPEED` (cả section) hoặc từng chặng trong `LEN` ở khối `Section 5` cuối thẻ `<script>`.
+  Hiện tại cả section dài khoảng 15 lần chiều cao màn hình.
+- Mobile/tablet (< 1024px) cũng ghim + bám cuộn, bố cục dọc (chữ trên, cục dưới).
+- Bật "giảm chuyển động": không ghim, dải cục cuộn/vuốt ngang bình thường.
+- Code: CSS ở cuối thẻ `<style>` (khối "Section 5"), JS ở khối `Section 5` cuối thẻ `<script>`, dữ liệu trong mảng `TOPICS` riêng của section 5.
+
 ## Cần thay
 
-- Section 3: ảnh của từng chủ đề đang là **ảnh tạm** lấy trong file Figma (mỗi chủ đề 2 ảnh, `assets/img/sym/`).
-  Thay ảnh thật thì sửa mảng `TOPICS` trong `<script>` (thêm bao nhiêu ảnh cũng được). Ảnh nên 1920 × 1200, WebP.
+- Section 3 và 5: ảnh của từng chủ đề đang là **ảnh tạm** lấy trong file Figma (mỗi chủ đề 2 ảnh, `assets/img/sym/`).
+  Thay ảnh thật thì sửa mảng `TOPICS` của từng section trong `<script>` (thêm bao nhiêu ảnh cũng được). Ảnh nên 1920 × 1200, WebP.
 - Section 3: chữ trên ảnh toàn màn hình đang dùng chung câu "Viết nên bản giao hưởng cho mỗi vùng đất" như trong Figma.
 - Section 1: mô tả của 4 lĩnh vực **Bất động sản, Giải trí nghỉ dưỡng, Điện ảnh & nghệ thuật biểu diễn, Y tế** đang là nội dung tạm
   (đã canh đủ 5 dòng ở desktop như "Hàng không") → sửa trong `<script>` cuối `index.html` (mảng `SECTORS`).

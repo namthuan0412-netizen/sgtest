@@ -1,6 +1,11 @@
-# Sun Group – Section "Về Sun Group" + Hệ sinh thái
+# Sun Group – trang test các section
 
-Section dựng từ Figma (node `1:183`), HTML/CSS/JS thuần, không cần build.
+HTML/CSS/JS thuần, không cần build. Thứ tự trên trang:
+
+1. **Section 1 – Về Sun Group + Hệ sinh thái** (Figma node `1:183`)
+2. Section 2 – placeholder: div trắng cao 1080px (đang có người khác làm)
+3. **Section 3 – Viết nên bản giao hưởng cho mỗi vùng đất** (Figma page "section 3", frame `10:1692` + storyboard)
+4. Section 4 – placeholder: div trắng cao 1080px (đang có người khác làm)
 
 ## Cấu trúc
 
@@ -8,8 +13,9 @@ Section dựng từ Figma (node `1:183`), HTML/CSS/JS thuần, không cần buil
 index.html            Toàn bộ section: markup + <style> (desktop chuẩn 1440px, responsive xuống 360px)
                       + <script> ở cuối file (tương tác vòng tròn, nội dung 5 lĩnh vực trong mảng SECTORS)
 assets/fonts/         CDA Independence (variable, trục Text, wght 400–700) dạng woff2
-assets/img/           Ảnh mảng vòng tròn, nhãn cong, ảnh nội dung (WebP)
-assets/svg/           Huy hiệu "Du lịch", la bàn nền, đường cung trang trí
+assets/img/           Section 1: ảnh mảng vòng tròn, nhãn cong, ảnh nội dung (WebP)
+assets/img/sym/       Section 3: ảnh của 5 chủ đề (WebP 1920 × 1200)
+assets/svg/           Huy hiệu "Du lịch", la bàn nền, đường cung trang trí, khung cục section 3
 ```
 
 ## Chạy thử trên máy
@@ -56,9 +62,28 @@ Hoặc không dùng GitHub: `npx vercel` (preview) và `npx vercel --prod` (prod
 - Khối tiêu đề + mô tả luôn giữ chiều cao bằng lĩnh vực dài nhất ở bề rộng hiện tại, nên chuyển qua lại không bị giật.
   Tất cả chuyển động tắt khi người dùng bật "giảm chuyển động" (prefers-reduced-motion).
 
+## Section 3 – Bản giao hưởng
+
+- **Desktop:** khi tới section, cuộn dọc sẽ làm dải 5 cục chạy ngang (section được ghim lại). Lướt qua hết 5 cục thì
+  danh sách 5 chủ đề bên trái hiện ra; cuộn tiếp là sang section 4.
+- **Bấm 1 cục:** chữ và hình của cục tách ra (chữ bay lên, hình hạ xuống), rồi hình vòm nở thành ảnh toàn màn hình kèm
+  chữ "Viết nên bản giao hưởng…" ở dưới.
+- **Mỗi lần cuộn / vuốt = 1 ảnh** (~1s): lớp ảnh mới phủ lên từ phải sang kèm viền sáng vàng, hai ảnh lệch nhau 5% tạo parallax.
+  Trackpad vuốt mạnh cũng chỉ sang 1 ảnh (bỏ qua quán tính).
+- **Hết ảnh của 1 chủ đề:** màn đỏ mang tên chủ đề kế trượt vào từ phải, hình vòm mọc lên từ dưới rồi nở ra. Cuộn ngược thì đi ngược lại.
+- **Hết chủ đề cuối:** ảnh thu về hình vòm, rơi xuống, trở lại dải cục ở cuối (danh sách đã hiện) để cuộn tiếp.
+  Cuộn ngược ở ảnh đầu tiên thì hình thu về đúng cục ban đầu.
+- Bấm vào tên chủ đề trong danh sách bên trái cũng mở màn chi tiết của chủ đề đó.
+- Phím mũi tên / Page Up-Down / Space để chuyển, Esc hoặc nút × để thoát. Bật "giảm chuyển động" thì chỉ đổi ảnh, không chạy hiệu ứng.
+- **Mobile/tablet (< 1024px):** dải cục vuốt ngang tự nhiên, bấm vào mở màn chi tiết toàn màn hình, vuốt lên/trái để sang ảnh kế.
+- Code: CSS ở cuối thẻ `<style>`, JS ở khối `Section 3` cuối thẻ `<script>`. Dữ liệu chủ đề + ảnh nằm trong mảng `TOPICS`.
+
 ## Cần thay
 
-- Mô tả của 4 lĩnh vực **Bất động sản, Giải trí nghỉ dưỡng, Điện ảnh & nghệ thuật biểu diễn, Y tế** đang là nội dung tạm
+- Section 3: ảnh của từng chủ đề đang là **ảnh tạm** lấy trong file Figma (mỗi chủ đề 2 ảnh, `assets/img/sym/`).
+  Thay ảnh thật thì sửa mảng `TOPICS` trong `<script>` (thêm bao nhiêu ảnh cũng được). Ảnh nên 1920 × 1200, WebP.
+- Section 3: chữ trên ảnh toàn màn hình đang dùng chung câu "Viết nên bản giao hưởng cho mỗi vùng đất" như trong Figma.
+- Section 1: mô tả của 4 lĩnh vực **Bất động sản, Giải trí nghỉ dưỡng, Điện ảnh & nghệ thuật biểu diễn, Y tế** đang là nội dung tạm
   (đã canh đủ 5 dòng ở desktop như "Hàng không") → sửa trong `<script>` cuối `index.html` (mảng `SECTORS`).
   Mô tả của "Hàng không" đang lấy đúng text trong Figma. Content thật nên giữ khoảng 250–270 ký tự để vẫn 5 dòng.
-- Ảnh nội dung từng lĩnh vực: `assets/img/photo-*.webp` (tỉ lệ 437 × 270).
+- Section 1: ảnh nội dung từng lĩnh vực: `assets/img/photo-*.webp` (tỉ lệ 437 × 270).

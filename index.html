@@ -512,9 +512,563 @@ img { display: block; max-width: 100%; }
   .wheel__label,
   .sg-eco__panel { transition: none; }
 }
+
+/* =========================================================
+   Section 2 & 4 – placeholder (đang có người khác làm)
+   ========================================================= */
+.sec-placeholder {
+  height: 1080px;
+  background: #fff;
+}
+
+/* Màu vàng kim cho tên chủ đề (dùng ở dải cục và màn chi tiết) */
+:root { --sym-gold: linear-gradient(180deg, #fbe3a6 0%, #e8c495 48%, #c9984a 100%); }
+
+/* Khoá cuộn trang khi xem chi tiết section 3 (giữ chỗ thanh cuộn để trang không bị xô) */
+html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
+
+/* =========================================================
+   Section 3 – "Viết nên bản giao hưởng cho mỗi vùng đất"
+   Desktop: cuộn dọc → dải 5 cục chạy ngang (section được ghim).
+   Kích thước theo đơn vị --u = 1px của design 1440×900.
+   ========================================================= */
+.sym {
+  --u: min(calc(100vw / 1440), calc(100vh / 900));
+  --oy: calc((100vh - 900 * var(--u)) / 2);
+  position: relative;
+  background: radial-gradient(70.71% 70.71% at 50% 50%, #750d1b 0%, #4b0d18 100%);
+  color: #fff;
+}
+
+.sym__stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sym__compass {
+  position: absolute;
+  left: calc(-175 * var(--u));
+  top: calc(var(--oy) + 394 * var(--u));
+  width: calc(805 * var(--u));
+  height: auto;
+  max-width: none;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ---------- Cột trái ---------- */
+.sym__intro {
+  position: absolute;
+  z-index: 2;
+  left: calc(64 * var(--u));
+  top: calc(var(--oy) + 105 * var(--u));
+  width: calc(437 * var(--u));
+}
+
+.sym__title {
+  margin: 0;
+  max-width: calc(366 * var(--u));
+  font-size: max(22px, calc(36 * var(--u)));
+  font-weight: var(--fw-regular);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+.sym__title > span { display: block; }
+.sym__title-a { color: #f6d5d4; font-weight: var(--fw-medium); }
+
+.sym__desc {
+  margin: calc(24 * var(--u)) 0 0;
+  width: calc(366 * var(--u));
+  color: #f8f2e9;
+  font-size: max(13px, calc(14 * var(--u)));
+  line-height: 1.5;
+}
+
+/* Danh sách 5 chủ đề – hiện ra khi đã lướt qua hết 5 cục */
+.sym__list {
+  margin: calc(100 * var(--u)) 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: calc(16 * var(--u));
+}
+.sym__list li {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s var(--ease), transform 0.8s var(--ease);
+  transition-delay: calc(var(--i) * 70ms);
+}
+.sym__stage.is-list .sym__list li { opacity: 1; transform: none; }
+.sym__stage:not(.is-list) .sym__list { visibility: hidden; transition: visibility 0s 0.6s; }
+
+.sym__item {
+  display: flex;
+  flex-direction: column;
+  gap: calc(16 * var(--u));
+  width: 100%;
+  padding: calc(10 * var(--u)) 0;
+  border: 0;
+  background: none;
+  color: #ddbab8;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.sym__item-row { display: flex; align-items: center; }
+.sym__item-star {
+  width: 0;
+  height: calc(17 * var(--u));
+  margin-right: 0;
+  overflow: hidden;
+  flex: none;
+  opacity: 0;
+  transition: width 0.45s var(--ease), margin-right 0.45s var(--ease), opacity 0.35s var(--ease);
+}
+.sym__item-star svg { width: calc(34 * var(--u)); height: 100%; display: block; }
+.sym__item-name {
+  font-size: max(18px, calc(24 * var(--u)));
+  font-weight: var(--fw-medium);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  transition: color 0.35s var(--ease);
+}
+.sym__item-line {
+  display: block;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform-origin: 0 50%;
+  transform: scaleX(0.0458); /* 20 / 437 */
+  transition: transform 0.6s var(--ease), background-color 0.35s;
+}
+.sym__item.is-active,
+.sym__item:hover,
+.sym__item:focus-visible { color: #e8c495; outline: none; }
+.sym__item.is-active .sym__item-star,
+.sym__item:hover .sym__item-star,
+.sym__item:focus-visible .sym__item-star { width: calc(34 * var(--u)); margin-right: calc(16 * var(--u)); opacity: 1; }
+.sym__item.is-active .sym__item-line,
+.sym__item:hover .sym__item-line,
+.sym__item:focus-visible .sym__item-line { transform: scaleX(1); }
+.sym__list:hover .sym__item.is-active:not(:hover) { color: #ddbab8; }
+.sym__list:hover .sym__item.is-active:not(:hover) .sym__item-star { width: 0; margin-right: 0; opacity: 0; }
+.sym__list:hover .sym__item.is-active:not(:hover) .sym__item-line { transform: scaleX(0.0458); }
+
+.sym__hint {
+  position: absolute;
+  z-index: 2;
+  left: calc(64 * var(--u));
+  top: calc(var(--oy) + 806 * var(--u));
+  width: 22px;
+  height: 16px;
+  color: #fff;
+  transition: opacity 0.4s var(--ease);
+  animation: sym-nudge 2.2s var(--ease) infinite;
+}
+.sym__stage.is-list .sym__hint { opacity: 0; }
+@keyframes sym-nudge { 50% { transform: translateX(6px); } }
+
+/* ---------- Dải 5 cục ---------- */
+.sym__viewport {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  bottom: 0;
+  left: calc(556 * var(--u));
+  right: 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 calc(40 * var(--u)));
+  mask-image: linear-gradient(90deg, transparent 0, #000 calc(40 * var(--u)));
+}
+.sym__track {
+  position: absolute;
+  top: calc(var(--oy) + 67 * var(--u));
+  left: 0;
+  display: flex;
+  gap: calc(46 * var(--u));
+  width: max-content;
+  margin: 0;
+  padding: 0 calc(65 * var(--u)) 0 calc(48 * var(--u));
+  list-style: none;
+  will-change: transform;
+}
+
+.sym-card {
+  position: relative;
+  flex: none;
+  width: calc(624.1 * var(--u));
+  height: calc(739 * var(--u));
+  container-type: inline-size;
+}
+.sym-card__btn {
+  position: absolute;
+  inset: 0;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.sym-card__btn:focus-visible { outline: 2px solid #ffe284; outline-offset: 6px; }
+.sym-card__frame {
+  position: absolute;
+  top: -0.27%;
+  left: -0.32%;
+  width: 100.64%;
+  height: 100.54%;
+  max-width: none;
+  pointer-events: none;
+}
+.sym-card__media {
+  position: absolute;
+  left: 1.447%;
+  top: 1.222%;
+  width: 97.106%;
+  height: 97.556%;
+  overflow: hidden;
+  clip-path: url(#sym-arch);
+}
+.sym-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 1.2s var(--ease);
+}
+.sym-card__shade {
+  position: absolute;
+  left: 1.44%;
+  width: 97.1%;
+  top: 62.25%;
+  height: 36.54%;
+  background: linear-gradient(180deg, rgba(88, 7, 23, 0) 20.6%, #4d000f 100%);
+  pointer-events: none;
+}
+.sym-card__label {
+  position: absolute;
+  left: 50%;
+  bottom: 3.92%;
+  width: 88.6%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3.2cqw;
+  padding-bottom: 6.41cqw;
+  transition: transform 0.8s var(--ease);
+}
+.sym-card__label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(246, 215, 114, 0) 0%, rgba(246, 215, 114, 0.9) 22%, rgba(246, 215, 114, 0.9) 78%, rgba(246, 215, 114, 0) 100%);
+}
+.sym-card__star { width: 5.45cqw; height: 2.72cqw; display: block; }
+.sym-card__title {
+  font-size: 5.13cqw;
+  font-weight: var(--fw-medium);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  background: var(--sym-gold);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-block: 0.3em 0.12em;
+  margin-block: -0.3em -0.12em;
+}
+@media (hover: hover) {
+  .sym-card__btn:hover .sym-card__media img { transform: scale(1.05); }
+  .sym-card__btn:hover .sym-card__label { transform: translate(-50%, -6px); }
+}
+/* Cục đang được "nhấc" lên thành màn chi tiết */
+.sym-card.is-lifted .sym-card__media,
+.sym-card.is-lifted .sym-card__shade,
+.sym-card.is-lifted .sym-card__label { visibility: hidden; }
+
+/* Quay về từ màn chi tiết: các cục lần lượt hiện lại */
+.sym__stage.is-return .sym-card { animation: sym-card-in 1.1s var(--ease) both; animation-delay: calc(var(--i) * 90ms + 120ms); }
+.sym__stage.is-return .sym__intro { animation: sym-fade-in 0.9s var(--ease) both; }
+@keyframes sym-card-in { from { opacity: 0; transform: translateY(80px); } }
+@keyframes sym-fade-in { from { opacity: 0; } }
+
+/* =========================================================
+   Màn chi tiết (toàn màn hình)
+   ========================================================= */
+.sym-detail {
+  --s: 1;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  overflow: hidden;
+  contain: strict;
+  color: #fff;
+  overscroll-behavior: contain;
+  touch-action: none;
+}
+.sym-detail[hidden] { display: none; }
+.sym-detail__bg,
+.sym-detail__panel {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(70.71% 70.71% at 50% 50%, #750d1b 0%, #4b0d18 100%);
+}
+.sym-detail__bg { opacity: 0; }
+.sym-detail__full { position: absolute; inset: 0; z-index: 1; }
+.sym-slide { position: absolute; inset: 0; overflow: hidden; }
+.sym-slide img { width: 100%; height: 100%; object-fit: cover; display: block; will-change: transform; }
+
+/* Viền sáng vàng chạy theo mép ảnh mới khi chuyển ảnh */
+.sym-edge {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  bottom: 0;
+  left: -1px;
+  width: 2px;
+  background: linear-gradient(180deg, rgba(255, 231, 166, 0) 0%, #ffe7a6 18%, #fff6dc 50%, #ffe7a6 82%, rgba(255, 231, 166, 0) 100%);
+  box-shadow: 0 0 14px 3px rgba(255, 210, 110, 0.7), 0 0 44px 10px rgba(255, 170, 60, 0.35);
+  mix-blend-mode: screen;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sym-detail__panel {
+  z-index: 3;
+  background: radial-gradient(70.71% 70.71% at 50% 50%, #6c0d1a 0%, #4b0d18 100%);
+  transform: translateX(100%);
+  visibility: hidden;
+}
+
+/* Khối tiêu đề chủ đề: ngôi sao + tên + đường kẻ + chim Lạc */
+.sym-head {
+  --hs: 1;
+  position: absolute;
+  z-index: 6;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(20px * var(--hs));
+  padding-bottom: calc(40px * var(--hs));
+  transform-origin: 0 0;
+  visibility: hidden;
+  will-change: transform, opacity;
+}
+.sym-head__line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(246, 215, 114, 0) 0%, rgba(246, 215, 114, 0.85) 26%, rgba(246, 215, 114, 0.85) 74%, rgba(246, 215, 114, 0) 100%);
+}
+.sym-head__star { width: calc(34px * var(--hs)); height: calc(17px * var(--hs)); display: block; }
+.sym-head__title {
+  margin: 0;
+  font-size: calc(32px * var(--hs));
+  font-weight: var(--fw-medium);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  text-align: center;
+  white-space: nowrap;
+  background: var(--sym-gold);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  padding-block: 0.3em 0.12em;
+  margin-block: -0.3em -0.12em;
+}
+.sym-head__bird {
+  position: absolute;
+  left: 50%;
+  top: calc(81.6px * var(--hs));
+  width: calc(64px * var(--hs));
+  height: calc(32px * var(--hs));
+  transform: translateX(-50%);
+}
+
+/* Cửa sổ hình vòm – mở rộng từ cục ra toàn màn hình */
+.sym-detail__win {
+  position: absolute;
+  z-index: 5;
+  left: 0;
+  top: 0;
+  overflow: hidden;
+  clip-path: url(#sym-arch);
+  transform-origin: 0 0;
+  visibility: hidden;
+  will-change: transform;
+}
+.sym-detail__win img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+}
+
+/* Chữ trên ảnh toàn màn hình */
+.sym-caption {
+  position: absolute;
+  z-index: 7;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.sym-caption__shade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 51.3%;
+  background: linear-gradient(180deg, rgba(14, 14, 14, 0) 0%, #212121 100%);
+  mix-blend-mode: luminosity;
+}
+.sym-caption__inner {
+  position: absolute;
+  left: calc(67px * var(--s));
+  right: calc(54px * var(--s));
+  bottom: calc(101px * var(--s));
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+}
+.sym-caption__title {
+  margin: 0;
+  max-width: calc(488px * var(--s));
+  font-size: max(22px, calc(36px * var(--s)));
+  font-weight: var(--fw-regular);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: #f6d5d4;
+}
+.sym-caption__title .text-gold { font-weight: var(--fw-regular); }
+.sym-caption__title span:not(.text-gold) { font-weight: var(--fw-medium); }
+.sym-caption__desc {
+  margin: 0;
+  width: calc(372px * var(--s));
+  max-width: 42%;
+  color: #f8f2e9;
+  font-size: max(13px, calc(14px * var(--s)));
+  line-height: 1.5;
+}
+.sym-caption__line {
+  position: absolute;
+  left: calc(66.5px * var(--s));
+  bottom: calc(56px * var(--s));
+  width: calc(477px * var(--s));
+  height: 2px;
+  background: linear-gradient(90deg, rgba(246, 215, 114, 0) 0%, #f6d772 100%);
+  transform-origin: 0 50%;
+}
+
+.sym-close {
+  position: absolute;
+  z-index: 8;
+  top: 24px;
+  right: 24px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid rgba(232, 196, 149, 0.55);
+  border-radius: 50%;
+  background: rgba(40, 6, 10, 0.25);
+  color: #f6dc9a;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background-color 0.3s, border-color 0.3s;
+}
+.sym-close:hover { background: rgba(40, 6, 10, 0.55); border-color: #f6dc9a; }
+.sym-close:focus-visible { outline: 2px solid #ffe284; outline-offset: 3px; }
+.sym-close svg { width: 16px; height: 16px; display: block; margin: auto; }
+
+/* =========================================================
+   Tablet / mobile: dải cục vuốt ngang tự nhiên, không ghim
+   ========================================================= */
+@media (max-width: 1023px) {
+  .sym { height: auto !important; --u: 1px; --oy: 0px; }
+  .sym__stage { position: relative; height: auto; padding: 72px 0 88px; overflow: hidden; }
+  .sym__compass { left: -45%; top: auto; bottom: -25%; width: 110%; opacity: 0.9; }
+  .sym__intro { position: relative; left: auto; top: auto; width: auto; padding: 0 20px; }
+  .sym__title { max-width: 360px; font-size: clamp(24px, 6.6vw, 32px); }
+  .sym__desc { width: auto; max-width: 440px; margin-top: 18px; font-size: 14px; }
+  .sym__list { display: none; }
+  .sym__hint { position: relative; left: 20px; top: auto; display: block; margin-top: 24px; }
+  .sym__viewport {
+    position: relative;
+    left: auto;
+    margin-top: 32px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .sym__viewport::-webkit-scrollbar { display: none; }
+  .sym__track { position: relative; top: auto; transform: none !important; gap: 16px; padding: 0 20px; }
+  .sym-card { width: min(78vw, 380px); height: auto; aspect-ratio: 624.1 / 739; scroll-snap-align: center; }
+
+  .sym-caption__inner { left: 20px; right: 20px; bottom: 56px; flex-direction: column; align-items: flex-start; gap: 14px; }
+  .sym-caption__title { max-width: 100%; font-size: clamp(22px, 6.4vw, 30px); }
+  .sym-caption__desc { width: auto; max-width: 100%; }
+  .sym-caption__line { left: 20px; bottom: 32px; width: min(60vw, 280px); }
+  .sym-close { top: 16px; right: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sym__hint { animation: none; }
+  .sym__list li,
+  .sym__item-star,
+  .sym__item-line,
+  .sym-card__media img,
+  .sym-card__label { transition: none; }
+  .sym__stage.is-return .sym-card,
+  .sym__stage.is-return .sym__intro { animation: none; }
+}
   </style>
 </head>
 <body>
+<!-- Định nghĩa dùng chung cho section 3: khung vòm, ngôi sao, chim Lạc -->
+<svg class="sr-only" width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <defs>
+    <clipPath id="sym-arch" clipPathUnits="objectBoundingBox">
+      <path d="M0,0.076668 L0,1 L1,1 L1,0.076668 C0.864238,0.076668 0.720408,0 0.495861,0 C0.28524,0 0.14197,0.088379 0,0.076668 Z"/>
+    </clipPath>
+    <radialGradient id="sym-star-grad" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(17 17) rotate(-90) scale(17)">
+      <stop stop-color="#FFF2B0"/><stop offset="1" stop-color="#F5DE6D"/>
+    </radialGradient>
+  </defs>
+  <symbol id="sym-star" viewBox="0 0 34 17">
+    <path d="M11.434 15.5086L0 17H34L22.566 15.5086L31.7224 8.5L21.0746 12.9254L25.5 2.27757L18.4914 11.434L17 0L15.5086 11.434L8.5 2.27757L12.9254 12.9254L2.27757 8.5L11.434 15.5086Z" fill="url(#sym-star-grad)"/>
+  </symbol>
+  <symbol id="sym-bird" viewBox="0 0 64 32" fill="#DCB43C">
+<path d="M24.7665 11.5565C25.6606 11.5833 26.5319 11.5996 27.4033 11.616L27.4345 12.2058C26.53 12.2017 25.636 12.1749 24.7419 12.1481L24.6956 13.0861C25.5897 13.1128 26.5168 13.1274 27.4212 13.1315L27.4278 13.6553C26.5234 13.6511 25.5963 13.6366 24.6795 13.5994L24.6455 14.5704C25.5726 14.5849 26.4894 14.6221 27.4269 14.614L27.4212 15.1047C26.4941 15.0902 25.567 15.0756 24.6398 15.0611L24.6039 15.9764C25.5537 16.0014 26.4808 16.0159 27.4306 16.0409L27.425 16.5316C26.4648 16.5292 25.5253 16.4816 24.5878 16.4897L24.5434 17.4833C25.4932 17.5083 26.4657 17.5437 27.4032 17.5356L27.4183 17.981C26.4581 17.9787 25.4856 17.9433 24.5254 17.941L24.5028 18.5883C24.5028 18.5883 27.3682 18.8076 28.7169 18.7416L28.5913 10.7637C28.0289 9.65594 27.4336 8.56043 26.8817 7.43007L26.033 7.42413C26.5726 8.52145 27.1018 9.6414 27.6641 10.7491L27.0942 10.7342C26.5319 9.62642 25.9696 8.51869 25.4177 7.38832L24.4906 7.37377C25.0425 8.50413 25.6048 9.61187 26.1567 10.7422L25.5869 10.7273C25.0576 9.6073 24.5284 8.48735 23.9992 7.3674L23.0267 7.33201C23.5786 8.46238 24.1305 9.59275 24.7051 10.7335L24.7315 11.513L24.7665 11.5565Z"/>
+<path d="M29.4211 18.7052C29.9909 18.7202 30.334 18.631 30.334 18.631C30.3114 15.9897 30.2556 13.3606 30.1999 10.7314C29.6272 9.64632 29.0318 8.5508 28.4591 7.4657L27.4989 7.46336C28.0612 8.5711 28.6339 9.65621 29.2293 10.7517C29.3077 13.3913 29.3531 16.043 29.3984 18.6948L29.4211 18.7052Z"/>
+<path d="M29.4551 23.1323C26.8089 23.4522 24.3252 23.2985 23.5796 23.3673L24.122 24.2193C25.5614 24.1949 27.0215 24.1253 28.459 24.0453L28.4949 24.4455C27.1132 24.5237 25.7419 24.5793 24.3583 24.6018L24.8762 25.3877C26.1029 25.3479 27.3627 25.296 28.5998 25.2336L28.6707 25.6772C27.512 25.7482 26.3411 25.7861 25.1928 25.8345L25.7683 26.6742C26.772 26.6417 27.7757 26.6092 28.7671 26.5436L28.8275 27.0099C27.9023 27.051 26.9998 27.1026 26.0849 27.1211L26.6009 27.8513C27.3816 27.826 28.1622 27.8007 28.9428 27.7754L29.0156 28.2747C28.3134 28.3086 27.6216 28.3198 26.9298 28.3311L26.462 29.3496L27.0413 29.643L27.3012 29.0771L27.8257 29.0713L27.4723 29.8408L27.9958 30.136L28.5402 29.0704L29.009 29.0664L28.3379 30.3479L29.0638 30.6811L30.0561 28.999L29.4343 23.1776L29.4551 23.1323Z"/>
+<path d="M31.3303 22.8702C31.076 22.9453 29.9646 23.0928 29.9646 23.0928L30.6875 28.9333C30.3076 29.581 29.9277 30.2288 29.5478 30.8765L30.387 31.2618C30.8851 30.4765 31.3604 29.6807 31.8358 28.8849L31.3303 22.8702Z"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M43.4741 11.7576L43.4835 11.7519L43.512 11.7344L43.5478 11.7123L43.5768 11.6943C44.3196 11.2132 45.8771 10.3935 45.8771 10.3935C45.8771 10.3935 49.4628 8.80577 53.1817 6.86817C56.9233 4.94089 60.765 2.67599 61.7999 1.91782C62.8348 1.15965 63.4973 0.614246 63.7544 0.293762L63.6882 0.318176C63.6618 0.196461 63.5323 0 63.5323 0C63.5323 0 63.5256 0.00411092 63.5087 0.015248L63.4728 0.038743C63.3069 0.147088 62.8023 0.473082 62.0049 0.938405C59.1709 2.59219 52.6386 6.00587 44.4671 7.66331C44.3838 7.63154 44.2934 7.59357 44.1964 7.55263C43.4764 7.24942 42.3756 6.7858 40.8559 7.51275C39.0848 8.36494 38.9143 10.168 38.7837 11.5492C38.7531 11.8726 38.7247 12.1732 38.6784 12.4327C38.6274 12.9026 38.2569 15.1441 36.9394 16.4578C35.3838 17.9908 33.608 19.2858 28.6576 19.4797C23.9861 19.6645 18.1294 18.4831 13.2879 16.9454C8.82791 15.5797 5.2106 13.9028 3.71191 13.2079L3.66548 13.1864C3.55688 13.1361 3.46017 13.0913 3.37588 13.0526L2.73226 14.1548C4.31212 14.8537 5.89019 15.5013 7.50854 16.1653L7.70433 16.2456L7.53799 16.6077C6.40765 16.1985 3.84841 15.1331 2.53288 14.5291L2.13214 15.2222C2.37497 15.3241 2.65326 15.4421 2.95108 15.5685C4.34765 16.1609 6.21281 16.9521 7.28186 17.2849L7.11552 17.647C5.92945 17.2395 3.31443 16.176 1.93276 15.5965L1.46773 16.3697C2.95055 16.9682 5.52873 17.9326 6.83861 18.3695L6.67227 18.7316C5.53348 18.4006 2.79654 17.3633 1.26833 16.744L0.792938 17.5397C2.7256 18.2352 5.44837 19.1837 6.40762 19.4871L6.26206 19.804C5.38317 19.5649 1.53386 18.3184 0.56045 17.9263L0 18.8475C4.9144 20.8844 11.0517 22.1125 16.5284 22.6262C22.0052 23.14 26.8006 22.9845 29.0148 22.768C32.1421 22.4771 35.4272 21.2447 37.0934 20.009C38.7596 18.7733 40.1631 17.0333 40.923 15.0801C41.8391 12.7526 42.9083 12.1019 43.459 11.7667L43.4667 11.7621L43.4741 11.7576ZM43.1968 9.2361C43.1787 9.31149 43.1531 9.38634 43.1195 9.4595C42.8416 10.0643 42.125 10.3291 41.5189 10.0508C40.9127 9.77251 40.6466 9.05655 40.9244 8.45174C41.2022 7.84693 41.9188 7.58215 42.525 7.86044C43.0578 8.10507 43.3279 8.6879 43.1968 9.2361Z"/>
+<path d="M39.4078 7.86133C37.6324 8.7894 34.4399 8.82916 32.7769 8.30336C33.0831 9.0057 33.4527 9.65445 34.2232 10.3471L35.4665 9.30045L35.7961 9.58063L34.5507 10.6298C34.6732 10.7314 34.7986 10.8309 34.9263 10.9278L36.1812 9.86752L36.5108 10.1477L35.2768 11.1835C35.4088 11.2759 35.5425 11.3653 35.6774 11.4512L36.8955 10.4341L37.2252 10.7143L36.0518 11.6788C36.6603 12.0313 37.5342 12.422 38.1149 12.5764C38.0035 10.2275 38.5036 8.79319 39.4078 7.86133Z"/>
+  </symbol>
+</svg>
 <main>
   <section class="sg-about" aria-labelledby="sg-intro-title">
 
@@ -632,7 +1186,145 @@ img { display: block; max-width: 100%; }
       </div>
     </div>
   </section>
+
+  <!-- ===== Section 2: placeholder (có người khác làm) ===== -->
+  <div class="sec-placeholder" aria-hidden="true"></div>
+
+  <!-- ===== Section 3: Bản giao hưởng ===== -->
+  <section class="sym" id="ban-giao-huong" aria-labelledby="sym-title" data-sym>
+    <div class="sym__stage" data-sym-stage>
+      <img class="sym__compass" src="assets/svg/compass-bg.svg" alt="" aria-hidden="true" width="805" height="805">
+
+      <div class="sym__intro">
+        <h2 class="sym__title trim" id="sym-title">
+          <span class="sym__title-a">Viết nên</span>
+          <span><span class="text-gold">bản giao hưởng</span></span>
+          <span class="sym__title-a">cho mỗi vùng đất</span>
+        </h2>
+        <p class="sym__desc">Sun Group không xây dựng những công trình đơn lẻ. Chúng tôi viết nên bản giao hưởng cho mỗi vùng đất, nơi thiên nhiên, văn hóa và con người hòa quyện, thăng hoa trong những trải nghiệm trọn vẹn.</p>
+        <ol class="sym__list" data-sym-list aria-label="5 chủ đề">
+          <li style="--i:0"><button class="sym__item" type="button">
+            <span class="sym__item-row"><span class="sym__item-star"><svg class="" viewBox="0 0 34 17" aria-hidden="true"><use href="#sym-star"/></svg></span><span class="sym__item-name">Thiên nhiên khởi nguồn</span></span>
+            <span class="sym__item-line"></span>
+          </button></li>
+          <li style="--i:1"><button class="sym__item" type="button">
+            <span class="sym__item-row"><span class="sym__item-star"><svg class="" viewBox="0 0 34 17" aria-hidden="true"><use href="#sym-star"/></svg></span><span class="sym__item-name">Di sản tiếp nối</span></span>
+            <span class="sym__item-line"></span>
+          </button></li>
+          <li style="--i:2"><button class="sym__item" type="button">
+            <span class="sym__item-row"><span class="sym__item-star"><svg class="" viewBox="0 0 34 17" aria-hidden="true"><use href="#sym-star"/></svg></span><span class="sym__item-name">Kỷ lục kiến tạo</span></span>
+            <span class="sym__item-line"></span>
+          </button></li>
+          <li style="--i:3"><button class="sym__item" type="button">
+            <span class="sym__item-row"><span class="sym__item-star"><svg class="" viewBox="0 0 34 17" aria-hidden="true"><use href="#sym-star"/></svg></span><span class="sym__item-name">Tinh hoa giao hòa</span></span>
+            <span class="sym__item-line"></span>
+          </button></li>
+          <li style="--i:4"><button class="sym__item" type="button">
+            <span class="sym__item-row"><span class="sym__item-star"><svg class="" viewBox="0 0 34 17" aria-hidden="true"><use href="#sym-star"/></svg></span><span class="sym__item-name">Trải nghiệm trọn vẹn</span></span>
+            <span class="sym__item-line"></span>
+          </button></li>
+        </ol>
+      </div>
+      <span class="sym__hint" aria-hidden="true">
+          <svg viewBox="0 0 24 18" fill="none" aria-hidden="true">
+            <path d="M1 17L6.1 10.2C6.63 9.49 6.63 8.51 6.1 7.8L1 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path opacity=".5" d="M9 17L14.1 10.2C14.63 9.49 14.63 8.51 14.1 7.8L9 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path opacity=".3" d="M17 17L22.1 10.2C22.63 9.49 22.63 8.51 22.1 7.8L17 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+      </span>
+
+      <div class="sym__viewport" data-sym-viewport>
+        <ul class="sym__track" data-sym-track>
+          <li class="sym-card" style="--i:0" data-sym-card>
+            <button class="sym-card__btn" type="button" aria-label="Thiên nhiên khởi nguồn – xem chi tiết">
+              <img class="sym-card__frame" src="assets/svg/sym-card-frame.svg" alt="" width="629" height="743">
+              <span class="sym-card__media" data-card-media><img src="assets/img/sym/thien-nhien-1.webp" alt="" width="1920" height="1200"></span>
+              <span class="sym-card__shade"></span>
+              <span class="sym-card__label" data-card-label>
+                <svg class="sym-card__star" viewBox="0 0 34 17" aria-hidden="true"><use href="#sym-star"/></svg>
+                <span class="sym-card__title">Thiên nhiên khởi nguồn</span>
+              </span>
+            </button>
+          </li>
+          <li class="sym-card" style="--i:1" data-sym-card>
+            <button class="sym-card__btn" type="button" aria-label="Di sản tiếp nối – xem chi tiết">
+              <img class="sym-card__frame" src="assets/svg/sym-card-frame.svg" alt="" width="629" height="743">
+              <span class="sym-card__media" data-card-media><img src="assets/img/sym/di-san-1.webp" alt="" width="1920" height="1200"></span>
+              <span class="sym-card__shade"></span>
+              <span class="sym-card__label" data-card-label>
+                <svg class="sym-card__star" viewBox="0 0 34 17" aria-hidden="true"><use href="#sym-star"/></svg>
+                <span class="sym-card__title">Di sản tiếp nối</span>
+              </span>
+            </button>
+          </li>
+          <li class="sym-card" style="--i:2" data-sym-card>
+            <button class="sym-card__btn" type="button" aria-label="Kỷ lục kiến tạo – xem chi tiết">
+              <img class="sym-card__frame" src="assets/svg/sym-card-frame.svg" alt="" width="629" height="743">
+              <span class="sym-card__media" data-card-media><img src="assets/img/sym/ky-luc-1.webp" alt="" width="1920" height="1200" loading="lazy"></span>
+              <span class="sym-card__shade"></span>
+              <span class="sym-card__label" data-card-label>
+                <svg class="sym-card__star" viewBox="0 0 34 17" aria-hidden="true"><use href="#sym-star"/></svg>
+                <span class="sym-card__title">Kỷ lục kiến tạo</span>
+              </span>
+            </button>
+          </li>
+          <li class="sym-card" style="--i:3" data-sym-card>
+            <button class="sym-card__btn" type="button" aria-label="Tinh hoa giao hòa – xem chi tiết">
+              <img class="sym-card__frame" src="assets/svg/sym-card-frame.svg" alt="" width="629" height="743">
+              <span class="sym-card__media" data-card-media><img src="assets/img/sym/tinh-hoa-1.webp" alt="" width="1920" height="1200" loading="lazy"></span>
+              <span class="sym-card__shade"></span>
+              <span class="sym-card__label" data-card-label>
+                <svg class="sym-card__star" viewBox="0 0 34 17" aria-hidden="true"><use href="#sym-star"/></svg>
+                <span class="sym-card__title">Tinh hoa giao hòa</span>
+              </span>
+            </button>
+          </li>
+          <li class="sym-card" style="--i:4" data-sym-card>
+            <button class="sym-card__btn" type="button" aria-label="Trải nghiệm trọn vẹn – xem chi tiết">
+              <img class="sym-card__frame" src="assets/svg/sym-card-frame.svg" alt="" width="629" height="743">
+              <span class="sym-card__media" data-card-media><img src="assets/img/sym/trai-nghiem-1.webp" alt="" width="1920" height="1200" loading="lazy"></span>
+              <span class="sym-card__shade"></span>
+              <span class="sym-card__label" data-card-label>
+                <svg class="sym-card__star" viewBox="0 0 34 17" aria-hidden="true"><use href="#sym-star"/></svg>
+                <span class="sym-card__title">Trải nghiệm trọn vẹn</span>
+              </span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Section 4: placeholder (có người khác làm) ===== -->
+  <div class="sec-placeholder" aria-hidden="true"></div>
 </main>
+
+<!-- Màn chi tiết của section 3 (toàn màn hình) -->
+<div class="sym-detail" data-sym-detail role="dialog" aria-modal="true" aria-label="Bản giao hưởng – xem chi tiết" tabindex="-1" hidden>
+  <div class="sym-detail__bg" data-bg></div>
+  <div class="sym-detail__full" data-full></div>
+  <span class="sym-edge" data-edge aria-hidden="true"></span>
+  <div class="sym-detail__panel" data-panel aria-hidden="true"></div>
+  <div class="sym-head" data-head aria-hidden="true">
+    <svg class="sym-head__star" viewBox="0 0 34 17" data-head-deco><use href="#sym-star"/></svg>
+    <p class="sym-head__title trim" data-head-title></p>
+    <span class="sym-head__line" data-head-deco></span>
+    <svg class="sym-head__bird" viewBox="0 0 64 32" data-head-deco><use href="#sym-bird"/></svg>
+  </div>
+  <div class="sym-detail__win" data-win aria-hidden="true"><img alt=""></div>
+  <div class="sym-caption" data-caption>
+    <div class="sym-caption__shade" data-cap-shade></div>
+    <div class="sym-caption__inner">
+      <p class="sym-caption__title trim" data-cap><span>Viết nên </span><span class="text-gold">bản giao hưởng</span><span> cho mỗi vùng đất</span></p>
+      <p class="sym-caption__desc" data-cap>Sun Group không xây dựng những công trình đơn lẻ. Chúng tôi viết nên bản giao hưởng cho mỗi vùng đất, nơi thiên nhiên, văn hóa và con người hòa quyện, thăng hoa trong những trải nghiệm trọn vẹn.</p>
+    </div>
+    <span class="sym-caption__line" data-cap-line></span>
+  </div>
+  <button class="sym-close" type="button" data-close aria-label="Đóng, quay lại danh sách">
+    <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+  </button>
+  <p class="sr-only" aria-live="polite" data-live></p>
+</div>
 
 <script>
 /* Sun Group – vòng tròn hệ sinh thái
@@ -1064,6 +1756,613 @@ img { display: block; max-width: 100%; }
   };
   if ('requestIdleCallback' in window) requestIdleCallback(preload, { timeout: 2500 });
   else setTimeout(preload, 1500);
+})();
+
+/* =====================================================================
+   Section 3 – "Viết nên bản giao hưởng cho mỗi vùng đất"
+   - Desktop: cuộn dọc → dải 5 cục chạy ngang. Lướt qua hết 5 cục thì
+     danh sách chủ đề bên trái hiện ra, cuộn tiếp là sang section sau.
+   - Bấm 1 cục: chữ và hình tách ra, hình vòm nở thành ảnh toàn màn hình.
+     Mỗi lần cuộn/vuốt = 1 ảnh (≈1s, lớp ảnh mới phủ lên + parallax 5%).
+     Hết ảnh của chủ đề → màn đỏ mang tên chủ đề kế trượt vào, hình vòm
+     mọc lên rồi nở ra. Hết chủ đề cuối → ảnh thu về hình vòm, rơi xuống,
+     trở lại dải cục (danh sách bên trái đã hiện) để cuộn tiếp.
+   ===================================================================== */
+(function () {
+  'use strict';
+
+  // TODO(content): ảnh đang là ảnh tạm lấy trong file Figma – team thay ảnh thật.
+  var IMG = 'assets/img/sym/';
+  var TOPICS = [
+    { name: 'Thiên nhiên khởi nguồn', images: [
+      { src: IMG + 'thien-nhien-1.webp', alt: 'Hai người trên cây cầu vươn ra biển lúc hoàng hôn' },
+      { src: IMG + 'thien-nhien-2.webp', alt: 'Nhà hát mái vòm giữa hàng cọ lúc chiều tà' }
+    ] },
+    { name: 'Di sản tiếp nối', images: [
+      { src: IMG + 'di-san-1.webp', alt: 'Đoàn múa dân tộc biểu diễn trước những ngôi nhà mái tranh' },
+      { src: IMG + 'di-san-2.webp', alt: 'Biển mây và mặt trời mọc trên dãy núi' }
+    ] },
+    { name: 'Kỷ lục kiến tạo', images: [
+      { src: IMG + 'ky-luc-1.webp', alt: 'Cabin cáp treo bay trên đồi hoa cam' },
+      { src: IMG + 'ky-luc-2.webp', alt: 'Trụ cáp treo in bóng trên mặt trời đỏ rực' }
+    ] },
+    { name: 'Tinh hoa giao hòa', images: [
+      { src: IMG + 'tinh-hoa-1.webp', alt: 'Pháo hoa rực rỡ trên sân khấu ven biển về đêm' },
+      { src: IMG + 'tinh-hoa-2.webp', alt: 'Công trình mái vòm bên bến du thuyền lúc hoàng hôn' }
+    ] },
+    { name: 'Trải nghiệm trọn vẹn', images: [
+      { src: IMG + 'trai-nghiem-1.webp', alt: 'Biệt thự nghỉ dưỡng giữa rừng nhiệt đới nhìn từ trên cao' },
+      { src: IMG + 'trai-nghiem-2.webp', alt: 'Hồ bơi vô cực bên bờ biển và hàng cọ' }
+    ] }
+  ];
+
+  var root = document.querySelector('[data-sym]');
+  var detail = document.querySelector('[data-sym-detail]');
+  if (!root || !detail) return;
+
+  var stage = root.querySelector('[data-sym-stage]');
+  var viewport = root.querySelector('[data-sym-viewport]');
+  var track = root.querySelector('[data-sym-track]');
+  var cards = [].slice.call(root.querySelectorAll('[data-sym-card]'));
+  var listBtns = [].slice.call(root.querySelectorAll('[data-sym-list] button'));
+
+  var mqMobile = window.matchMedia('(max-width: 1023px)');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var canAnimate = typeof Element !== 'undefined' && typeof Element.prototype.animate === 'function';
+  var A = 606.0407 / 720.9274;              // tỉ lệ khung vòm (rộng / cao)
+  var noop = function () {};
+  function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+
+  // ===================================================================
+  //  1. DẢI NGANG – cuộn dọc điều khiển dải chạy ngang (desktop)
+  // ===================================================================
+  var pinned = false, travel = 0, hold = 0, cur = 0, target = 0, raf = 0;
+  var isOpen = false;
+
+  function measure() {
+    if (mqMobile.matches) {
+      pinned = false;
+      root.style.height = '';
+      track.style.transform = '';
+      cur = target = 0;
+      stage.classList.remove('is-list');
+      return;
+    }
+    pinned = true;
+    var H = window.innerHeight;
+    travel = Math.max(0, track.offsetWidth - viewport.clientWidth);
+    hold = Math.round(H * 0.6);                // đoạn cuộn thêm để danh sách hiện ra
+    root.style.height = (H + travel + hold) + 'px';
+    update(true);
+  }
+
+  function scrolled() { return -root.getBoundingClientRect().top; }
+
+  function update(jump) {
+    if (!pinned || isOpen) return;
+    var y = scrolled();
+    target = -clamp(y / (travel || 1), 0, 1) * travel;
+    stage.classList.toggle('is-list', y > travel + hold * 0.12);
+    if (jump || reduce) { cur = target; paint(); return; }
+    if (!raf) raf = requestAnimationFrame(tick);
+  }
+  function tick() {
+    raf = 0;
+    var d = target - cur;
+    if (Math.abs(d) < 0.25) cur = target;
+    else { cur += d * 0.14; raf = requestAnimationFrame(tick); }
+    paint();
+  }
+  function paint() { track.style.transform = 'translate3d(' + cur.toFixed(2) + 'px,0,0)'; }
+
+  window.addEventListener('scroll', function () { update(false); }, { passive: true });
+  window.addEventListener('resize', measure);
+  if (mqMobile.addEventListener) mqMobile.addEventListener('change', measure);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+  measure();
+
+  // Danh sách: mục đang chọn (mặc định mục đầu)
+  function markList(i) { listBtns.forEach(function (b, j) { b.classList.toggle('is-active', j === i); }); }
+
+  // ===================================================================
+  //  2. MÀN CHI TIẾT
+  // ===================================================================
+  var bg = detail.querySelector('[data-bg]');
+  var full = detail.querySelector('[data-full]');
+  var edge = detail.querySelector('[data-edge]');
+  var panel = detail.querySelector('[data-panel]');
+  var head = detail.querySelector('[data-head]');
+  var headTitle = head.querySelector('[data-head-title]');
+  var headDeco = [].slice.call(head.querySelectorAll('[data-head-deco]'));
+  var win = detail.querySelector('[data-win]');
+  var winImg = win.querySelector('img');
+  var caption = detail.querySelector('[data-caption]');
+  var capShade = caption.querySelector('[data-cap-shade]');
+  var capParts = [].slice.call(caption.querySelectorAll('[data-cap]'));
+  var capLine = caption.querySelector('[data-cap-line]');
+  var closeBtn = detail.querySelector('[data-close]');
+  var live = detail.querySelector('[data-live]');
+
+  var EIO = 'cubic-bezier(0.65, 0, 0.35, 1)';
+  var ESLIDE = 'cubic-bezier(0.77, 0, 0.175, 1)';
+  var EOUT = 'cubic-bezier(0.16, 1, 0.3, 1)';
+
+  var G = null;               // hình học theo viewport hiện tại
+  var T = 0, K = 0;           // chủ đề / ảnh đang xem
+  var slide = null;           // lớp ảnh toàn màn hình hiện tại
+  var busy = false, openedFrom = -1, returnFocus = null;
+  var anims = [], capAnims = [];
+
+  function play(el, frames, opts, bucket) {
+    var a = el.animate(frames, opts);
+    (bucket || anims).push(a);
+    return a;
+  }
+  function done(a) { return a ? a.finished.then(noop, noop) : Promise.resolve(); }
+  function cancelAll(list) { list.forEach(function (a) { try { a.cancel(); } catch (e) { /* bỏ qua */ } }); list.length = 0; }
+
+  // ---------- Hình học ----------
+  function geo() {
+    var W = window.innerWidth, H = window.innerHeight;
+    var mob = mqMobile.matches || W < 1024;
+    var g = { W: W, H: H, mob: mob };
+    var s, ox, oy;
+    if (!mob) { s = Math.min(W / 1440, H / 900); ox = (W - 1440 * s) / 2; oy = (H - 900 * s) / 2; }
+    else { s = Math.min(W / 390, H / 844); ox = (W - 390 * s) / 2; oy = (H - 844 * s) / 2; }
+    function R(x, y, w) { return { x: ox + x * s, y: oy + y * s, w: w * s }; }
+    function P(x, y) { return { x: ox + x * s, y: oy + y * s }; }
+    g.s = s;
+    if (!mob) {
+      // Toạ độ lấy từ storyboard Figma (khung 1440 × 900)
+      g.headW = 553 * s;
+      g.head1 = P(444, 357); g.head2 = P(444, 66); g.headA = P(444, 332);
+      g.win1 = R(474.74, 569, 492.55); g.win2 = R(418, 220, 606.04); g.win3 = R(327.9, 109, 786);
+      g.rise1 = R(418, 577, 606.04);
+      g.exit = [R(163.14, -215, 1116), R(263.59, 24, 915), R(354.04, 239, 734), R(484.48, 514, 473)];
+    } else {
+      g.headW = Math.min(W - 40, 553 * s);
+      var hx = (W - g.headW) / 2;
+      g.head1 = { x: hx, y: oy + 380 * s }; g.head2 = { x: hx, y: oy + 110 * s }; g.headA = { x: hx, y: oy + 330 * s };
+      g.win1 = R(75, 540, 240); g.win2 = R(35, 250, 320); g.win3 = R(-20, 150, 430);
+      g.rise1 = R(35, 600, 320);
+      g.exit = [R(-110, -60, 610), R(-20, 170, 430), R(55, 400, 280), R(105, 620, 180)];
+    }
+    g.rise0 = { x: g.rise1.x, y: H + 24, w: g.rise1.w };
+    var last = g.exit[g.exit.length - 1];
+    g.exit.push({ x: last.x, y: H + 24, w: last.w });
+    var wh = Math.max(W / A, H * 1.2) + 2, ww = wh * A;   // vòm đủ lớn để phủ kín màn hình
+    g.full = { x: (W - ww) / 2, y: -0.1616 * wh, w: ww };
+    g.bw = g.win2.w; g.bh = g.bw / A;
+    return g;
+  }
+
+  function applyGeo() {
+    detail.style.setProperty('--s', G.mob ? 1 : G.s);
+    head.style.width = G.headW + 'px';
+    head.style.setProperty('--hs', (G.headW / 553).toFixed(4));
+    win.style.width = G.bw + 'px';
+    win.style.height = G.bh + 'px';
+  }
+
+  // Khung hình (keyframe) cho cửa sổ vòm: chỉ dùng transform để mượt
+  function wk(r, off, ease) {
+    var f = { transform: 'translate(' + r.x.toFixed(2) + 'px,' + r.y.toFixed(2) + 'px) scale(' + (r.w / G.bw).toFixed(5) + ')' };
+    if (off != null) f.offset = off;
+    if (ease) f.easing = ease;
+    return f;
+  }
+  // Ảnh bên trong cửa sổ: 'cover' = phủ khung vòm, 'mask' = ảnh neo theo màn hình, 'mid' = ở giữa
+  function pk(r, mode, off, ease) {
+    var b = [0, 0, G.bw, G.bh];
+    if (mode !== 'cover') {
+      var k = r.w / G.bw;
+      var m = [-r.x / k, -r.y / k, G.W / k, G.H / k];
+      b = mode === 'mask' ? m : [m[0] / 2, m[1] / 2, (G.bw + m[2]) / 2, (G.bh + m[3]) / 2];
+    }
+    var f = { left: b[0].toFixed(2) + 'px', top: b[1].toFixed(2) + 'px', width: b[2].toFixed(2) + 'px', height: b[3].toFixed(2) + 'px' };
+    if (off != null) f.offset = off;
+    if (ease) f.easing = ease;
+    return f;
+  }
+  function hk(p, k, off, ease) {
+    var f = { transform: 'translate(' + p.x.toFixed(2) + 'px,' + p.y.toFixed(2) + 'px) scale(' + (k || 1).toFixed(5) + ')' };
+    if (off != null) f.offset = off;
+    if (ease) f.easing = ease;
+    return f;
+  }
+
+  // ---------- Nội dung ----------
+  function cur_img(t, k) { return TOPICS[t].images[k]; }
+  function ready(img) { return img.decode ? img.decode().then(noop, noop) : Promise.resolve(); }
+  function setWin(im) { winImg.src = im.src; winImg.alt = ''; return ready(winImg); }
+  function setHead(t) { headTitle.textContent = TOPICS[t].name; }
+  function makeSlide(im) {
+    var s = document.createElement('div');
+    s.className = 'sym-slide';
+    var i = document.createElement('img');
+    i.src = im.src;
+    i.alt = im.alt;
+    i.decoding = 'async';
+    s.appendChild(i);
+    return s;
+  }
+  function announce() {
+    live.textContent = TOPICS[T].name + ' – ảnh ' + (K + 1) + ' trên ' + TOPICS[T].images.length;
+  }
+  function preload(t, k) {
+    var list = [];
+    TOPICS.forEach(function (tp) { tp.images.forEach(function (im) { list.push(im.src); }); });
+    var start = 0;
+    for (var a = 0; a < t; a++) start += TOPICS[a].images.length;
+    start += k;
+    // ưu tiên các ảnh kế tiếp
+    list.slice(start).concat(list.slice(0, start)).forEach(function (src) { var i = new Image(); i.src = src; });
+  }
+
+  // ---------- Chữ trên ảnh ----------
+  function captionIn() {
+    cancelAll(capAnims);
+    caption.style.opacity = '1';
+    if (reduce || !canAnimate) return Promise.resolve();
+    play(capShade, [{ opacity: 0 }, { opacity: 1 }], { duration: 700, easing: 'ease-out', fill: 'backwards' }, capAnims);
+    capParts.forEach(function (el, i) {
+      play(el, [
+        { opacity: 0, transform: 'translateY(22px)', filter: 'blur(6px)' },
+        { opacity: 1, transform: 'none', filter: 'blur(0px)' }
+      ], { duration: 900, delay: 120 + i * 110, easing: EOUT, fill: 'backwards' }, capAnims);
+    });
+    var l = play(capLine, [{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }],
+      { duration: 1100, delay: 420, easing: EOUT, fill: 'backwards' }, capAnims);
+    return done(l);
+  }
+  function captionOut() {
+    if (caption.style.opacity !== '1') return Promise.resolve();
+    if (reduce || !canAnimate) { caption.style.opacity = '0'; return Promise.resolve(); }
+    var a = play(caption, [{ opacity: 1 }, { opacity: 0 }], { duration: 260, easing: 'ease-in', fill: 'forwards' }, capAnims);
+    return done(a).then(function () { caption.style.opacity = '0'; cancelAll(capAnims); });
+  }
+
+  // ---------- Chốt trạng thái: ảnh đã phủ kín màn hình ----------
+  function commit(t, k) {
+    var s = makeSlide(cur_img(t, k));
+    return ready(s.firstChild).then(function () {
+      full.appendChild(s);
+      [].slice.call(full.children).forEach(function (c) { if (c !== s) full.removeChild(c); });
+      slide = s;
+      return settleCommit(t, k);
+    });
+  }
+  function settleCommit(t, k) {
+    bg.style.opacity = '1';
+    win.style.visibility = 'hidden';
+    head.style.visibility = 'hidden';
+    panel.style.visibility = 'hidden';
+    cancelAll(anims);
+    T = t; K = k;
+    markList(t);
+    announce();
+    captionIn();          // không chờ chữ hiện xong – người xem có thể cuộn tiếp ngay
+  }
+
+  // ---------- Mở: từ 1 cục trên dải ----------
+  function enterFromCard(i) {
+    var card = cards[i];
+    var mr = card.querySelector('[data-card-media]').getBoundingClientRect();
+    var lr = card.querySelector('[data-card-label]').getBoundingClientRect();
+    var C = { x: mr.left, y: mr.top, w: mr.width };
+    var HC = { x: lr.left, y: lr.top };
+    var kc = lr.width / G.headW;
+    var D = 2300, E3 = 'cubic-bezier(0.45, 0, 0.2, 1)';
+
+    setHead(i);
+    openedFrom = i;
+    return setWin(cur_img(i, 0)).then(function () {
+    card.classList.add('is-lifted');
+    win.style.visibility = 'visible';
+    head.style.visibility = 'visible';
+
+    play(bg, [{ opacity: 0 }, { opacity: 1 }], { duration: 700, easing: 'ease-out', fill: 'forwards' });
+    // Hình: đi xuống & nhỏ lại → lên giữa → nở ra toàn màn hình
+    var w = play(win, [wk(C, 0, EIO), wk(G.win1, 0.3, EIO), wk(G.win2, 0.58, EIO), wk(G.win3, 0.79, E3), wk(G.full, 1)],
+      { duration: D, fill: 'forwards' });
+    play(winImg, [pk(C, 'cover', 0, EIO), pk(G.win1, 'cover', 0.3, EIO), pk(G.win2, 'cover', 0.58, EIO), pk(G.win3, 'mid', 0.79, E3), pk(G.full, 'mask', 1)],
+      { duration: D, fill: 'forwards' });
+    // Chữ: tách khỏi hình, bay lên giữa rồi lên trên; mờ dần khi hình nở ra
+    play(head, [hk(HC, kc, 0, EIO), hk(G.head1, 1, 0.3, EIO), hk(G.head2, 1, 0.58), hk(G.head2, 1, 1)], { duration: D, fill: 'forwards' });
+    play(head, [{ opacity: 1 }, { opacity: 1, offset: 0.62 }, { opacity: 0, offset: 0.84 }, { opacity: 0 }], { duration: D, fill: 'forwards' });
+    headDeco.forEach(function (el) {
+      play(el, [{ opacity: 0 }, { opacity: 0, offset: 0.14 }, { opacity: 1, offset: 0.34 }, { opacity: 1 }], { duration: D, fill: 'forwards' });
+    });
+    return done(w);
+    }).then(function () { return commit(i, 0); });
+  }
+
+  // ---------- Sang chủ đề khác: màn đỏ trượt vào, vòm mọc lên rồi nở ra ----------
+  function arrive(t, k, dir, fromStrip) {
+    var D1 = 950, D2 = 1850, o = 0.47;
+    var winReady = null;
+    return captionOut().then(function () {
+      setHead(t);
+      winReady = setWin(cur_img(t, k));
+      head.style.visibility = 'visible';
+      panel.style.visibility = 'visible';
+      headDeco.forEach(function (el) { el.style.opacity = ''; });
+      if (fromStrip) bg.style.opacity = '0';
+
+      var a1 = play(panel, [{ transform: 'translateX(' + (dir > 0 ? 100 : -100) + '%)' }, { transform: 'translateX(0)' }],
+        { duration: D1, easing: ESLIDE, fill: 'forwards' });
+      play(head, [hk({ x: G.headA.x + dir * G.W, y: G.headA.y }, 1), hk(G.headA, 1)], { duration: D1, easing: ESLIDE, fill: 'forwards' });
+      play(edge, [
+        { transform: 'translateX(' + (dir > 0 ? G.W : 0) + 'px)', opacity: 1 },
+        { opacity: 1, offset: 0.85 },
+        { transform: 'translateX(' + (dir > 0 ? 0 : G.W) + 'px)', opacity: 0 }
+      ], { duration: D1, easing: ESLIDE });
+      if (slide) {
+        play(slide.firstChild, [{ transform: 'none', filter: 'brightness(1)' }, { transform: 'translateX(' + (-6 * dir) + '%)', filter: 'brightness(0.55)' }],
+          { duration: D1, easing: ESLIDE, fill: 'forwards' });
+      }
+      return Promise.all([done(a1), winReady]);
+    }).then(function () {
+      bg.style.opacity = '1';
+      full.innerHTML = '';
+      slide = null;
+      win.style.visibility = 'visible';
+      var E3 = 'cubic-bezier(0.45, 0, 0.2, 1)';
+      var w = play(win, [wk(G.rise0, 0, EOUT), wk(G.rise1, o * 0.42, EIO), wk(G.win2, o, EIO), wk(G.win3, o + (1 - o) * 0.45, E3), wk(G.full, 1)],
+        { duration: D2, fill: 'forwards' });
+      play(winImg, [pk(G.rise0, 'cover', 0, EOUT), pk(G.rise1, 'cover', o * 0.42, EIO), pk(G.win2, 'cover', o, EIO), pk(G.win3, 'mid', o + (1 - o) * 0.45, E3), pk(G.full, 'mask', 1)],
+        { duration: D2, fill: 'forwards' });
+      play(head, [hk(G.headA, 1, 0), hk(G.headA, 1, o * 0.3, EIO), hk(G.head2, 1, o), hk(G.head2, 1, 1)], { duration: D2, fill: 'forwards' });
+      play(head, [{ opacity: 1 }, { opacity: 1, offset: o + 0.04 }, { opacity: 0, offset: o + (1 - o) * 0.5 }, { opacity: 0 }], { duration: D2, fill: 'forwards' });
+      return done(w);
+    }).then(function () { return commit(t, k); });
+  }
+
+  // ---------- Đổi ảnh trong cùng chủ đề: phủ lớp mới + parallax ----------
+  function slideTo(k, dir) {
+    var old = slide;
+    var neu = makeSlide(cur_img(T, k));
+    var D = 1050;
+    return ready(neu.firstChild).then(function () {
+      full.appendChild(neu);
+      slide = neu;
+      var a = play(neu, [{ clipPath: dir > 0 ? 'inset(0 0 0 100%)' : 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0 0 0)' }],
+        { duration: D, easing: ESLIDE });
+      neu.firstChild.animate([{ transform: 'translateX(' + 5 * dir + '%) scale(1.05)' }, { transform: 'none' }],
+        { duration: D + 300, easing: EOUT });
+      if (old) {
+        play(old.firstChild, [{ transform: 'none', filter: 'brightness(1)' }, { transform: 'translateX(' + (-5 * dir) + '%)', filter: 'brightness(0.55)' }],
+          { duration: D, easing: ESLIDE, fill: 'forwards' });
+      }
+      play(edge, [
+        { transform: 'translateX(' + (dir > 0 ? G.W : 0) + 'px)', opacity: 1 },
+        { opacity: 1, offset: 0.85 },
+        { transform: 'translateX(' + (dir > 0 ? 0 : G.W) + 'px)', opacity: 0 }
+      ], { duration: D, easing: ESLIDE });
+      return done(a);
+    }).then(function () {
+      if (old && old.parentNode) old.parentNode.removeChild(old);
+      cancelAll(anims);
+      K = k;
+      announce();
+    });
+  }
+
+  // ---------- Thoát: ảnh thu về hình vòm, rơi xuống ----------
+  function exitDown(toEnd) {
+    return captionOut().then(function () { return setWin(cur_img(T, K)); }).then(function () {
+      win.style.visibility = 'visible';
+      var D = 1500, offs = [0, 0.2, 0.42, 0.63, 0.82, 1];
+      var rects = [G.full].concat(G.exit);
+      var opts = { duration: D, easing: 'cubic-bezier(0.55, 0, 0.3, 1)', fill: 'both' };
+      var w = play(win, rects.map(function (r, i) { return wk(r, offs[i]); }), opts);
+      play(winImg, rects.map(function (r, i) { return pk(r, 'mask', offs[i]); }), opts);
+      full.innerHTML = '';
+      slide = null;
+      return done(w);
+    }).then(function () {
+      win.style.visibility = 'hidden';
+      return finish(toEnd, true);
+    });
+  }
+
+  // ---------- Quay về đúng cục ban đầu (ngược lại lúc mở) ----------
+  function closeToCard() {
+    var card = cards[T];
+    return captionOut().then(function () { return setWin(cur_img(T, K)); }).then(function () {
+      var mr = card.querySelector('[data-card-media]').getBoundingClientRect();
+      var lr = card.querySelector('[data-card-label]').getBoundingClientRect();
+      var C = { x: mr.left, y: mr.top, w: mr.width };
+      var HC = { x: lr.left, y: lr.top };
+      var kc = lr.width / G.headW;
+      var D = 1900;
+      setHead(T);
+      win.style.visibility = 'visible';
+      head.style.visibility = 'visible';
+      var w = play(win, [wk(G.full, 0, EIO), wk(G.win3, 0.2, EIO), wk(G.win2, 0.42, EIO), wk(G.win1, 0.7, EIO), wk(C, 1)], { duration: D, fill: 'both' });
+      play(winImg, [pk(G.full, 'mask', 0, EIO), pk(G.win3, 'mid', 0.2, EIO), pk(G.win2, 'cover', 0.42, EIO), pk(G.win1, 'cover', 0.7, EIO), pk(C, 'cover', 1)], { duration: D, fill: 'both' });
+      play(head, [hk(G.head2, 1, 0), hk(G.head2, 1, 0.42, EIO), hk(G.head1, 1, 0.7, EIO), hk(HC, kc, 1)], { duration: D, fill: 'both' });
+      play(head, [{ opacity: 0 }, { opacity: 0, offset: 0.25 }, { opacity: 1, offset: 0.45 }, { opacity: 1 }], { duration: D, fill: 'both' });
+      headDeco.forEach(function (el) {
+        play(el, [{ opacity: 1 }, { opacity: 1, offset: 0.66 }, { opacity: 0, offset: 0.86 }, { opacity: 0 }], { duration: D, fill: 'both' });
+      });
+      play(bg, [{ opacity: 1 }, { opacity: 1, offset: 0.68 }, { opacity: 0 }], { duration: D, fill: 'forwards' });
+      full.innerHTML = '';
+      slide = null;
+      return done(w);
+    }).then(function () { return finish(false, false); });
+  }
+
+  // ---------- Đóng màn chi tiết, trả lại trang ----------
+  function finish(toEnd, fadeBg) {
+    if (toEnd && pinned) {
+      var top = root.getBoundingClientRect().top + window.scrollY;
+      window.scrollTo({ top: top + travel + hold, left: 0, behavior: 'instant' });
+      cur = target = -travel;
+      paint();
+      stage.classList.add('is-list');
+    }
+    stage.classList.toggle('is-return', fadeBg);
+    var p = fadeBg && canAnimate && !reduce
+      ? done(play(bg, [{ opacity: 1 }, { opacity: 0 }], { duration: 700, easing: 'ease-out', fill: 'forwards' }))
+      : Promise.resolve();
+    return p.then(function () {
+      cancelAll(anims);
+      cancelAll(capAnims);
+      detail.hidden = true;
+      bg.style.opacity = '0';
+      caption.style.opacity = '0';
+      full.innerHTML = '';
+      slide = null;
+      [win, head, panel].forEach(function (el) { el.style.visibility = 'hidden'; });
+      cards.forEach(function (c) { c.classList.remove('is-lifted'); });
+      document.documentElement.classList.remove('sym-lock');
+      isOpen = false;
+      busy = false;
+      openedFrom = -1;
+      update(true);
+      if (returnFocus && returnFocus.focus) { try { returnFocus.focus({ preventScroll: true }); } catch (e) { /* bỏ qua */ } }
+      setTimeout(function () { stage.classList.remove('is-return'); }, 1800);
+    });
+  }
+
+  // ---------- Bản giản lược (giảm chuyển động / trình duyệt cũ) ----------
+  function showStatic(t, k) {
+    var s = makeSlide(cur_img(t, k));
+    return ready(s.firstChild).then(function () {
+      full.innerHTML = '';
+      full.appendChild(s);
+      slide = s;
+      bg.style.opacity = '1';
+      T = t; K = k;
+      markList(t);
+      announce();
+      captionIn();
+    });
+  }
+
+  // ===================================================================
+  //  3. ĐIỀU HƯỚNG
+  // ===================================================================
+  function cardVisible(i) {
+    var r = cards[i].getBoundingClientRect();
+    return r.right > 0 && r.left < window.innerWidth && r.bottom > 0 && r.top < window.innerHeight;
+  }
+
+  function open(i, via) {
+    if (isOpen) return;
+    isOpen = true;
+    busy = true;
+    returnFocus = document.activeElement;
+    if (raf) { cancelAnimationFrame(raf); raf = 0; }
+    G = geo();
+    applyGeo();
+    document.documentElement.classList.add('sym-lock');
+    detail.hidden = false;
+    detail.focus({ preventScroll: true });
+    preload(i, 0);
+    var run;
+    if (reduce || !canAnimate) run = showStatic(i, 0);
+    else if (via === 'card' && cardVisible(i)) run = enterFromCard(i);
+    else run = arrive(i, 0, 1, true);
+    run.then(settle, settle);
+  }
+
+  function go(dir) {
+    if (!isOpen || busy) return;
+    busy = true;
+    G = geo();
+    applyGeo();
+    var tp = TOPICS[T], run;
+    if (dir > 0) {
+      if (K + 1 < tp.images.length) run = (reduce || !canAnimate) ? showStatic(T, K + 1) : slideTo(K + 1, 1);
+      else if (T + 1 < TOPICS.length) run = (reduce || !canAnimate) ? showStatic(T + 1, 0) : arrive(T + 1, 0, 1, false);
+      else run = (reduce || !canAnimate) ? finish(true, false) : exitDown(true);
+    } else {
+      if (K > 0) run = (reduce || !canAnimate) ? showStatic(T, K - 1) : slideTo(K - 1, -1);
+      else if (T > 0) {
+        var pk2 = TOPICS[T - 1].images.length - 1;
+        run = (reduce || !canAnimate) ? showStatic(T - 1, pk2) : arrive(T - 1, pk2, -1, false);
+      } else run = close();
+    }
+    run.then(settle, settle);
+  }
+
+  function close() {
+    if (reduce || !canAnimate) return finish(false, false);
+    if (openedFrom === T && cardVisible(T)) return closeToCard();
+    return exitDown(false);
+  }
+
+  var needQuiet = false, lastWheel = 0, pendingClose = false;
+  function settle() {
+    busy = false;
+    needQuiet = true;
+    if (pendingClose && isOpen) {
+      pendingClose = false;
+      busy = true;
+      close().then(settle, settle);
+    }
+    pendingClose = false;
+  }
+
+  // Cuộn chuột / trackpad: mỗi cú vuốt = 1 bước, bỏ qua phần quán tính còn lại
+  detail.addEventListener('wheel', function (e) {
+    e.preventDefault();
+    var now = performance.now(), gap = now - lastWheel;
+    lastWheel = now;
+    if (busy) return;
+    if (needQuiet && gap < 220) return;
+    needQuiet = false;
+    var d = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+    if (Math.abs(d) < 3) return;
+    go(d > 0 ? 1 : -1);
+  }, { passive: false });
+
+  // Vuốt cảm ứng
+  var tx = 0, ty = 0, touching = false;
+  detail.addEventListener('touchstart', function (e) {
+    var p = e.touches[0];
+    tx = p.clientX; ty = p.clientY; touching = true;
+  }, { passive: true });
+  detail.addEventListener('touchmove', function (e) { e.preventDefault(); }, { passive: false });
+  detail.addEventListener('touchend', function (e) {
+    if (!touching) return;
+    touching = false;
+    var p = e.changedTouches[0];
+    var dx = p.clientX - tx, dy = p.clientY - ty;
+    var d = Math.abs(dy) > Math.abs(dx) ? -dy : -dx;
+    if (Math.abs(d) < 40) return;
+    go(d > 0 ? 1 : -1);
+  }, { passive: true });
+
+  // Bàn phím
+  document.addEventListener('keydown', function (e) {
+    if (!isOpen) return;
+    var k = e.key;
+    if (k === 'Escape') { e.preventDefault(); requestClose(); return; }
+    if (k === 'Tab') { e.preventDefault(); (document.activeElement === closeBtn ? detail : closeBtn).focus({ preventScroll: true }); return; }
+    if (k === 'ArrowDown' || k === 'ArrowRight' || k === 'PageDown' || (k === ' ' && e.target !== closeBtn)) { e.preventDefault(); go(1); }
+    else if (k === 'ArrowUp' || k === 'ArrowLeft' || k === 'PageUp') { e.preventDefault(); go(-1); }
+  });
+
+  function requestClose() {
+    if (!isOpen) return;
+    if (busy) { pendingClose = true; return; }   // đóng ngay khi hiệu ứng đang chạy kết thúc
+    busy = true;
+    close().then(settle, settle);
+  }
+  closeBtn.addEventListener('click', requestClose);
+
+  cards.forEach(function (card, i) {
+    card.querySelector('button').addEventListener('click', function () { open(i, 'card'); });
+  });
+  listBtns.forEach(function (btn, i) {
+    btn.addEventListener('click', function () { open(i, 'list'); });
+    btn.addEventListener('mouseenter', function () { markList(i); });
+    btn.addEventListener('focus', function () { markList(i); });
+  });
+  markList(0);
 })();
 </script>
 </body>

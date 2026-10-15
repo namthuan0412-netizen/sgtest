@@ -88,6 +88,8 @@ Hoặc không dùng GitHub: `npx vercel` (preview) và `npx vercel --prod` (prod
 - Phím mũi tên / Page Up-Down / Space để chuyển, Esc hoặc nút × để thoát. Bật "giảm chuyển động" thì chỉ đổi ảnh, không chạy hiệu ứng.
 - **Mobile/tablet (< 1024px):** dải cục vuốt ngang tự nhiên, bấm vào mở màn chi tiết toàn màn hình, vuốt lên/trái để sang ảnh kế.
 - Code: CSS ở cuối thẻ `<style>`, JS ở khối `Section 3` cuối thẻ `<script>`. Dữ liệu chủ đề + ảnh nằm trong mảng `TOPICS`.
+- Trống đồng chìm ở góc dưới-trái của section 3, 5, 7 (`assets/svg/sym-drum.svg`, Figma 24:2136): nền đĩa đứng yên,
+  hoa văn xoay theo chiều kim đồng hồ cùng tốc độ trống đồng section 1 (biến `--spin-drum`).
 
 ## Section 5 – Bản giao hưởng, kiểu cuộn (không cần bấm)
 

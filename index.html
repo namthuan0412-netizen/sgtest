@@ -626,15 +626,29 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
   overflow: hidden;
 }
 
+/* Trống đồng chìm góc dưới-trái (Figma 24:2136): nền đĩa đứng yên, hoa văn xoay theo chiều kim đồng hồ
+   cùng tốc độ trống đồng section 1 (--spin-drum). Dùng chung cho section 3, 5, 7. */
 .sym__compass {
   position: absolute;
+  display: block;
   left: calc(-175 * var(--u));
   top: calc(var(--oy) + 394 * var(--u));
   width: calc(805 * var(--u));
   height: auto;
+  aspect-ratio: 1 / 1;
   max-width: none;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #4d0e18 0%, #6a0d1a 100%);
   pointer-events: none;
   user-select: none;
+}
+.sym__drum {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  transform-origin: 49.85% 49.85%;   /* tâm hoa văn (401.3 / 805) */
+  animation: sg-spin var(--spin-drum) linear infinite;
 }
 
 /* ---------- Cột trái ---------- */
@@ -1044,7 +1058,8 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sym__hint { animation: none; }
+  .sym__hint,
+  .sym__drum { animation: none; }
   .sym-card__media img,
   .sym-card__label { transition: none; }
   .sym__stage.is-return .sym-card,
@@ -1373,7 +1388,7 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
   <!-- ===== Section 3: Bản giao hưởng ===== -->
   <section class="sym" id="ban-giao-huong" aria-labelledby="sym-title" data-sym>
     <div class="sym__stage" data-sym-stage>
-      <img class="sym__compass" src="assets/svg/compass-bg.svg" alt="" aria-hidden="true" width="805" height="805">
+      <span class="sym__compass" aria-hidden="true"><img class="sym__drum" src="assets/svg/sym-drum.svg" alt="" width="805" height="805"></span>
 
       <div class="sym__intro">
         <h2 class="sym__title trim" id="sym-title">
@@ -1459,7 +1474,7 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
   <!-- ===== Section 5: Bản giao hưởng – bản cuộn (không cần bấm, mọi chuyển động bám theo cuộn) ===== -->
   <section class="sym sym--scrub" id="ban-giao-huong-cuon" aria-labelledby="sym5-title" data-s5>
     <div class="sym__stage" data-s5-stage>
-      <img class="sym__compass" src="assets/svg/compass-bg.svg" alt="" aria-hidden="true" width="805" height="805">
+      <span class="sym__compass" aria-hidden="true"><img class="sym__drum" src="assets/svg/sym-drum.svg" alt="" width="805" height="805"></span>
 
       <div class="sym__intro">
         <h2 class="sym__title trim" id="sym5-title">
@@ -1569,7 +1584,7 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
   <!-- ===== Section 7: Bản giao hưởng – lướt hết dải 5 cục rồi mới mở lần lượt 5 chủ đề (bám theo cuộn) ===== -->
   <section class="sym sym--scrub sym--s7" id="ban-giao-huong-luot" aria-labelledby="sym7-title" data-s7>
     <div class="sym__stage" data-s7-stage>
-      <img class="sym__compass" src="assets/svg/compass-bg.svg" alt="" aria-hidden="true" width="805" height="805">
+      <span class="sym__compass" aria-hidden="true"><img class="sym__drum" src="assets/svg/sym-drum.svg" alt="" width="805" height="805"></span>
 
       <div class="sym__intro">
         <h2 class="sym__title trim" id="sym7-title">

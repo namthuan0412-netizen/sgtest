@@ -113,9 +113,18 @@ Hoặc không dùng GitHub: `npx vercel` (preview) và `npx vercel --prod` (prod
 - Chặng 2: cuộn tiếp → màn đỏ mang tên chủ đề 1 trượt vào từ phải (viền sáng vàng ở mép), vòm mọc lên từ dưới rồi nở
   thành ảnh toàn màn hình → lướt các ảnh của chủ đề → màn đỏ chủ đề 2 trượt vào đè lên ảnh cũ (ảnh cũ lùi lại, tối đi)…
   tới chủ đề 5. Đúng chuỗi "sang chủ đề" trong storyboard của section 3.
-- Hết chủ đề 5: ảnh thu về hình vòm, rơi xuống, nền đỏ tan ra để lộ lại dải cục → cuộn tiếp là sang section 8.
+- Hết chủ đề 5: ảnh thu về hình vòm, rơi xuống, để lại màn nền đỏ → cuộn tiếp là section 8 trồi lên luôn
+  (không quay lại dải cục).
 - Độ dài: chỉnh `SPEED` / `LEN` ở khối `Section 7` cuối thẻ `<script>`. Mobile vẫn ghim + bám cuộn như section 5;
   bật "giảm chuyển động" thì dải cục cuộn ngang bình thường.
+
+## Smooth scroll (lăn chuột mượt)
+
+- Dùng thư viện **Lenis 1.3.23** (MIT, darkroom.engineering) – nhúng sẵn trong `<script>` của `index.html` (khối đầu tiên),
+  cấu hình ở khối "Smooth scroll" ngay sau đó (`lerp: 0.09` – nhỏ hơn thì trôi lâu/êm hơn, lớn hơn thì bám tay hơn).
+- Trang vẫn cuộn bằng thanh cuộn gốc nên các section ghim (3, 5, 7) chạy như cũ; các section này tự bỏ lớp làm mượt riêng
+  khi có Lenis để không bị trễ chồng. Section 3 tạm dừng Lenis khi mở màn chi tiết.
+- Link neo (nút mũi tên ở intro) cũng cuộn mượt. Điện thoại / tablet chỉ có cảm ứng và chế độ "giảm chuyển động" thì không bật.
 
 ## Cần thay
 

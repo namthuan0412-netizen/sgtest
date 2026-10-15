@@ -291,16 +291,6 @@ img { display: block; max-width: 100%; }
   pointer-events: none;
 }
 
-/* Ánh dương bừng lên từ phía vòng tròn */
-.sg-eco__flare {
-  position: absolute;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 251, 236, 0.95) 0%, rgba(255, 226, 140, 0.7) 14%, rgba(255, 180, 70, 0.32) 34%, rgba(255, 160, 60, 0) 62%);
-  mix-blend-mode: screen;
-  opacity: 0;
-  pointer-events: none;
-}
-
 /* Hạt sáng lấp lánh (sao 4 cánh) rơi lại sau mép sóng */
 .sg-eco__sparkles { position: absolute; inset: 0; pointer-events: none; }
 .sg-spark {
@@ -632,7 +622,6 @@ img { display: block; max-width: 100%; }
               </div>
               <!-- Vầng sáng hoàng kim khi ảnh mở ra -->
               <span class="sg-eco__sheen" data-sheen aria-hidden="true"></span>
-              <span class="sg-eco__flare" data-flare aria-hidden="true"></span>
               <span class="sg-eco__rays" data-rays aria-hidden="true"></span>
               <span class="sg-eco__ring" data-ring aria-hidden="true"></span>
               <span class="sg-eco__sparkles" data-sparkles aria-hidden="true"></span>
@@ -840,7 +829,7 @@ img { display: block; max-width: 100%; }
   // ===================================================================
   var EASE_OUT = 'cubic-bezier(0.16, 1, 0.3, 1)';  // expo-out: bật mạnh, lắng chậm
   var EASE_IN = 'cubic-bezier(0.4, 0, 1, 1)';
-  var EXIT_MS = 240;
+  var EXIT_MS = 200;
   var canAnimate = typeof Element !== 'undefined' && typeof Element.prototype.animate === 'function';
   var noop = function () {};
 
@@ -852,7 +841,6 @@ img { display: block; max-width: 100%; }
   var clipEl = panel.querySelector('[data-media-clip]');
   var ringEl = panel.querySelector('[data-ring]');
   var raysEl = panel.querySelector('[data-rays]');
-  var flareEl = panel.querySelector('[data-flare]');
   var sparkBox = panel.querySelector('[data-sparkles]');
   var burstEl = wheel.querySelector('[data-burst]');
   var sheenEl = panel.querySelector('[data-sheen]');
@@ -943,8 +931,9 @@ img { display: block; max-width: 100%; }
   }
 
   function enter() {
-    var T0 = 80;          // độ trễ chung sau khi đổi nội dung
-    var REVEAL = 1000;    // thời gian mở ảnh
+    var T0 = 0;           // bắt đầu ngay khi đổi nội dung – không có khoảng chờ trống
+    var REVEAL = 900;     // thời gian mép sóng quét hết ảnh
+    var K0 = 0.3;         // khung hình đầu tiên đã thấy sẵn ~1/4 ảnh phía vòng tròn
 
     // Ảnh mở theo hình tròn, tâm nằm ngoài mép trái (phía vòng tròn) – như sóng trống lan tới
     var w = mediaEl.clientWidth, h = mediaEl.clientHeight;
@@ -957,13 +946,13 @@ img { display: block; max-width: 100%; }
       el.style.top = oy - R + 'px';
     });
 
-    var B = [0.7, 0, 0.2, 1];
-    var SWEEP = 'cubic-bezier(' + B.join(', ') + ')';  // vào mạnh, ra êm – mép sóng đi ngang qua ảnh
+    var B = [0.2, 0.75, 0.3, 1];
+    var SWEEP = 'cubic-bezier(' + B.join(', ') + ')';  // lao nhanh ngay từ đầu, chậm dần ở mép xa
 
     // Mép sóng: chạy biến --k trên khung ảnh; vùng mở ảnh (clip-path), viền sáng và tia nắng
     // đều đọc cùng biến này (xem CSS) nên luôn khớp nhau, kể cả khi trình duyệt bận.
     clipEl.style.clipPath = 'circle(calc(var(--k) * ' + R + 'px) at ' + ox + 'px ' + oy + 'px)';
-    var wave = play(mediaEl, [{ '--k': 0 }, { '--k': 1 }],
+    var wave = play(mediaEl, [{ '--k': K0 }, { '--k': 1 }],
       { duration: REVEAL, delay: T0, easing: SWEEP, fill: 'backwards' });
     if (wave) wave.onfinish = function () { clipEl.style.clipPath = ''; };
 
@@ -972,19 +961,6 @@ img { display: block; max-width: 100%; }
       { duration: REVEAL, delay: T0, easing: 'linear', fill: 'both' });
     play(raysEl, [{ opacity: 0 }, { opacity: 1, offset: 0.18 }, { opacity: 1, offset: 0.6 }, { opacity: 0 }],
       { duration: REVEAL, delay: T0, easing: 'linear', fill: 'both' });
-
-    // Ánh dương bừng lên ở phía vòng tròn
-    if (flareEl) {
-      var F = Math.round(h * 1.9);
-      flareEl.style.width = flareEl.style.height = F + 'px';
-      flareEl.style.left = ox - F / 2 + 'px';
-      flareEl.style.top = oy - F / 2 + 'px';
-      play(flareEl, [
-        { opacity: 0, transform: 'scale(0.55)' },
-        { opacity: 1, transform: 'scale(0.9)', offset: 0.22 },
-        { opacity: 0, transform: 'scale(1.25)' }
-      ], { duration: 1200, delay: T0, easing: 'cubic-bezier(0.2, 0.7, 0.3, 1)', fill: 'both' });
-    }
 
     // Hạt lấp lánh: phần lớn loé lên đúng lúc mép sóng đi qua, vài hạt loé muộn theo vệt sáng
     sparks.forEach(function (el, i) {
@@ -995,9 +971,12 @@ img { display: block; max-width: 100%; }
       el.style.left = x - size / 2 + 'px';
       el.style.top = y - size / 2 + 'px';
       var d = Math.sqrt((x - ox) * (x - ox) + (y - oy) * (y - oy));
+      var k = Math.min(d / R, 1);
       var delay = late
-        ? T0 + 650 + Math.random() * 900
-        : T0 + bezierTimeFor(Math.min(d / R, 1), B[0], B[1], B[2], B[3]) * REVEAL - 30;
+        ? T0 + 500 + Math.random() * 900
+        : k <= K0
+          ? T0 + Math.random() * 120
+          : T0 + bezierTimeFor((k - K0) / (1 - K0), B[0], B[1], B[2], B[3]) * REVEAL - 30;
       var spin = (Math.random() < 0.5 ? -1 : 1) * (60 + Math.random() * 60);
       play(el, [
         { opacity: 0, transform: 'scale(0.1) rotate(0deg)' },
@@ -1014,7 +993,7 @@ img { display: block; max-width: 100%; }
       { opacity: 1, offset: 0.25 },
       { opacity: 1, offset: 0.75 },
       { transform: 'translateX(120%)', opacity: 0 }
-    ], { duration: 1200, delay: T0 + 650, easing: 'cubic-bezier(0.45, 0.05, 0.25, 1)', fill: 'both' });
+    ], { duration: 1200, delay: T0 + 520, easing: 'cubic-bezier(0.45, 0.05, 0.25, 1)', fill: 'both' });
 
     // Ngôi sao mặt trời (tâm trống đồng) xoay vào vị trí, loé sáng
     play(iconEl, [

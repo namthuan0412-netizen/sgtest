@@ -45,9 +45,10 @@ Hoặc không dùng GitHub: `npx vercel` (preview) và `npx vercel --prod` (prod
 
 - Hover một mảng: mảng sáng lên (xem trước).
 - Khi chọn mảng mới, nội dung xuất hiện theo hiệu ứng **"Nhịp trống"** (lấy cảm hứng từ trống đồng Đông Sơn):
-  trống đồng nảy và loé sáng như vừa được gõ, sóng xung kích + 3 vòng sóng âm vàng (nét liền / chấm / vạch, gợi các vành
-  hoa văn trên mặt trống) lan ra; ảnh mở theo hình tròn từ phía vòng tròn với viền sóng vàng quét qua, màu ảnh nở từ
-  sắc đồng thau sang màu thật, ánh kim lướt qua; ngôi sao mặt trời xoay vào vị trí, tiêu đề lắng nét, mô tả lan theo từng chữ.
+  trống đồng nảy, loé sáng và bung 14 tia nắng như vừa được gõ, sóng xung kích + 3 vòng sóng âm vàng (nét liền / chấm / vạch,
+  gợi các vành hoa văn trên mặt trống) lan ra; ảnh mở theo hình tròn từ phía vòng tròn với vầng sáng hoàng kim: mép sóng
+  rực sáng kèm 14 tia nắng (như ngôi sao 14 cánh giữa mặt trống đồng), ánh dương bừng lên, hạt sáng lấp lánh rơi lại sau
+  mép sóng, màu ảnh nở từ sắc đồng thau sang màu thật rồi một vệt sáng hoàng kim lướt qua; ngôi sao mặt trời xoay vào vị trí, tiêu đề lắng nét, mô tả lan theo từng chữ.
   Bấm liên tục vẫn mượt (hiệu ứng cũ bị huỷ và thay ngay). Toàn bộ code nằm trong khối `"NHỊP TRỐNG"` ở `<script>`.
 - Click / chạm (hoặc Tab + Enter, phím mũi tên): chọn mảng, nội dung bên phải đổi theo; nhãn cong của mảng đang chọn ẩn đi như design.
 - Trống đồng "Du lịch" ở giữa xoay chậm theo chiều kim đồng hồ; 2 vòng line trang trí (hồng + vàng) xoay ngược chiều.

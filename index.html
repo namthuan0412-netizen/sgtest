@@ -247,23 +247,86 @@ img { display: block; max-width: 100%; }
   object-fit: cover;
 }
 
-/* Viền sóng vàng quét qua ảnh khi ảnh mở ra (JS đặt kích thước/vị trí) */
+/* --k: tiến độ mép sóng (0 → 1). Một biến duy nhất điều khiển cả vùng mở ảnh, viền sáng và tia nắng,
+   nên các lớp luôn khớp nhau từng khung hình. */
+@property --k {
+  syntax: '<number>';
+  inherits: true;
+  initial-value: 1;
+}
+
+/* ---------- Vầng sáng hoàng kim khi ảnh mở ra ----------
+   Mọi lớp sáng dùng mix-blend-mode: screen nên chỉ cộng thêm ánh sáng lên ảnh, không làm bẩn màu.
+   JS đặt kích thước/vị trí theo khung ảnh. */
+
+/* Mép sóng: lõi trắng ngà + quầng vàng nhiều lớp */
 .sg-eco__ring {
   position: absolute;
   border-radius: 50%;
-  border: 1.5px solid rgba(255, 226, 132, 0.95);
-  box-shadow: 0 0 22px 3px rgba(255, 200, 90, 0.45), inset 0 0 22px 3px rgba(255, 200, 90, 0.35);
+  border: 2px solid rgba(255, 246, 220, 0.98);
+  box-shadow:
+    0 0 6px 1px rgba(255, 250, 232, 0.95),
+    0 0 18px 6px rgba(255, 216, 115, 0.9),
+    0 0 48px 18px rgba(255, 172, 60, 0.5),
+    inset 0 0 14px 4px rgba(255, 228, 145, 0.8),
+    inset 0 0 50px 16px rgba(255, 190, 80, 0.4);
+  mix-blend-mode: screen;
   opacity: 0;
-  transform: scale(0);
+  transform: scale(var(--k));
   pointer-events: none;
 }
 
-/* Ánh kim lướt qua ảnh như mặt đồng được đánh bóng */
+/* Tia nắng bám theo mép sóng: 14 tia chính như ngôi sao 14 cánh giữa mặt trống đồng + tia phụ mảnh */
+.sg-eco__rays {
+  position: absolute;
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(from 0deg, rgba(255, 242, 200, 0) 0deg, rgba(255, 242, 200, 0.95) 1.1deg, rgba(255, 242, 200, 0) 2.4deg, rgba(255, 242, 200, 0) 25.714deg),
+    repeating-conic-gradient(from 7deg, rgba(255, 210, 110, 0) 0deg, rgba(255, 210, 110, 0.5) 0.8deg, rgba(255, 210, 110, 0) 1.8deg, rgba(255, 210, 110, 0) 6.43deg);
+  -webkit-mask-image: radial-gradient(closest-side, transparent 72%, #000 90%, #000 97%, transparent 100%);
+  mask-image: radial-gradient(closest-side, transparent 72%, #000 90%, #000 97%, transparent 100%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  transform: rotate(calc(16deg * var(--k) - 8deg)) scale(var(--k));
+  pointer-events: none;
+}
+
+/* Ánh dương bừng lên từ phía vòng tròn */
+.sg-eco__flare {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 251, 236, 0.95) 0%, rgba(255, 226, 140, 0.7) 14%, rgba(255, 180, 70, 0.32) 34%, rgba(255, 160, 60, 0) 62%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Hạt sáng lấp lánh (sao 4 cánh) rơi lại sau mép sóng */
+.sg-eco__sparkles { position: absolute; inset: 0; pointer-events: none; }
+.sg-spark {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3CradialGradient id='g'%3E%3Cstop offset='0' stop-color='%23ffffff'/%3E%3Cstop offset='.35' stop-color='%23fff3c4'/%3E%3Cstop offset='1' stop-color='%23f5c84c'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cpath d='M50 0C52 38 62 48 100 50C62 52 52 62 50 100C48 62 38 52 0 50C38 48 48 38 50 0Z' fill='url(%23g)'/%3E%3C/svg%3E") center / contain no-repeat;
+  filter: drop-shadow(0 0 3px rgba(255, 238, 175, 0.95)) drop-shadow(0 0 9px rgba(255, 190, 80, 0.75));
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+/* Vệt sáng hoàng kim lướt qua ảnh như mặt đồng vừa được đánh bóng */
 .sg-eco__sheen {
   position: absolute;
   inset: 0;
-  background: linear-gradient(105deg, transparent 30%, rgba(255, 236, 170, 0.6) 50%, transparent 70%);
-  mix-blend-mode: soft-light;
+  background: linear-gradient(105deg,
+    transparent 34%,
+    rgba(255, 200, 90, 0) 39%,
+    rgba(255, 222, 140, 0.45) 46%,
+    rgba(255, 250, 228, 0.85) 50%,
+    rgba(255, 222, 140, 0.45) 54%,
+    rgba(255, 200, 90, 0) 61%,
+    transparent 66%);
+  mix-blend-mode: screen;
   opacity: 0;
   pointer-events: none;
 }
@@ -318,6 +381,20 @@ img { display: block; max-width: 100%; }
   aspect-ratio: 1 / 1;
   pointer-events: none;
 }
+/* Tia sáng 14 cánh bung ra quanh trống đồng khi "gõ trống" */
+.wheel__burst {
+  position: absolute;
+  inset: -42%;
+  border-radius: 50%;
+  background:
+    repeating-conic-gradient(from -90deg, rgba(255, 232, 160, 0) 0deg, rgba(255, 232, 160, 0.85) 1.6deg, rgba(255, 232, 160, 0) 3.2deg, rgba(255, 232, 160, 0) 25.714deg),
+    repeating-conic-gradient(from -77deg, rgba(255, 200, 90, 0) 0deg, rgba(255, 200, 90, 0.35) 1deg, rgba(255, 200, 90, 0) 2deg, rgba(255, 200, 90, 0) 12.857deg);
+  -webkit-mask-image: radial-gradient(closest-side, transparent 50%, #000 58%, rgba(0, 0, 0, 0.55) 78%, transparent 100%);
+  mask-image: radial-gradient(closest-side, transparent 50%, #000 58%, rgba(0, 0, 0, 0.55) 78%, transparent 100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* Quầng sáng khi "gõ trống" */
 .wheel__glow {
   position: absolute;
@@ -505,6 +582,7 @@ img { display: block; max-width: 100%; }
             </svg>
 
             <div class="wheel__core">
+              <span class="wheel__burst" data-burst aria-hidden="true"></span>
               <span class="wheel__glow" data-glow aria-hidden="true"></span>
               <img class="wheel__medallion" src="assets/svg/medallion.svg" alt="" width="369" height="369">
               <span class="wheel__core-label trim">Du lịch</span>
@@ -552,8 +630,12 @@ img { display: block; max-width: 100%; }
               <div class="sg-eco__media-clip" data-media-clip>
                 <img data-image src="assets/img/photo-hang-khong.webp" alt="Máy bay cất cánh trên đường băng" width="437" height="270">
               </div>
-              <span class="sg-eco__ring" data-ring aria-hidden="true"></span>
+              <!-- Vầng sáng hoàng kim khi ảnh mở ra -->
               <span class="sg-eco__sheen" data-sheen aria-hidden="true"></span>
+              <span class="sg-eco__flare" data-flare aria-hidden="true"></span>
+              <span class="sg-eco__rays" data-rays aria-hidden="true"></span>
+              <span class="sg-eco__ring" data-ring aria-hidden="true"></span>
+              <span class="sg-eco__sparkles" data-sparkles aria-hidden="true"></span>
             </figure>
           </div>
         </div>
@@ -769,7 +851,31 @@ img { display: block; max-width: 100%; }
   var mediaEl = panel.querySelector('[data-media]');
   var clipEl = panel.querySelector('[data-media-clip]');
   var ringEl = panel.querySelector('[data-ring]');
+  var raysEl = panel.querySelector('[data-rays]');
+  var flareEl = panel.querySelector('[data-flare]');
+  var sparkBox = panel.querySelector('[data-sparkles]');
+  var burstEl = wheel.querySelector('[data-burst]');
   var sheenEl = panel.querySelector('[data-sheen]');
+
+  // Hạt lấp lánh: tạo sẵn 1 lần, mỗi lần mở ảnh xếp lại vị trí ngẫu nhiên
+  var SPARK_COUNT = 24;
+  var sparks = [];
+  for (var k = 0; sparkBox && k < SPARK_COUNT; k++) {
+    var sp = document.createElement('span');
+    sp.className = 'sg-spark';
+    sparkBox.appendChild(sp);
+    sparks.push(sp);
+  }
+
+  // Giải ngược đường cong cubic-bezier: với tiến độ p (0–1) của mép sóng, trả về thời điểm t (0–1).
+  // Dùng để hạt sáng loé lên đúng lúc mép sóng đi qua vị trí của nó.
+  function bezierTimeFor(p, x1, y1, x2, y2) {
+    var bx = function (u) { return 3 * (1 - u) * (1 - u) * u * x1 + 3 * (1 - u) * u * u * x2 + u * u * u; };
+    var by = function (u) { return 3 * (1 - u) * (1 - u) * u * y1 + 3 * (1 - u) * u * u * y2 + u * u * u; };
+    var lo = 0, hi = 1;
+    for (var n = 0; n < 24; n++) { var mid = (lo + hi) / 2; if (by(mid) < p) lo = mid; else hi = mid; }
+    return bx((lo + hi) / 2);
+  }
   var iconEl = panel.querySelector('.sg-eco__icon');
   var running = [];
   var token = 0;
@@ -819,6 +925,11 @@ img { display: block; max-width: 100%; }
     ], { duration: 800, easing: 'cubic-bezier(0.3, 0, 0.2, 1)' });
     play(glowEl, [{ opacity: 0 }, { opacity: 1, offset: 0.18 }, { opacity: 0 }],
       { duration: 1200, easing: 'ease-out' });
+    play(burstEl, [
+      { opacity: 0, transform: 'rotate(-10deg) scale(0.82)' },
+      { opacity: 1, transform: 'rotate(-4deg) scale(0.98)', offset: 0.16 },
+      { opacity: 0, transform: 'rotate(12deg) scale(1.18)' }
+    ], { duration: 1400, easing: 'cubic-bezier(0.2, 0.7, 0.3, 1)' });
     play(shockEl, [
       { transform: 'scale(1)', opacity: 0.95 },
       { transform: 'scale(3.4)', opacity: 0 }
@@ -839,18 +950,61 @@ img { display: block; max-width: 100%; }
     var w = mediaEl.clientWidth, h = mediaEl.clientHeight;
     var ox = Math.round(-0.08 * w), oy = Math.round(h / 2);
     var R = Math.ceil(Math.sqrt((w - ox) * (w - ox) + (h / 2) * (h / 2))) + 2;
-    ringEl.style.width = ringEl.style.height = R * 2 + 'px';
-    ringEl.style.left = ox - R + 'px';
-    ringEl.style.top = oy - R + 'px';
+    [ringEl, raysEl].forEach(function (el) {
+      if (!el) return;
+      el.style.width = el.style.height = R * 2 + 'px';
+      el.style.left = ox - R + 'px';
+      el.style.top = oy - R + 'px';
+    });
 
-    var at = ' at ' + ox + 'px ' + oy + 'px)';
-    var SWEEP = 'cubic-bezier(0.7, 0, 0.2, 1)';  // vào mạnh, ra êm – mép sóng đi ngang qua ảnh
-    play(clipEl, [{ clipPath: 'circle(0px' + at }, { clipPath: 'circle(' + R + 'px' + at }],
-      { duration: REVEAL, delay: T0, easing: SWEEP, fill: 'both' });
-    play(ringEl, [{ transform: 'scale(0)' }, { transform: 'scale(1)' }],
-      { duration: REVEAL, delay: T0, easing: SWEEP, fill: 'both' });
-    play(ringEl, [{ opacity: 1 }, { opacity: 1, offset: 0.5 }, { opacity: 0 }],
+    var B = [0.7, 0, 0.2, 1];
+    var SWEEP = 'cubic-bezier(' + B.join(', ') + ')';  // vào mạnh, ra êm – mép sóng đi ngang qua ảnh
+
+    // Mép sóng: chạy biến --k trên khung ảnh; vùng mở ảnh (clip-path), viền sáng và tia nắng
+    // đều đọc cùng biến này (xem CSS) nên luôn khớp nhau, kể cả khi trình duyệt bận.
+    clipEl.style.clipPath = 'circle(calc(var(--k) * ' + R + 'px) at ' + ox + 'px ' + oy + 'px)';
+    var wave = play(mediaEl, [{ '--k': 0 }, { '--k': 1 }],
+      { duration: REVEAL, delay: T0, easing: SWEEP, fill: 'backwards' });
+    if (wave) wave.onfinish = function () { clipEl.style.clipPath = ''; };
+
+    // Viền sáng giữ rực lâu rồi mới tắt; tia nắng bừng lên ngay sau mép sóng
+    play(ringEl, [{ opacity: 1 }, { opacity: 1, offset: 0.62 }, { opacity: 0 }],
       { duration: REVEAL, delay: T0, easing: 'linear', fill: 'both' });
+    play(raysEl, [{ opacity: 0 }, { opacity: 1, offset: 0.18 }, { opacity: 1, offset: 0.6 }, { opacity: 0 }],
+      { duration: REVEAL, delay: T0, easing: 'linear', fill: 'both' });
+
+    // Ánh dương bừng lên ở phía vòng tròn
+    if (flareEl) {
+      var F = Math.round(h * 1.9);
+      flareEl.style.width = flareEl.style.height = F + 'px';
+      flareEl.style.left = ox - F / 2 + 'px';
+      flareEl.style.top = oy - F / 2 + 'px';
+      play(flareEl, [
+        { opacity: 0, transform: 'scale(0.55)' },
+        { opacity: 1, transform: 'scale(0.9)', offset: 0.22 },
+        { opacity: 0, transform: 'scale(1.25)' }
+      ], { duration: 1200, delay: T0, easing: 'cubic-bezier(0.2, 0.7, 0.3, 1)', fill: 'both' });
+    }
+
+    // Hạt lấp lánh: phần lớn loé lên đúng lúc mép sóng đi qua, vài hạt loé muộn theo vệt sáng
+    sparks.forEach(function (el, i) {
+      var late = i >= SPARK_COUNT - 7;
+      var x = Math.random() * w, y = Math.random() * h;
+      var size = 9 + Math.random() * (late ? 14 : 20);
+      el.style.width = el.style.height = size + 'px';
+      el.style.left = x - size / 2 + 'px';
+      el.style.top = y - size / 2 + 'px';
+      var d = Math.sqrt((x - ox) * (x - ox) + (y - oy) * (y - oy));
+      var delay = late
+        ? T0 + 650 + Math.random() * 900
+        : T0 + bezierTimeFor(Math.min(d / R, 1), B[0], B[1], B[2], B[3]) * REVEAL - 30;
+      var spin = (Math.random() < 0.5 ? -1 : 1) * (60 + Math.random() * 60);
+      play(el, [
+        { opacity: 0, transform: 'scale(0.1) rotate(0deg)' },
+        { opacity: 1, transform: 'scale(1.15) rotate(' + spin * 0.45 + 'deg)', offset: 0.32 },
+        { opacity: 0, transform: 'translateY(-6px) scale(0.3) rotate(' + spin + 'deg)' }
+      ], { duration: 650 + Math.random() * 550, delay: Math.max(0, delay), easing: 'cubic-bezier(0.25, 0.6, 0.3, 1)', fill: 'both' });
+    });
     play(imgEl, [
       { transform: 'scale(1.16)', filter: 'sepia(0.75) saturate(1.25) brightness(1.12) contrast(1.06)' },
       { transform: 'scale(1)', filter: 'sepia(0) saturate(1) brightness(1) contrast(1)' }

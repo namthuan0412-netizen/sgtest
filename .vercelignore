@@ -1,0 +1,4 @@
+# Không đẩy bộ font gốc lên Vercel (site chỉ dùng assets/fonts/*.woff2)
+CDA Independence 260313
+.DS_Store
+README.md

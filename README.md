@@ -65,15 +65,16 @@ Hoặc không dùng GitHub: `npx vercel` (preview) và `npx vercel --prod` (prod
 ## Section 3 – Bản giao hưởng
 
 - **Desktop:** khi tới section, cuộn dọc sẽ làm dải 5 cục chạy ngang (section được ghim lại). Lướt qua hết 5 cục thì
-  danh sách 5 chủ đề bên trái hiện ra; cuộn tiếp là sang section 4.
+  cuộn tiếp là sang section 4.
 - **Bấm 1 cục:** chữ và hình của cục tách ra (chữ bay lên, hình hạ xuống), rồi hình vòm nở thành ảnh toàn màn hình kèm
   chữ "Viết nên bản giao hưởng…" ở dưới.
 - **Mỗi lần cuộn / vuốt = 1 ảnh** (~1s): lớp ảnh mới phủ lên từ phải sang kèm viền sáng vàng, hai ảnh lệch nhau 5% tạo parallax.
   Trackpad vuốt mạnh cũng chỉ sang 1 ảnh (bỏ qua quán tính).
 - **Hết ảnh của 1 chủ đề:** màn đỏ mang tên chủ đề kế trượt vào từ phải, hình vòm mọc lên từ dưới rồi nở ra. Cuộn ngược thì đi ngược lại.
-- **Hết chủ đề cuối:** ảnh thu về hình vòm, rơi xuống, trở lại dải cục ở cuối (danh sách đã hiện) để cuộn tiếp.
+- **Hết chủ đề cuối:** ảnh thu về hình vòm, rơi xuống, trở lại cuối dải cục để cuộn tiếp.
   Cuộn ngược ở ảnh đầu tiên thì hình thu về đúng cục ban đầu.
-- Bấm vào tên chủ đề trong danh sách bên trái cũng mở màn chi tiết của chủ đề đó.
+- Mỗi chuỗi nhiều chặng (mở cục, sang chủ đề, thoát) chạy theo một đường cong liền mạch qua các điểm mốc của
+  storyboard (nội suy PCHIP + 1 easing chung), nên không có điểm dừng giữa các chặng.
 - Phím mũi tên / Page Up-Down / Space để chuyển, Esc hoặc nút × để thoát. Bật "giảm chuyển động" thì chỉ đổi ảnh, không chạy hiệu ứng.
 - **Mobile/tablet (< 1024px):** dải cục vuốt ngang tự nhiên, bấm vào mở màn chi tiết toàn màn hình, vuốt lên/trái để sang ảnh kế.
 - Code: CSS ở cuối thẻ `<style>`, JS ở khối `Section 3` cuối thẻ `<script>`. Dữ liệu chủ đề + ảnh nằm trong mảng `TOPICS`.

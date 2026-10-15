@@ -587,78 +587,6 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
   line-height: 1.5;
 }
 
-/* Danh sách 5 chủ đề – hiện ra khi đã lướt qua hết 5 cục */
-.sym__list {
-  margin: calc(100 * var(--u)) 0 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: calc(16 * var(--u));
-}
-.sym__list li {
-  opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 0.6s var(--ease), transform 0.8s var(--ease);
-  transition-delay: calc(var(--i) * 70ms);
-}
-.sym__stage.is-list .sym__list li { opacity: 1; transform: none; }
-.sym__stage:not(.is-list) .sym__list { visibility: hidden; transition: visibility 0s 0.6s; }
-
-.sym__item {
-  display: flex;
-  flex-direction: column;
-  gap: calc(16 * var(--u));
-  width: 100%;
-  padding: calc(10 * var(--u)) 0;
-  border: 0;
-  background: none;
-  color: #ddbab8;
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-}
-.sym__item-row { display: flex; align-items: center; }
-.sym__item-star {
-  width: 0;
-  height: calc(17 * var(--u));
-  margin-right: 0;
-  overflow: hidden;
-  flex: none;
-  opacity: 0;
-  transition: width 0.45s var(--ease), margin-right 0.45s var(--ease), opacity 0.35s var(--ease);
-}
-.sym__item-star svg { width: calc(34 * var(--u)); height: 100%; display: block; }
-.sym__item-name {
-  font-size: max(18px, calc(24 * var(--u)));
-  font-weight: var(--fw-medium);
-  line-height: 1.35;
-  letter-spacing: -0.01em;
-  text-transform: uppercase;
-  transition: color 0.35s var(--ease);
-}
-.sym__item-line {
-  display: block;
-  height: 1px;
-  width: 100%;
-  background: currentColor;
-  transform-origin: 0 50%;
-  transform: scaleX(0.0458); /* 20 / 437 */
-  transition: transform 0.6s var(--ease), background-color 0.35s;
-}
-.sym__item.is-active,
-.sym__item:hover,
-.sym__item:focus-visible { color: #e8c495; outline: none; }
-.sym__item.is-active .sym__item-star,
-.sym__item:hover .sym__item-star,
-.sym__item:focus-visible .sym__item-star { width: calc(34 * var(--u)); margin-right: calc(16 * var(--u)); opacity: 1; }
-.sym__item.is-active .sym__item-line,
-.sym__item:hover .sym__item-line,
-.sym__item:focus-visible .sym__item-line { transform: scaleX(1); }
-.sym__list:hover .sym__item.is-active:not(:hover) { color: #ddbab8; }
-.sym__list:hover .sym__item.is-active:not(:hover) .sym__item-star { width: 0; margin-right: 0; opacity: 0; }
-.sym__list:hover .sym__item.is-active:not(:hover) .sym__item-line { transform: scaleX(0.0458); }
-
 .sym__hint {
   position: absolute;
   z-index: 2;
@@ -670,7 +598,7 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
   transition: opacity 0.4s var(--ease);
   animation: sym-nudge 2.2s var(--ease) infinite;
 }
-.sym__stage.is-list .sym__hint { opacity: 0; }
+.sym__stage.is-end .sym__hint { opacity: 0; }
 @keyframes sym-nudge { 50% { transform: translateX(6px); } }
 
 /* ---------- Dải 5 cục ---------- */
@@ -891,6 +819,8 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
   color: transparent;
   padding-block: 0.3em 0.12em;
   margin-block: -0.3em -0.12em;
+  /* giữ chữ đọc được khi bay ngang qua vùng ảnh sáng */
+  filter: drop-shadow(0 1px 10px rgba(38, 4, 8, 0.55));
 }
 .sym-head__bird {
   position: absolute;
@@ -1010,7 +940,6 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
   .sym__intro { position: relative; left: auto; top: auto; width: auto; padding: 0 20px; }
   .sym__title { max-width: 360px; font-size: clamp(24px, 6.6vw, 32px); }
   .sym__desc { width: auto; max-width: 440px; margin-top: 18px; font-size: 14px; }
-  .sym__list { display: none; }
   .sym__hint { position: relative; left: 20px; top: auto; display: block; margin-top: 24px; }
   .sym__viewport {
     position: relative;
@@ -1036,9 +965,6 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
 
 @media (prefers-reduced-motion: reduce) {
   .sym__hint { animation: none; }
-  .sym__list li,
-  .sym__item-star,
-  .sym__item-line,
   .sym-card__media img,
   .sym-card__label { transition: none; }
   .sym__stage.is-return .sym-card,
@@ -1202,28 +1128,6 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
           <span class="sym__title-a">cho mỗi vùng đất</span>
         </h2>
         <p class="sym__desc">Sun Group không xây dựng những công trình đơn lẻ. Chúng tôi viết nên bản giao hưởng cho mỗi vùng đất, nơi thiên nhiên, văn hóa và con người hòa quyện, thăng hoa trong những trải nghiệm trọn vẹn.</p>
-        <ol class="sym__list" data-sym-list aria-label="5 chủ đề">
-          <li style="--i:0"><button class="sym__item" type="button">
-            <span class="sym__item-row"><span class="sym__item-star"><svg class="" viewBox="0 0 34 17" aria-hidden="true"><use href="#sym-star"/></svg></span><span class="sym__item-name">Thiên nhiên khởi nguồn</span></span>
-            <span class="sym__item-line"></span>
-          </button></li>
-          <li style="--i:1"><button class="sym__item" type="button">
-            <span class="sym__item-row"><span class="sym__item-star"><svg class="" viewBox="0 0 34 17" aria-hidden="true"><use href="#sym-star"/></svg></span><span class="sym__item-name">Di sản tiếp nối</span></span>
-            <span class="sym__item-line"></span>
-          </button></li>
-          <li style="--i:2"><button class="sym__item" type="button">
-            <span class="sym__item-row"><span class="sym__item-star"><svg class="" viewBox="0 0 34 17" aria-hidden="true"><use href="#sym-star"/></svg></span><span class="sym__item-name">Kỷ lục kiến tạo</span></span>
-            <span class="sym__item-line"></span>
-          </button></li>
-          <li style="--i:3"><button class="sym__item" type="button">
-            <span class="sym__item-row"><span class="sym__item-star"><svg class="" viewBox="0 0 34 17" aria-hidden="true"><use href="#sym-star"/></svg></span><span class="sym__item-name">Tinh hoa giao hòa</span></span>
-            <span class="sym__item-line"></span>
-          </button></li>
-          <li style="--i:4"><button class="sym__item" type="button">
-            <span class="sym__item-row"><span class="sym__item-star"><svg class="" viewBox="0 0 34 17" aria-hidden="true"><use href="#sym-star"/></svg></span><span class="sym__item-name">Trải nghiệm trọn vẹn</span></span>
-            <span class="sym__item-line"></span>
-          </button></li>
-        </ol>
       </div>
       <span class="sym__hint" aria-hidden="true">
           <svg viewBox="0 0 24 18" fill="none" aria-hidden="true">
@@ -1761,12 +1665,14 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
 /* =====================================================================
    Section 3 – "Viết nên bản giao hưởng cho mỗi vùng đất"
    - Desktop: cuộn dọc → dải 5 cục chạy ngang. Lướt qua hết 5 cục thì
-     danh sách chủ đề bên trái hiện ra, cuộn tiếp là sang section sau.
+     cuộn tiếp là sang section sau.
    - Bấm 1 cục: chữ và hình tách ra, hình vòm nở thành ảnh toàn màn hình.
      Mỗi lần cuộn/vuốt = 1 ảnh (≈1s, lớp ảnh mới phủ lên + parallax 5%).
      Hết ảnh của chủ đề → màn đỏ mang tên chủ đề kế trượt vào, hình vòm
      mọc lên rồi nở ra. Hết chủ đề cuối → ảnh thu về hình vòm, rơi xuống,
-     trở lại dải cục (danh sách bên trái đã hiện) để cuộn tiếp.
+     trở lại cuối dải cục để cuộn tiếp.
+   - Mọi chuỗi chuyển động nhiều chặng chạy theo MỘT đường cong liền mạch
+     (nội suy qua các điểm mốc của storyboard), nên không bị khựng giữa chặng.
    ===================================================================== */
 (function () {
   'use strict';
@@ -1804,7 +1710,6 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
   var viewport = root.querySelector('[data-sym-viewport]');
   var track = root.querySelector('[data-sym-track]');
   var cards = [].slice.call(root.querySelectorAll('[data-sym-card]'));
-  var listBtns = [].slice.call(root.querySelectorAll('[data-sym-list] button'));
 
   var mqMobile = window.matchMedia('(max-width: 1023px)');
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1816,7 +1721,7 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
   // ===================================================================
   //  1. DẢI NGANG – cuộn dọc điều khiển dải chạy ngang (desktop)
   // ===================================================================
-  var pinned = false, travel = 0, hold = 0, cur = 0, target = 0, raf = 0;
+  var pinned = false, travel = 0, cur = 0, target = 0, raf = 0;
   var isOpen = false;
 
   function measure() {
@@ -1825,14 +1730,13 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
       root.style.height = '';
       track.style.transform = '';
       cur = target = 0;
-      stage.classList.remove('is-list');
+      stage.classList.remove('is-end');
       return;
     }
     pinned = true;
     var H = window.innerHeight;
     travel = Math.max(0, track.offsetWidth - viewport.clientWidth);
-    hold = Math.round(H * 0.6);                // đoạn cuộn thêm để danh sách hiện ra
-    root.style.height = (H + travel + hold) + 'px';
+    root.style.height = (H + travel) + 'px';
     update(true);
   }
 
@@ -1842,7 +1746,7 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
     if (!pinned || isOpen) return;
     var y = scrolled();
     target = -clamp(y / (travel || 1), 0, 1) * travel;
-    stage.classList.toggle('is-list', y > travel + hold * 0.12);
+    stage.classList.toggle('is-end', y > travel - 4);
     if (jump || reduce) { cur = target; paint(); return; }
     if (!raf) raf = requestAnimationFrame(tick);
   }
@@ -1861,8 +1765,6 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
   measure();
 
-  // Danh sách: mục đang chọn (mặc định mục đầu)
-  function markList(i) { listBtns.forEach(function (b, j) { b.classList.toggle('is-active', j === i); }); }
 
   // ===================================================================
   //  2. MÀN CHI TIẾT
@@ -1883,7 +1785,6 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
   var closeBtn = detail.querySelector('[data-close]');
   var live = detail.querySelector('[data-live]');
 
-  var EIO = 'cubic-bezier(0.65, 0, 0.35, 1)';
   var ESLIDE = 'cubic-bezier(0.77, 0, 0.175, 1)';
   var EOUT = 'cubic-bezier(0.16, 1, 0.3, 1)';
 
@@ -1944,32 +1845,102 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
     win.style.height = G.bh + 'px';
   }
 
-  // Khung hình (keyframe) cho cửa sổ vòm: chỉ dùng transform để mượt
-  function wk(r, off, ease) {
-    var f = { transform: 'translate(' + r.x.toFixed(2) + 'px,' + r.y.toFixed(2) + 'px) scale(' + (r.w / G.bw).toFixed(5) + ')' };
-    if (off != null) f.offset = off;
-    if (ease) f.easing = ease;
-    return f;
+  // ---------- Chuyển động liền mạch qua nhiều điểm mốc ----------
+  // Mỗi chuỗi là MỘT đường cong: các điểm mốc (lấy từ storyboard) được nối bằng nội suy
+  // bậc 3 đơn điệu (PCHIP) – vận tốc liên tục, không dừng ở điểm giữa, không vọt quá –
+  // rồi cả chuỗi chạy theo một easing chung. Kết quả được lấy mẫu dày (~70 khung/giây)
+  // thành keyframe cho Web Animations, nên vẫn chạy trên compositor.
+  function bezier(x1, y1, x2, y2) {
+    function bx(t) { return 3 * (1 - t) * (1 - t) * t * x1 + 3 * (1 - t) * t * t * x2 + t * t * t; }
+    function by(t) { return 3 * (1 - t) * (1 - t) * t * y1 + 3 * (1 - t) * t * t * y2 + t * t * t; }
+    return function (x) {
+      if (x <= 0) return 0;
+      if (x >= 1) return 1;
+      var lo = 0, hi = 1, t = x;
+      for (var i = 0; i < 32; i++) { t = (lo + hi) / 2; if (bx(t) < x) lo = t; else hi = t; }
+      return by(t);
+    };
   }
-  // Ảnh bên trong cửa sổ: 'cover' = phủ khung vòm, 'mask' = ảnh neo theo màn hình, 'mid' = ở giữa
-  function pk(r, mode, off, ease) {
-    var b = [0, 0, G.bw, G.bh];
-    if (mode !== 'cover') {
-      var k = r.w / G.bw;
-      var m = [-r.x / k, -r.y / k, G.W / k, G.H / k];
-      b = mode === 'mask' ? m : [m[0] / 2, m[1] / 2, (G.bw + m[2]) / 2, (G.bh + m[3]) / 2];
+  function endSlope(h0, h1, d0, d1) {
+    var m = ((2 * h0 + h1) * d0 - h0 * d1) / (h0 + h1);
+    if (m * d0 <= 0) return 0;
+    if (d0 * d1 <= 0 && Math.abs(m) > Math.abs(3 * d0)) return 3 * d0;
+    return m;
+  }
+  function pchip(us, vs) {
+    var n = us.length, h = [], d = [], m = [], i;
+    for (i = 0; i < n - 1; i++) { h[i] = us[i + 1] - us[i]; d[i] = (vs[i + 1] - vs[i]) / h[i]; }
+    if (n === 2) { m[0] = m[1] = d[0]; }
+    else {
+      for (i = 1; i < n - 1; i++) {
+        if (d[i - 1] * d[i] <= 0) m[i] = 0;
+        else {
+          var w1 = 2 * h[i] + h[i - 1], w2 = h[i] + 2 * h[i - 1];
+          m[i] = (w1 + w2) / (w1 / d[i - 1] + w2 / d[i]);
+        }
+      }
+      m[0] = endSlope(h[0], h[1], d[0], d[1]);
+      m[n - 1] = endSlope(h[n - 2], h[n - 3], d[n - 2], d[n - 3]);
     }
-    var f = { left: b[0].toFixed(2) + 'px', top: b[1].toFixed(2) + 'px', width: b[2].toFixed(2) + 'px', height: b[3].toFixed(2) + 'px' };
-    if (off != null) f.offset = off;
-    if (ease) f.easing = ease;
-    return f;
+    return function (u) {
+      if (u <= us[0]) return vs[0];
+      if (u >= us[n - 1]) return vs[n - 1];
+      var k = 0;
+      while (k < n - 2 && u > us[k + 1]) k++;
+      var t = (u - us[k]) / h[k], t2 = t * t, t3 = t2 * t;
+      return (2 * t3 - 3 * t2 + 1) * vs[k] + (t3 - 2 * t2 + t) * h[k] * m[k] +
+        (-2 * t3 + 3 * t2) * vs[k + 1] + (t3 - t2) * h[k] * m[k + 1];
+    };
   }
-  function hk(p, k, off, ease) {
-    var f = { transform: 'translate(' + p.x.toFixed(2) + 'px,' + p.y.toFixed(2) + 'px) scale(' + (k || 1).toFixed(5) + ')' };
-    if (off != null) f.offset = off;
-    if (ease) f.easing = ease;
-    return f;
+  // keys: [{ u, kênh1, kênh2, ... }] → hàm trả về giá trị mọi kênh tại tiến độ u
+  function curve(keys) {
+    var us = keys.map(function (k) { return k.u; });
+    var names = Object.keys(keys[0]).filter(function (n) { return n !== 'u'; });
+    var fns = {};
+    names.forEach(function (n) { fns[n] = pchip(us, keys.map(function (k) { return k[n]; })); });
+    return function (u) {
+      var o = { u: u };
+      names.forEach(function (n) { o[n] = fns[n](u); });
+      return o;
+    };
   }
+  // Chạy nhiều phần tử theo cùng một track → luôn khớp nhau từng khung hình
+  function run(tr, D, ease, parts) {
+    var N = Math.max(30, Math.round(D / 14)), samples = [];
+    for (var i = 0; i <= N; i++) { var x = i / N, smp = tr(ease(x)); smp.t = x; samples.push(smp); }
+    var first = null;
+    parts.forEach(function (p) {
+      if (!p.el) return;
+      var frames = samples.map(function (smp) { var f = p.frame(smp); f.offset = smp.t; return f; });
+      var a = play(p.el, frames, { duration: D, fill: 'both' });
+      if (!first) first = a;
+    });
+    return first;
+  }
+  function rk(r) { return { wx: r.x, wy: r.y, ww: r.w }; }
+  function merge(a, b) { for (var k in b) a[k] = b[k]; return a; }
+  // Cửa sổ vòm: chỉ dùng transform
+  function winFrame(s) {
+    return { transform: 'translate(' + s.wx.toFixed(2) + 'px,' + s.wy.toFixed(2) + 'px) scale(' + (s.ww / G.bw).toFixed(5) + ')' };
+  }
+  // Ảnh trong cửa sổ: m = 0 phủ khung vòm, m = 1 neo theo màn hình (mặt nạ), ở giữa thì pha trộn
+  function imgFrame(s) {
+    var k = s.ww / G.bw, m = clamp(s.m, 0, 1);
+    var l = (-s.wx / k) * m, t = (-s.wy / k) * m;
+    var w = G.bw + (G.W / k - G.bw) * m, h = G.bh + (G.H / k - G.bh) * m;
+    return { left: l.toFixed(2) + 'px', top: t.toFixed(2) + 'px', width: w.toFixed(2) + 'px', height: h.toFixed(2) + 'px' };
+  }
+  // Khối tiêu đề: nằm trên ảnh lúc hai bên còn chồng nhau, rồi chui xuống dưới để vòm nở ra phủ lên
+  function headFrame(zU, reverse) {
+    return function (s) {
+      var above = reverse ? s.u > zU : s.u < zU;
+      return {
+        transform: 'translate(' + s.hx.toFixed(2) + 'px,' + s.hy.toFixed(2) + 'px) scale(' + s.hk.toFixed(5) + ')',
+        zIndex: above ? 7 : 4
+      };
+    };
+  }
+  function decoFrame(s) { return { opacity: clamp(s.deco, 0, 1).toFixed(3) }; }
 
   // ---------- Nội dung ----------
   function cur_img(t, k) { return TOPICS[t].images[k]; }
@@ -2039,82 +2010,87 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
     panel.style.visibility = 'hidden';
     cancelAll(anims);
     T = t; K = k;
-    markList(t);
     announce();
     captionIn();          // không chờ chữ hiện xong – người xem có thể cuộn tiếp ngay
   }
 
   // ---------- Mở: từ 1 cục trên dải ----------
-  function enterFromCard(i) {
+  // Chữ và hình tách nhau: chữ bay lên giữa rồi lên trên, hình hạ xuống – vòng lên – nở toàn màn hình.
+  function entryKeys(C, HC, kc) {
+    return [
+      merge(rk(C), { u: 0, m: 0, hx: HC.x, hy: HC.y, hk: kc, deco: 0 }),
+      merge(rk(G.win1), { u: 0.3, m: 0, hx: G.head1.x, hy: G.head1.y, hk: 1, deco: 1 }),
+      merge(rk(G.win2), { u: 0.56, m: 0, hx: G.head2.x, hy: G.head2.y, hk: 1, deco: 1 }),
+      merge(rk(G.win3), { u: 0.77, m: 0.45, hx: G.head2.x, hy: G.head2.y, hk: 1, deco: 1 }),
+      merge(rk(G.full), { u: 1, m: 1, hx: G.head2.x, hy: G.head2.y, hk: 1, deco: 1 })
+    ];
+  }
+  function cardRects(i) {
     var card = cards[i];
     var mr = card.querySelector('[data-card-media]').getBoundingClientRect();
     var lr = card.querySelector('[data-card-label]').getBoundingClientRect();
-    var C = { x: mr.left, y: mr.top, w: mr.width };
-    var HC = { x: lr.left, y: lr.top };
-    var kc = lr.width / G.headW;
-    var D = 2300, E3 = 'cubic-bezier(0.45, 0, 0.2, 1)';
+    return { C: { x: mr.left, y: mr.top, w: mr.width }, HC: { x: lr.left, y: lr.top }, kc: lr.width / G.headW };
+  }
 
+  function enterFromCard(i) {
+    var r = cardRects(i);
+    var D = 2600;
     setHead(i);
     openedFrom = i;
     return setWin(cur_img(i, 0)).then(function () {
-    card.classList.add('is-lifted');
-    win.style.visibility = 'visible';
-    head.style.visibility = 'visible';
-
-    play(bg, [{ opacity: 0 }, { opacity: 1 }], { duration: 700, easing: 'ease-out', fill: 'forwards' });
-    // Hình: đi xuống & nhỏ lại → lên giữa → nở ra toàn màn hình
-    var w = play(win, [wk(C, 0, EIO), wk(G.win1, 0.3, EIO), wk(G.win2, 0.58, EIO), wk(G.win3, 0.79, E3), wk(G.full, 1)],
-      { duration: D, fill: 'forwards' });
-    play(winImg, [pk(C, 'cover', 0, EIO), pk(G.win1, 'cover', 0.3, EIO), pk(G.win2, 'cover', 0.58, EIO), pk(G.win3, 'mid', 0.79, E3), pk(G.full, 'mask', 1)],
-      { duration: D, fill: 'forwards' });
-    // Chữ: tách khỏi hình, bay lên giữa rồi lên trên; mờ dần khi hình nở ra
-    play(head, [hk(HC, kc, 0, EIO), hk(G.head1, 1, 0.3, EIO), hk(G.head2, 1, 0.58), hk(G.head2, 1, 1)], { duration: D, fill: 'forwards' });
-    play(head, [{ opacity: 1 }, { opacity: 1, offset: 0.62 }, { opacity: 0, offset: 0.84 }, { opacity: 0 }], { duration: D, fill: 'forwards' });
-    headDeco.forEach(function (el) {
-      play(el, [{ opacity: 0 }, { opacity: 0, offset: 0.14 }, { opacity: 1, offset: 0.34 }, { opacity: 1 }], { duration: D, fill: 'forwards' });
-    });
-    return done(w);
+      cards[i].classList.add('is-lifted');
+      win.style.visibility = 'visible';
+      head.style.visibility = 'visible';
+      play(bg, [{ opacity: 0 }, { opacity: 1 }], { duration: 800, easing: 'ease-out', fill: 'forwards' });
+      var tr = curve(entryKeys(r.C, r.HC, r.kc));
+      var parts = [
+        { el: win, frame: winFrame },
+        { el: winImg, frame: imgFrame },
+        { el: head, frame: headFrame(0.6, false) }
+      ].concat(headDeco.map(function (el) { return { el: el, frame: decoFrame }; }));
+      return done(run(tr, D, bezier(0.45, 0, 0.25, 1), parts));
     }).then(function () { return commit(i, 0); });
   }
 
-  // ---------- Sang chủ đề khác: màn đỏ trượt vào, vòm mọc lên rồi nở ra ----------
+  // ---------- Sang chủ đề khác: màn đỏ trượt vào, vòm mọc lên rồi nở ra (một mạch) ----------
   function arrive(t, k, dir, fromStrip) {
-    var D1 = 950, D2 = 1850, o = 0.47;
-    var winReady = null;
+    var D = 2900;
     return captionOut().then(function () {
       setHead(t);
-      winReady = setWin(cur_img(t, k));
+      return setWin(cur_img(t, k));
+    }).then(function () {
+      var W = G.W, lift = G.mob ? 16 : 14 * G.s;
+      var oldImg = slide ? slide.firstChild : null;
       head.style.visibility = 'visible';
       panel.style.visibility = 'visible';
+      win.style.visibility = 'visible';
       headDeco.forEach(function (el) { el.style.opacity = ''; });
       if (fromStrip) bg.style.opacity = '0';
-
-      var a1 = play(panel, [{ transform: 'translateX(' + (dir > 0 ? 100 : -100) + '%)' }, { transform: 'translateX(0)' }],
-        { duration: D1, easing: ESLIDE, fill: 'forwards' });
-      play(head, [hk({ x: G.headA.x + dir * G.W, y: G.headA.y }, 1), hk(G.headA, 1)], { duration: D1, easing: ESLIDE, fill: 'forwards' });
-      play(edge, [
-        { transform: 'translateX(' + (dir > 0 ? G.W : 0) + 'px)', opacity: 1 },
-        { opacity: 1, offset: 0.85 },
-        { transform: 'translateX(' + (dir > 0 ? 0 : G.W) + 'px)', opacity: 0 }
-      ], { duration: D1, easing: ESLIDE });
-      if (slide) {
-        play(slide.firstChild, [{ transform: 'none', filter: 'brightness(1)' }, { transform: 'translateX(' + (-6 * dir) + '%)', filter: 'brightness(0.55)' }],
-          { duration: D1, easing: ESLIDE, fill: 'forwards' });
+      function key(u, px, eo, ox, r, m, hx, hy) {
+        return merge(rk(r), { u: u, px: px, eo: eo, ox: ox, m: m, hx: hx, hy: hy, hk: 1 });
       }
-      return Promise.all([done(a1), winReady]);
-    }).then(function () {
-      bg.style.opacity = '1';
-      full.innerHTML = '';
-      slide = null;
-      win.style.visibility = 'visible';
-      var E3 = 'cubic-bezier(0.45, 0, 0.2, 1)';
-      var w = play(win, [wk(G.rise0, 0, EOUT), wk(G.rise1, o * 0.42, EIO), wk(G.win2, o, EIO), wk(G.win3, o + (1 - o) * 0.45, E3), wk(G.full, 1)],
-        { duration: D2, fill: 'forwards' });
-      play(winImg, [pk(G.rise0, 'cover', 0, EOUT), pk(G.rise1, 'cover', o * 0.42, EIO), pk(G.win2, 'cover', o, EIO), pk(G.win3, 'mid', o + (1 - o) * 0.45, E3), pk(G.full, 'mask', 1)],
-        { duration: D2, fill: 'forwards' });
-      play(head, [hk(G.headA, 1, 0), hk(G.headA, 1, o * 0.3, EIO), hk(G.head2, 1, o), hk(G.head2, 1, 1)], { duration: D2, fill: 'forwards' });
-      play(head, [{ opacity: 1 }, { opacity: 1, offset: o + 0.04 }, { opacity: 0, offset: o + (1 - o) * 0.5 }, { opacity: 0 }], { duration: D2, fill: 'forwards' });
-      return done(w);
+      var A0 = G.headA, H2 = G.head2;
+      var tr = curve([
+        key(0, dir * W, 1, 0, G.rise0, 0, A0.x + dir * W, A0.y),
+        key(0.3, dir * W * 0.05, 1, -5.7 * dir, G.rise0, 0, A0.x + dir * W * 0.05, A0.y),
+        key(0.44, 0, 0, -6 * dir, G.rise1, 0, A0.x, A0.y - lift),
+        key(0.65, 0, 0, -6 * dir, G.win2, 0, H2.x, H2.y),
+        key(0.83, 0, 0, -6 * dir, G.win3, 0.45, H2.x, H2.y),
+        key(1, 0, 0, -6 * dir, G.full, 1, H2.x, H2.y)
+      ]);
+      var parts = [
+        { el: panel, frame: function (s) { return { transform: 'translateX(' + s.px.toFixed(2) + 'px)' }; } },
+        { el: edge, frame: function (s) {
+          return { transform: 'translateX(' + (dir > 0 ? s.px : W + s.px).toFixed(2) + 'px)', opacity: clamp(s.eo, 0, 1).toFixed(3) };
+        } },
+        { el: oldImg, frame: function (s) {
+          return { transform: 'translateX(' + s.ox.toFixed(3) + '%)', filter: 'brightness(' + (1 - 0.45 * Math.abs(s.ox) / 6).toFixed(3) + ')' };
+        } },
+        { el: win, frame: winFrame },
+        { el: winImg, frame: imgFrame },
+        { el: head, frame: headFrame(0.67, false) }
+      ];
+      return done(run(tr, D, bezier(0.55, 0, 0.3, 1), parts));
     }).then(function () { return commit(t, k); });
   }
 
@@ -2148,45 +2124,42 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
     });
   }
 
-  // ---------- Thoát: ảnh thu về hình vòm, rơi xuống ----------
+  // ---------- Thoát: ảnh thu về hình vòm, rơi xuống (một mạch, nhanh dần như rơi) ----------
   function exitDown(toEnd) {
+    var D = 1700;
     return captionOut().then(function () { return setWin(cur_img(T, K)); }).then(function () {
       win.style.visibility = 'visible';
-      var D = 1500, offs = [0, 0.2, 0.42, 0.63, 0.82, 1];
+      var us = [0, 0.2, 0.42, 0.63, 0.82, 1];
       var rects = [G.full].concat(G.exit);
-      var opts = { duration: D, easing: 'cubic-bezier(0.55, 0, 0.3, 1)', fill: 'both' };
-      var w = play(win, rects.map(function (r, i) { return wk(r, offs[i]); }), opts);
-      play(winImg, rects.map(function (r, i) { return pk(r, 'mask', offs[i]); }), opts);
+      var tr = curve(rects.map(function (r, i) { return merge(rk(r), { u: us[i], m: 1 }); }));
+      run(tr, D, bezier(0.42, 0, 0.72, 0.62), [
+        { el: win, frame: winFrame },
+        { el: winImg, frame: imgFrame }
+      ]);
       full.innerHTML = '';
       slide = null;
-      return done(w);
-    }).then(function () {
-      win.style.visibility = 'hidden';
-      return finish(toEnd, true);
-    });
+      // màn đỏ bắt đầu tan khi vòm sắp rơi khỏi màn hình – nối liền, không có khoảng chờ
+      return new Promise(function (res) { setTimeout(res, D * 0.72); });
+    }).then(function () { return finish(toEnd, true); });
   }
 
-  // ---------- Quay về đúng cục ban đầu (ngược lại lúc mở) ----------
+  // ---------- Quay về đúng cục ban đầu (ngược lại lúc mở, một mạch) ----------
   function closeToCard() {
-    var card = cards[T];
+    var D = 2200;
     return captionOut().then(function () { return setWin(cur_img(T, K)); }).then(function () {
-      var mr = card.querySelector('[data-card-media]').getBoundingClientRect();
-      var lr = card.querySelector('[data-card-label]').getBoundingClientRect();
-      var C = { x: mr.left, y: mr.top, w: mr.width };
-      var HC = { x: lr.left, y: lr.top };
-      var kc = lr.width / G.headW;
-      var D = 1900;
+      var r = cardRects(T);
       setHead(T);
       win.style.visibility = 'visible';
       head.style.visibility = 'visible';
-      var w = play(win, [wk(G.full, 0, EIO), wk(G.win3, 0.2, EIO), wk(G.win2, 0.42, EIO), wk(G.win1, 0.7, EIO), wk(C, 1)], { duration: D, fill: 'both' });
-      play(winImg, [pk(G.full, 'mask', 0, EIO), pk(G.win3, 'mid', 0.2, EIO), pk(G.win2, 'cover', 0.42, EIO), pk(G.win1, 'cover', 0.7, EIO), pk(C, 'cover', 1)], { duration: D, fill: 'both' });
-      play(head, [hk(G.head2, 1, 0), hk(G.head2, 1, 0.42, EIO), hk(G.head1, 1, 0.7, EIO), hk(HC, kc, 1)], { duration: D, fill: 'both' });
-      play(head, [{ opacity: 0 }, { opacity: 0, offset: 0.25 }, { opacity: 1, offset: 0.45 }, { opacity: 1 }], { duration: D, fill: 'both' });
-      headDeco.forEach(function (el) {
-        play(el, [{ opacity: 1 }, { opacity: 1, offset: 0.66 }, { opacity: 0, offset: 0.86 }, { opacity: 0 }], { duration: D, fill: 'both' });
-      });
-      play(bg, [{ opacity: 1 }, { opacity: 1, offset: 0.68 }, { opacity: 0 }], { duration: D, fill: 'forwards' });
+      var keys = entryKeys(r.C, r.HC, r.kc).reverse().map(function (k) { k.u = 1 - k.u; return k; });
+      var tr = curve(keys);
+      var parts = [
+        { el: win, frame: winFrame },
+        { el: winImg, frame: imgFrame },
+        { el: head, frame: headFrame(0.4, true) }
+      ].concat(headDeco.map(function (el) { return { el: el, frame: decoFrame }; }));
+      var w = run(tr, D, bezier(0.55, 0, 0.3, 1), parts);
+      play(bg, [{ opacity: 1 }, { opacity: 1, offset: 0.62 }, { opacity: 0 }], { duration: D, easing: 'ease-in-out', fill: 'forwards' });
       full.innerHTML = '';
       slide = null;
       return done(w);
@@ -2197,10 +2170,10 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
   function finish(toEnd, fadeBg) {
     if (toEnd && pinned) {
       var top = root.getBoundingClientRect().top + window.scrollY;
-      window.scrollTo({ top: top + travel + hold, left: 0, behavior: 'instant' });
+      window.scrollTo({ top: top + travel, left: 0, behavior: 'instant' });
       cur = target = -travel;
       paint();
-      stage.classList.add('is-list');
+      stage.classList.add('is-end');
     }
     stage.classList.toggle('is-return', fadeBg);
     var p = fadeBg && canAnimate && !reduce
@@ -2235,7 +2208,6 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
       slide = s;
       bg.style.opacity = '1';
       T = t; K = k;
-      markList(t);
       announce();
       captionIn();
     });
@@ -2265,7 +2237,7 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
     if (reduce || !canAnimate) run = showStatic(i, 0);
     else if (via === 'card' && cardVisible(i)) run = enterFromCard(i);
     else run = arrive(i, 0, 1, true);
-    run.then(settle, settle);
+    run.then(settle, fail);
   }
 
   function go(dir) {
@@ -2285,7 +2257,7 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
         run = (reduce || !canAnimate) ? showStatic(T - 1, pk2) : arrive(T - 1, pk2, -1, false);
       } else run = close();
     }
-    run.then(settle, settle);
+    run.then(settle, fail);
   }
 
   function close() {
@@ -2295,13 +2267,14 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
   }
 
   var needQuiet = false, lastWheel = 0, pendingClose = false;
+  function fail(e) { if (window.console) console.error('[sym]', e); settle(); }
   function settle() {
     busy = false;
     needQuiet = true;
     if (pendingClose && isOpen) {
       pendingClose = false;
       busy = true;
-      close().then(settle, settle);
+      close().then(settle, fail);
     }
     pendingClose = false;
   }
@@ -2350,19 +2323,13 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
     if (!isOpen) return;
     if (busy) { pendingClose = true; return; }   // đóng ngay khi hiệu ứng đang chạy kết thúc
     busy = true;
-    close().then(settle, settle);
+    close().then(settle, fail);
   }
   closeBtn.addEventListener('click', requestClose);
 
   cards.forEach(function (card, i) {
     card.querySelector('button').addEventListener('click', function () { open(i, 'card'); });
   });
-  listBtns.forEach(function (btn, i) {
-    btn.addEventListener('click', function () { open(i, 'list'); });
-    btn.addEventListener('mouseenter', function () { markList(i); });
-    btn.addEventListener('focus', function () { markList(i); });
-  });
-  markList(0);
 })();
 </script>
 </body>

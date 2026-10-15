@@ -1148,10 +1148,41 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
 .sym--scrub.is-static .sym__viewport::-webkit-scrollbar { display: none; }
 .sym--scrub.is-static .sym-card { scroll-snap-align: start; }
 .sym--scrub.is-static .s5-fx { display: none; }
+
+/* =========================================================
+   Section 7 – Bản giao hưởng: lướt hết dải 5 cục rồi mới mở lần lượt 5 chủ đề (bám theo cuộn)
+   Dùng lại giao diện section 3 (.sym__*, .sym-card*) và lớp chuyển động của section 5 (.s5-*):
+   cùng nền ghim, bố cục mobile, chế độ giảm chuyển động (.sym--scrub).
+   ========================================================= */
+/* Ảnh cuối của chủ đề trước, nằm dưới màn đỏ lúc màn đỏ trượt vào */
+.s7-under {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+.s7-under img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  will-change: transform;
+}
+/* Màn đỏ mang tên chủ đề kế, trượt vào từ phải */
+.s7-panel {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  visibility: hidden;
+  background: radial-gradient(70.71% 70.71% at 50% 50%, #6c0d1a 0%, #4b0d18 100%);
+  will-change: transform;
+}
   </style>
 </head>
 <body>
-<!-- Định nghĩa dùng chung cho section 3 và 5: khung vòm, ngôi sao, chim Lạc -->
+<!-- Định nghĩa dùng chung cho section 3, 5 và 7: khung vòm, ngôi sao, chim Lạc -->
 <svg class="sr-only" width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
   <defs>
     <clipPath id="sym-arch" clipPathUnits="objectBoundingBox">
@@ -1525,6 +1556,117 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
   </section>
 
   <!-- ===== Section 6: placeholder (có người khác làm) ===== -->
+  <div class="sec-placeholder" aria-hidden="true"></div>
+
+  <!-- ===== Section 7: Bản giao hưởng – lướt hết dải 5 cục rồi mới mở lần lượt 5 chủ đề (bám theo cuộn) ===== -->
+  <section class="sym sym--scrub sym--s7" id="ban-giao-huong-luot" aria-labelledby="sym7-title" data-s7>
+    <div class="sym__stage" data-s7-stage>
+      <img class="sym__compass" src="assets/svg/compass-bg.svg" alt="" aria-hidden="true" width="805" height="805">
+
+      <div class="sym__intro">
+        <h2 class="sym__title trim" id="sym7-title">
+          <span class="sym__title-a">Viết nên</span>
+          <span><span class="text-gold">bản giao hưởng</span></span>
+          <span class="sym__title-a">cho mỗi vùng đất</span>
+        </h2>
+        <p class="sym__desc">Sun Group không xây dựng những công trình đơn lẻ. Chúng tôi viết nên bản giao hưởng cho mỗi vùng đất, nơi thiên nhiên, văn hóa và con người hòa quyện, thăng hoa trong những trải nghiệm trọn vẹn.</p>
+      </div>
+      <span class="sym__hint" aria-hidden="true" data-s7-hint>
+          <svg viewBox="0 0 24 18" fill="none" aria-hidden="true">
+            <path d="M1 17L6.1 10.2C6.63 9.49 6.63 8.51 6.1 7.8L1 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path opacity=".5" d="M9 17L14.1 10.2C14.63 9.49 14.63 8.51 14.1 7.8L9 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path opacity=".3" d="M17 17L22.1 10.2C22.63 9.49 22.63 8.51 22.1 7.8L17 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+      </span>
+
+      <div class="sym__viewport" data-s7-viewport>
+        <ul class="sym__track" data-s7-track>
+          <li class="sym-card" style="--i:0">
+            <div class="sym-card__box">
+              <img class="sym-card__frame" src="assets/svg/sym-card-frame.svg" alt="" width="629" height="743">
+              <span class="sym-card__media"><img src="assets/img/sym/thien-nhien-1.webp" alt="" width="1920" height="1200"></span>
+              <span class="sym-card__shade"></span>
+              <span class="sym-card__label">
+                <svg class="sym-card__star" viewBox="0 0 34 17" aria-hidden="true"><use href="#sym-star"/></svg>
+                <span class="sym-card__title">Thiên nhiên khởi nguồn</span>
+              </span>
+            </div>
+          </li>
+          <li class="sym-card" style="--i:1">
+            <div class="sym-card__box">
+              <img class="sym-card__frame" src="assets/svg/sym-card-frame.svg" alt="" width="629" height="743">
+              <span class="sym-card__media"><img src="assets/img/sym/di-san-1.webp" alt="" width="1920" height="1200"></span>
+              <span class="sym-card__shade"></span>
+              <span class="sym-card__label">
+                <svg class="sym-card__star" viewBox="0 0 34 17" aria-hidden="true"><use href="#sym-star"/></svg>
+                <span class="sym-card__title">Di sản tiếp nối</span>
+              </span>
+            </div>
+          </li>
+          <li class="sym-card" style="--i:2">
+            <div class="sym-card__box">
+              <img class="sym-card__frame" src="assets/svg/sym-card-frame.svg" alt="" width="629" height="743">
+              <span class="sym-card__media"><img src="assets/img/sym/ky-luc-1.webp" alt="" width="1920" height="1200" loading="lazy"></span>
+              <span class="sym-card__shade"></span>
+              <span class="sym-card__label">
+                <svg class="sym-card__star" viewBox="0 0 34 17" aria-hidden="true"><use href="#sym-star"/></svg>
+                <span class="sym-card__title">Kỷ lục kiến tạo</span>
+              </span>
+            </div>
+          </li>
+          <li class="sym-card" style="--i:3">
+            <div class="sym-card__box">
+              <img class="sym-card__frame" src="assets/svg/sym-card-frame.svg" alt="" width="629" height="743">
+              <span class="sym-card__media"><img src="assets/img/sym/tinh-hoa-1.webp" alt="" width="1920" height="1200" loading="lazy"></span>
+              <span class="sym-card__shade"></span>
+              <span class="sym-card__label">
+                <svg class="sym-card__star" viewBox="0 0 34 17" aria-hidden="true"><use href="#sym-star"/></svg>
+                <span class="sym-card__title">Tinh hoa giao hòa</span>
+              </span>
+            </div>
+          </li>
+          <li class="sym-card" style="--i:4">
+            <div class="sym-card__box">
+              <img class="sym-card__frame" src="assets/svg/sym-card-frame.svg" alt="" width="629" height="743">
+              <span class="sym-card__media"><img src="assets/img/sym/trai-nghiem-1.webp" alt="" width="1920" height="1200" loading="lazy"></span>
+              <span class="sym-card__shade"></span>
+              <span class="sym-card__label">
+                <svg class="sym-card__star" viewBox="0 0 34 17" aria-hidden="true"><use href="#sym-star"/></svg>
+                <span class="sym-card__title">Trải nghiệm trọn vẹn</span>
+              </span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Lớp chuyển động: màn đỏ, vòm, tên chủ đề, ảnh toàn màn hình (JS vẽ theo vị trí cuộn) -->
+      <div class="s5-fx" data-s7-fx aria-hidden="true">
+        <div class="s5-fx__bg" data-s7-bg></div>
+        <div class="s7-under" data-s7-under><img alt=""><span class="s5-slide__dim" data-s7-under-dim></span></div>
+        <div class="s7-panel" data-s7-panel></div>
+        <div class="sym-head s5-head" data-s7-head>
+          <svg class="sym-head__star" viewBox="0 0 34 17"><use href="#sym-star"/></svg>
+          <p class="sym-head__title trim" data-s7-head-title></p>
+          <span class="s5-head__line"></span>
+          <svg class="sym-head__bird" viewBox="0 0 64 32" data-s7-bird><use href="#sym-bird"/></svg>
+        </div>
+        <div class="s5-win" data-s7-win>
+          <div class="s5-win__in" data-s7-in></div>
+        </div>
+        <span class="sym-edge s5-edge" data-s7-edge></span>
+        <div class="sym-caption s5-caption" data-s7-caption>
+          <div class="sym-caption__shade" data-s7-cap-shade></div>
+          <div class="sym-caption__inner">
+            <p class="sym-caption__title trim" data-s7-cap><span>Viết nên </span><span class="text-gold">bản giao hưởng</span><span> cho mỗi vùng đất</span></p>
+            <p class="sym-caption__desc" data-s7-cap>Sun Group không xây dựng những công trình đơn lẻ. Chúng tôi viết nên bản giao hưởng cho mỗi vùng đất, nơi thiên nhiên, văn hóa và con người hòa quyện, thăng hoa trong những trải nghiệm trọn vẹn.</p>
+          </div>
+          <span class="sym-caption__line" data-s7-cap-line></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Section 8: placeholder (có người khác làm) ===== -->
   <div class="sec-placeholder" aria-hidden="true"></div>
 </main>
 
@@ -3111,6 +3253,427 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
   }
 
   // ---------- Bám cuộn, làm mượt nhẹ (để con lăn chuột từng nấc vẫn trơn) ----------
+  var cur = 0, target = 0, raf = 0, lastT = 0;
+  function progress() { return -root.getBoundingClientRect().top; }
+  function onScroll() {
+    if (isStatic) return;
+    target = progress();
+    if (Math.abs(target - cur) > 3 * H) { cur = target; render(cur); return; }   // nhảy xa (phím End, link neo…)
+    if (!raf) { lastT = performance.now(); raf = requestAnimationFrame(tick); }
+  }
+  function tick(now) {
+    raf = 0;
+    var dt = Math.min(64, Math.max(1, now - lastT));
+    lastT = now;
+    var d = target - cur;
+    if (Math.abs(d) < 0.4) cur = target;
+    else {
+      cur += d * (1 - Math.pow(1 - 0.16, dt / 16.667));
+      raf = requestAnimationFrame(tick);
+    }
+    render(cur);
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  var rt = 0;
+  window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(measure, 120); });
+  function onMq() { measure(); }
+  [mqMobile, mqReduce].forEach(function (mq) {
+    if (mq.addEventListener) mq.addEventListener('change', onMq);
+    else if (mq.addListener) mq.addListener(onMq);
+  });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+  window.addEventListener('load', measure);
+  measure();
+})();
+
+/* =====================================================================
+   Section 7 – "Bản giao hưởng", bản LƯỚT DẢI RỒI MỚI MỞ (không cần bấm)
+   - Section được ghim, mọi chuyển động bám theo vị trí cuộn (cuộn ngược thì tua ngược).
+   - Chặng 1: cuộn dọc → dải 5 cục chạy ngang tới hết (giống section 3).
+   - Chặng 2: cuộn tiếp → màn đỏ mang tên chủ đề 1 trượt vào từ phải, vòm mọc lên từ dưới
+     rồi nở thành ảnh toàn màn hình → lướt các ảnh của chủ đề → màn đỏ chủ đề 2 trượt vào…
+     tới chủ đề 5 (đúng chuỗi chuyển chủ đề của section 3).
+   - Hết chủ đề 5: ảnh thu về hình vòm, rơi xuống, nền tan ra để lộ lại dải cục → sang section 8.
+   ===================================================================== */
+(function () {
+  'use strict';
+
+  // TODO(content): ảnh tạm lấy trong file Figma (dùng chung với section 3, 5) – team thay ảnh thật.
+  var IMG = 'assets/img/sym/';
+  var TOPICS = [
+    { name: 'Thiên nhiên khởi nguồn', images: [IMG + 'thien-nhien-1.webp', IMG + 'thien-nhien-2.webp'] },
+    { name: 'Di sản tiếp nối', images: [IMG + 'di-san-1.webp', IMG + 'di-san-2.webp'] },
+    { name: 'Kỷ lục kiến tạo', images: [IMG + 'ky-luc-1.webp', IMG + 'ky-luc-2.webp'] },
+    { name: 'Tinh hoa giao hòa', images: [IMG + 'tinh-hoa-1.webp', IMG + 'tinh-hoa-2.webp'] },
+    { name: 'Trải nghiệm trọn vẹn', images: [IMG + 'trai-nghiem-1.webp', IMG + 'trai-nghiem-2.webp'] }
+  ];
+
+  // Độ dài từng chặng (số lần chiều cao màn hình). Dải cục chạy 1 px theo mỗi px cuộn như section 3.
+  // Muốn phần mở rộng dài/ngắn hơn thì chỉnh SPEED.
+  var SPEED = 1;
+  var LEN = {
+    pause: 0.12,    // đệm sau khi dải chạy hết, trước khi màn đỏ chủ đề 1 trượt vào
+    arrive: 1.2,    // màn đỏ trượt vào + vòm mọc lên + nở toàn màn hình
+    settle: 0.25,   // chữ trên ảnh hiện ra
+    slide: 0.7,     // mỗi lần đổi ảnh trong chủ đề
+    gap: 0.12,      // nghỉ giữa 2 lần đổi ảnh (khi chủ đề có từ 3 ảnh)
+    hold: 0.2,      // chữ trên ảnh tan đi trước khi sang chủ đề kế
+    exit: 0.9,      // ảnh thu về vòm, rơi xuống, nền tan ra
+    tail: 0.4       // giữ dải ở cuối trước khi sang section 8
+  };
+
+  var root = document.querySelector('[data-s7]');
+  if (!root) return;
+
+  var stage = root.querySelector('[data-s7-stage]');
+  var viewport = root.querySelector('[data-s7-viewport]');
+  var track = root.querySelector('[data-s7-track]');
+  var hint = root.querySelector('[data-s7-hint]');
+  var fx = root.querySelector('[data-s7-fx]');
+  var bg = fx.querySelector('[data-s7-bg]');
+  var under = fx.querySelector('[data-s7-under]');
+  var underImg = under.querySelector('img');
+  var underDim = under.querySelector('[data-s7-under-dim]');
+  var panel = fx.querySelector('[data-s7-panel]');
+  var head = fx.querySelector('[data-s7-head]');
+  var headTitle = head.querySelector('[data-s7-head-title]');
+  var bird = head.querySelector('[data-s7-bird]');
+  var win = fx.querySelector('[data-s7-win]');
+  var inner = win.querySelector('[data-s7-in]');
+  var edge = fx.querySelector('[data-s7-edge]');
+  var caption = fx.querySelector('[data-s7-caption]');
+  var capShade = caption.querySelector('[data-s7-cap-shade]');
+  var capParts = [].slice.call(caption.querySelectorAll('[data-s7-cap]'));
+  var capLine = caption.querySelector('[data-s7-cap-line]');
+
+  var mqMobile = window.matchMedia('(max-width: 1023px)');
+  var mqReduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var A = 606.0407 / 720.9274;   // tỉ lệ khung vòm (rộng / cao)
+  function c01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+  function smooth(x) { x = c01(x); return x * x * (3 - 2 * x); }
+
+  // Chỉ ghi style khi giá trị đổi
+  function css(el, prop, val) {
+    var c = el._s7 || (el._s7 = {});
+    if (c[prop] === val) return;
+    c[prop] = val;
+    el.style[prop] = val;
+  }
+
+  // ---------- Easing + nội suy liền mạch qua các điểm mốc (giống section 3, 5) ----------
+  function bezier(x1, y1, x2, y2) {
+    function bx(t) { return 3 * (1 - t) * (1 - t) * t * x1 + 3 * (1 - t) * t * t * x2 + t * t * t; }
+    function by(t) { return 3 * (1 - t) * (1 - t) * t * y1 + 3 * (1 - t) * t * t * y2 + t * t * t; }
+    return function (x) {
+      if (x <= 0) return 0;
+      if (x >= 1) return 1;
+      var lo = 0, hi = 1, t = x;
+      for (var i = 0; i < 24; i++) { t = (lo + hi) / 2; if (bx(t) < x) lo = t; else hi = t; }
+      return by(t);
+    };
+  }
+  function endSlope(h0, h1, d0, d1) {
+    var m = ((2 * h0 + h1) * d0 - h0 * d1) / (h0 + h1);
+    if (m * d0 <= 0) return 0;
+    if (d0 * d1 <= 0 && Math.abs(m) > Math.abs(3 * d0)) return 3 * d0;
+    return m;
+  }
+  function pchip(us, vs) {
+    var n = us.length, h = [], d = [], m = [], i;
+    for (i = 0; i < n - 1; i++) { h[i] = us[i + 1] - us[i]; d[i] = (vs[i + 1] - vs[i]) / h[i]; }
+    if (n === 2) { m[0] = m[1] = d[0]; }
+    else {
+      for (i = 1; i < n - 1; i++) {
+        if (d[i - 1] * d[i] <= 0) m[i] = 0;
+        else {
+          var w1 = 2 * h[i] + h[i - 1], w2 = h[i] + 2 * h[i - 1];
+          m[i] = (w1 + w2) / (w1 / d[i - 1] + w2 / d[i]);
+        }
+      }
+      m[0] = endSlope(h[0], h[1], d[0], d[1]);
+      m[n - 1] = endSlope(h[n - 2], h[n - 3], d[n - 2], d[n - 3]);
+    }
+    return function (u) {
+      if (u <= us[0]) return vs[0];
+      if (u >= us[n - 1]) return vs[n - 1];
+      var k = 0;
+      while (k < n - 2 && u > us[k + 1]) k++;
+      var t = (u - us[k]) / h[k], t2 = t * t, t3 = t2 * t;
+      return (2 * t3 - 3 * t2 + 1) * vs[k] + (t3 - 2 * t2 + t) * h[k] * m[k] +
+        (-2 * t3 + 3 * t2) * vs[k + 1] + (t3 - t2) * h[k] * m[k + 1];
+    };
+  }
+  function curve(keys) {
+    var us = keys.map(function (k) { return k.u; });
+    var names = Object.keys(keys[0]).filter(function (n) { return n !== 'u'; });
+    var fns = {};
+    names.forEach(function (n) { fns[n] = pchip(us, keys.map(function (k) { return k[n]; })); });
+    return function (u) {
+      var o = { u: u };
+      names.forEach(function (n) { o[n] = fns[n](u); });
+      return o;
+    };
+  }
+  var E_ARR = bezier(0.42, 0, 0.32, 1);     // màn đỏ trượt vào → vòm nở
+  var E_EXIT = bezier(0.45, 0, 0.55, 1);    // thu về vòm, rơi xuống
+  var E_SLIDE = bezier(0.6, 0, 0.35, 1);    // đổi ảnh
+  var E_TEXT = bezier(0.33, 0, 0.2, 1);     // chữ hiện ra
+
+  // ---------- Ảnh của từng chủ đề (dựng sẵn 1 lần, khi section sắp tới) ----------
+  var LAYERS = null;
+  function build() {
+    if (LAYERS) return;
+    LAYERS = TOPICS.map(function (tp) {
+      return tp.images.map(function (src) {
+        var s = document.createElement('div');
+        s.className = 's5-slide';
+        var i = document.createElement('img');
+        i.src = src;
+        i.alt = '';
+        i.decoding = 'async';
+        var d = document.createElement('span');
+        d.className = 's5-slide__dim';
+        s.appendChild(i);
+        s.appendChild(d);
+        return { el: s, img: i, dim: d };
+      });
+    });
+  }
+
+  // ---------- Hình học (toạ độ storyboard Figma, giống section 3) ----------
+  var W = 0, H = 0, G = null, travel = 0, KARR = null, KEXIT = null, FULL = null;
+  var TL = [], EX = null, total = 0, isStatic = false;
+
+  function geo() {
+    var mob = mqMobile.matches || W < 1024;
+    var g = { mob: mob };
+    var s, ox, oy;
+    if (!mob) { s = Math.min(W / 1440, H / 900); ox = (W - 1440 * s) / 2; oy = (H - 900 * s) / 2; }
+    else { s = Math.min(W / 390, H / 844); ox = (W - 390 * s) / 2; oy = (H - 844 * s) / 2; }
+    function R(x, y, w) { return { x: ox + x * s, y: oy + y * s, w: w * s }; }
+    function P(x, y) { return { x: ox + x * s, y: oy + y * s }; }
+    g.s = s;
+    if (!mob) {
+      g.headW = 553 * s;
+      g.head2 = P(444, 66); g.headA = P(444, 332);
+      g.win2 = R(418, 220, 606.04); g.win3 = R(327.9, 109, 786);
+      g.rise1 = R(418, 577, 606.04);
+      g.exit = [R(163.14, -215, 1116), R(263.59, 24, 915), R(354.04, 239, 734), R(484.48, 514, 473)];
+    } else {
+      g.headW = Math.min(W - 40, 553 * s);
+      var hx = (W - g.headW) / 2;
+      g.head2 = { x: hx, y: oy + 110 * s }; g.headA = { x: hx, y: oy + 330 * s };
+      g.win2 = R(35, 250, 320); g.win3 = R(-20, 150, 430);
+      g.rise1 = R(35, 600, 320);
+      g.exit = [R(-110, -60, 610), R(-20, 170, 430), R(55, 400, 280), R(105, 620, 180)];
+    }
+    g.rise0 = { x: g.rise1.x, y: H + 24, w: g.rise1.w };
+    var last = g.exit[g.exit.length - 1];
+    g.exit.push({ x: last.x, y: H + 24, w: last.w });
+    var wh = Math.max(W / A, H * 1.2) + 2, ww = wh * A;   // vòm đủ lớn để phủ kín màn hình
+    g.full = { x: (W - ww) / 2, y: -0.1616 * wh, w: ww };
+    return g;
+  }
+
+  function measure() {
+    isStatic = mqReduce.matches;
+    root.classList.toggle('is-static', isStatic);
+    if (isStatic) {
+      root.style.height = '';
+      track.style.transform = '';
+      track._s7 = null;
+      hideFx();
+      return;
+    }
+    W = stage.clientWidth;
+    H = stage.clientHeight;
+    G = geo();
+    fx.style.setProperty('--s', G.mob ? 1 : G.s);
+    head.style.width = G.headW + 'px';
+    head.style.setProperty('--hs', (G.headW / 553).toFixed(4));
+    travel = Math.max(0, track.offsetWidth - viewport.clientWidth);
+
+    function rk(r) { return { wx: r.x, wy: r.y, ww: r.w }; }
+    function key(u, px, eo, ox, r, m, hp, dy) {
+      var o = rk(r);
+      o.u = u; o.px = px; o.eo = eo; o.ox = ox; o.m = m; o.hx = hp.x + px; o.hy = hp.y + (dy || 0);
+      return o;
+    }
+    var lift = G.mob ? 16 : 14 * G.s, A0 = G.headA, H2 = G.head2;
+    // Điểm mốc lấy đúng chuỗi "sang chủ đề" của section 3
+    KARR = curve([
+      key(0, W, 1, 0, G.rise0, 0, A0),
+      key(0.3, W * 0.05, 1, -5.7, G.rise0, 0, A0),
+      key(0.44, 0, 0, -6, G.rise1, 0, A0, -lift),
+      key(0.65, 0, 0, -6, G.win2, 0, H2),
+      key(0.83, 0, 0, -6, G.win3, 0.45, H2),
+      key(1, 0, 0, -6, G.full, 1, H2)
+    ]);
+    var us = [0, 0.2, 0.42, 0.63, 0.82, 1];
+    KEXIT = curve([G.full].concat(G.exit).map(function (r, i) { var o = rk(r); o.u = us[i]; return o; }));
+    FULL = rk(G.full);
+
+    // Dòng thời gian (px cuộn): [0, travel] dải chạy ngang, sau đó lần lượt 5 chủ đề, rồi thoát
+    var h = H * SPEED, t = travel + LEN.pause * h;
+    TL = [];
+    for (var i = 0; i < TOPICS.length; i++) {
+      var c = { a0: t, a1: t + LEN.arrive * h };
+      t = c.a1 + LEN.settle * h;
+      c.sl = [];
+      var n = TOPICS[i].images.length;
+      for (var j = 1; j < n; j++) {
+        c.sl.push([t, t + LEN.slide * h]);
+        t += LEN.slide * h + (j < n - 1 ? LEN.gap * h : 0);
+      }
+      t += LEN.hold * h;
+      c.end = t;
+      TL.push(c);
+    }
+    EX = { e0: t, e1: t + LEN.exit * h };
+    total = EX.e1 + LEN.tail * h;
+    root.style.height = Math.round(H + total) + 'px';
+    active = -2;
+    cur = target = progress();
+    render(cur);
+  }
+
+  // ---------- Vẽ một khung hình theo tiến độ cuộn p ----------
+  var active = -2;
+
+  function setTopic(a) {
+    active = a;
+    while (inner.firstChild) inner.removeChild(inner.firstChild);
+    if (a < 0) return;
+    headTitle.textContent = TOPICS[a].name;
+    LAYERS[a].forEach(function (L) { inner.appendChild(L.el); });
+    // lớp dưới màn đỏ: ảnh cuối của chủ đề trước (đúng ảnh đang thấy khi màn đỏ bắt đầu trượt vào)
+    if (a > 0) {
+      var prev = TOPICS[a - 1].images;
+      var src = prev[prev.length - 1];
+      if (underImg.getAttribute('src') !== src) underImg.src = src;
+    }
+  }
+
+  function hideFx() {
+    css(win, 'visibility', 'hidden');
+    css(head, 'visibility', 'hidden');
+    css(panel, 'visibility', 'hidden');
+    css(under, 'visibility', 'hidden');
+    css(bg, 'opacity', '0');
+    css(edge, 'opacity', '0');
+    css(caption, 'opacity', '0');
+  }
+
+  function render(p) {
+    if (isStatic || !TL.length) return;
+    css(track, 'transform', 'translate3d(' + (-Math.min(Math.max(p, 0), travel)).toFixed(2) + 'px,0,0)');
+    css(hint, 'opacity', p > 8 ? '0' : '');
+    if (!LAYERS && p > travel - 2.5 * H) build();
+    if (!LAYERS || p <= TL[0].a0 || p >= EX.e1) { hideFx(); return; }
+
+    var a = 0, i;
+    for (i = 0; i < TL.length; i++) if (p >= TL[i].a0) a = i;
+    if (a !== active) setTopic(a);
+    var c = TL[a], h = H * SPEED;
+    var s, phase, panelVis = false, underVis = false, headVis = false, above = false, bgO = 0;
+
+    if (p >= EX.e0) {
+      // Thoát: ảnh thu về vòm, rơi xuống; nền đỏ tan ra để lộ lại dải cục
+      phase = 3;
+      var ue = (p - EX.e0) / (EX.e1 - EX.e0);
+      s = KEXIT(E_EXIT(ue));
+      s.m = 1;
+      bgO = 1 - smooth((ue - 0.55) / 0.45);
+    } else if (p < c.a1) {
+      // Màn đỏ chủ đề a trượt vào, tên chủ đề đi cùng, vòm mọc lên rồi nở ra
+      phase = 1;
+      var ua = (p - c.a0) / (c.a1 - c.a0);
+      s = KARR(E_ARR(ua));
+      panelVis = true;
+      underVis = a > 0;
+      headVis = true;
+      above = s.u < 0.67;
+    } else {
+      phase = 2;
+      s = FULL;
+      s.m = 1;
+    }
+
+    // Màn đỏ + viền sáng ở mép trái của nó + ảnh chủ đề trước lùi lại phía dưới
+    if (panelVis) {
+      css(panel, 'visibility', 'visible');
+      css(panel, 'transform', 'translate3d(' + s.px.toFixed(2) + 'px,0,0)');
+    } else css(panel, 'visibility', 'hidden');
+    if (underVis) {
+      css(under, 'visibility', 'visible');
+      css(underImg, 'transform', 'translateX(' + s.ox.toFixed(3) + '%)');
+      css(underDim, 'opacity', (0.45 * Math.abs(s.ox) / 6).toFixed(3));
+    } else css(under, 'visibility', 'hidden');
+    css(bg, 'opacity', bgO.toFixed(3));
+
+    // Cửa sổ vòm (đổi kích thước thật để ảnh luôn nét)
+    var ww = s.ww, wh = ww / A, m = c01(s.m);
+    css(win, 'visibility', 'visible');
+    css(win, 'transform', 'translate3d(' + s.wx.toFixed(2) + 'px,' + s.wy.toFixed(2) + 'px,0)');
+    css(win, 'width', ww.toFixed(2) + 'px');
+    css(win, 'height', wh.toFixed(2) + 'px');
+    css(inner, 'left', (-s.wx * m).toFixed(2) + 'px');
+    css(inner, 'top', (-s.wy * m).toFixed(2) + 'px');
+    css(inner, 'width', (ww + (W - ww) * m).toFixed(2) + 'px');
+    css(inner, 'height', (wh + (H - wh) * m).toFixed(2) + 'px');
+
+    // Tên chủ đề: trượt vào cùng màn đỏ, nhích lên, rồi chui xuống để vòm nở phủ lên
+    if (headVis) {
+      css(head, 'visibility', 'visible');
+      css(head, 'transform', 'translate(' + s.hx.toFixed(2) + 'px,' + s.hy.toFixed(2) + 'px)');
+      css(head, 'zIndex', above ? '7' : '4');
+      css(bird, 'opacity', '1');
+    } else css(head, 'visibility', 'hidden');
+
+    // Đổi ảnh trong chủ đề: lớp mới phủ từ phải sang, hai ảnh lệch nhau 5%
+    var L = LAYERS[a], vs = [1], edgeX = -1, edgeO = 0;
+    for (i = 0; i < c.sl.length; i++) {
+      var r = c.sl[i];
+      vs.push(E_SLIDE(c01((p - r[0]) / (r[1] - r[0]))));
+    }
+    vs.push(0);
+    for (i = 0; i < L.length; i++) {
+      var vi = vs[i], vn = vs[i + 1];
+      if (i > 0) {
+        css(L[i].el, 'visibility', vi > 0 ? 'visible' : 'hidden');
+        css(L[i].el, 'clipPath', vi >= 1 ? 'none' : 'inset(0 0 0 ' + ((1 - vi) * 100).toFixed(3) + '%)');
+        if (vi > 0 && vi < 1) { edgeX = W * (1 - vi); edgeO = Math.min(1, (1 - vi) / 0.12, vi / 0.03); }
+      }
+      css(L[i].img, 'transform', 'translateX(' + (5 * (1 - vi) - 5 * vn).toFixed(3) + '%) scale(' + (1 + 0.05 * (1 - vi)).toFixed(4) + ')');
+      css(L[i].dim, 'opacity', (0.45 * vn).toFixed(3));
+    }
+    if (phase === 1 && s.eo > 0.01) { edgeX = Math.max(0, s.px); edgeO = c01(s.eo); }
+    if (edgeX >= 0) {
+      css(edge, 'transform', 'translateX(' + edgeX.toFixed(2) + 'px)');
+      css(edge, 'opacity', edgeO.toFixed(3));
+    } else css(edge, 'opacity', '0');
+
+    // Chữ trên ảnh toàn màn hình
+    var outEnd = a < TL.length - 1 ? c.end + 0.1 * LEN.arrive * h : c.end + 0.12 * LEN.exit * h;
+    var ci = c01((p - (c.a1 - 0.15 * LEN.arrive * h)) / (0.15 * LEN.arrive * h + LEN.settle * h));
+    var co = c01((p - (c.end - LEN.hold * h)) / (outEnd - (c.end - LEN.hold * h)));
+    var vis = ci * (1 - co);
+    if (vis <= 0) css(caption, 'opacity', '0');
+    else {
+      css(caption, 'opacity', '1');
+      css(capShade, 'opacity', vis.toFixed(3));
+      capParts.forEach(function (el, j) {
+        var q = E_TEXT(c01((ci - j * 0.18) / 0.64));
+        css(el, 'opacity', (q * (1 - co)).toFixed(3));
+        css(el, 'transform', 'translateY(' + ((1 - q) * 22 - co * 10).toFixed(2) + 'px)');
+      });
+      css(capLine, 'opacity', (1 - co).toFixed(3));
+      css(capLine, 'transform', 'scaleX(' + E_TEXT(c01((ci - 0.3) / 0.7)).toFixed(4) + ')');
+    }
+  }
+
+  // ---------- Bám cuộn, làm mượt nhẹ ----------
   var cur = 0, target = 0, raf = 0, lastT = 0;
   function progress() { return -root.getBoundingClientRect().top; }
   function onScroll() {

@@ -8,6 +8,8 @@ HTML/CSS/JS thuần, không cần build. Thứ tự trên trang:
 4. Section 4 – placeholder: div trắng cao 1080px (đang có người khác làm)
 5. **Section 5 – cùng design section 3, bản CUỘN** (không cần bấm, chuyển động bám theo cuộn) – để so sánh 2 kiểu
 6. Section 6 – placeholder: div trắng cao 1080px
+7. **Section 7 – cùng design section 3, bản LƯỚT DẢI RỒI MỚI MỞ** (không cần bấm, bám theo cuộn)
+8. Section 8 – placeholder: div trắng cao 1080px
 
 ## Cấu trúc
 
@@ -104,9 +106,20 @@ Hoặc không dùng GitHub: `npx vercel` (preview) và `npx vercel --prod` (prod
 - Bật "giảm chuyển động": không ghim, dải cục cuộn/vuốt ngang bình thường.
 - Code: CSS ở cuối thẻ `<style>` (khối "Section 5"), JS ở khối `Section 5` cuối thẻ `<script>`, dữ liệu trong mảng `TOPICS` riêng của section 5.
 
+## Section 7 – Bản giao hưởng, lướt hết dải rồi mới mở (không cần bấm)
+
+- Section được ghim, mọi chuyển động bám theo vị trí cuộn (cuộn ngược thì tua ngược), giống section 5.
+- Chặng 1: cuộn dọc → dải 5 cục chạy ngang tới hết, giống section 3 (1 px cuộn = 1 px dải chạy).
+- Chặng 2: cuộn tiếp → màn đỏ mang tên chủ đề 1 trượt vào từ phải (viền sáng vàng ở mép), vòm mọc lên từ dưới rồi nở
+  thành ảnh toàn màn hình → lướt các ảnh của chủ đề → màn đỏ chủ đề 2 trượt vào đè lên ảnh cũ (ảnh cũ lùi lại, tối đi)…
+  tới chủ đề 5. Đúng chuỗi "sang chủ đề" trong storyboard của section 3.
+- Hết chủ đề 5: ảnh thu về hình vòm, rơi xuống, nền đỏ tan ra để lộ lại dải cục → cuộn tiếp là sang section 8.
+- Độ dài: chỉnh `SPEED` / `LEN` ở khối `Section 7` cuối thẻ `<script>`. Mobile vẫn ghim + bám cuộn như section 5;
+  bật "giảm chuyển động" thì dải cục cuộn ngang bình thường.
+
 ## Cần thay
 
-- Section 3 và 5: ảnh của từng chủ đề đang là **ảnh tạm** lấy trong file Figma (mỗi chủ đề 2 ảnh, `assets/img/sym/`).
+- Section 3, 5 và 7: ảnh của từng chủ đề đang là **ảnh tạm** lấy trong file Figma (mỗi chủ đề 2 ảnh, `assets/img/sym/`).
   Thay ảnh thật thì sửa mảng `TOPICS` của từng section trong `<script>` (thêm bao nhiêu ảnh cũng được). Ảnh nên 1920 × 1200, WebP.
 - Section 3: chữ trên ảnh toàn màn hình đang dùng chung câu "Viết nên bản giao hưởng cho mỗi vùng đất" như trong Figma.
 - Section 1: mô tả của 4 lĩnh vực **Bất động sản, Giải trí nghỉ dưỡng, Điện ảnh & nghệ thuật biểu diễn, Y tế** đang là nội dung tạm

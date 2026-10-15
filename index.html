@@ -167,22 +167,23 @@ img { display: block; max-width: 100%; }
   max-width: 1440px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: minmax(0, 917fr) minmax(0, 437fr);
-  column-gap: 22px;
+  /* Figma "Update mới" (15:1921): vòng nhỏ lại 0.882 lần, chữ giữ nguyên size */
+  grid-template-columns: minmax(0, 808.84fr) minmax(0, 437fr);
+  column-gap: 51px;
   align-items: center;
-  padding: 116px 64px 159px 0;
+  padding: 122px 114px 122px 29px;
 }
 
 .sg-eco__visual {
-  padding-left: 3.0909%;   /* 28.3 / 917 */
-  padding-right: 0.944%;   /* 8.7 / 917  */
+  padding-left: 3.0909%;   /* 25 / 808.84 */
+  padding-right: 0.944%;   /* 7.6 / 808.84 */
 }
 
 .sg-eco__content {
   position: relative;
   z-index: 1; /* nằm trên các đường cung trang trí như design */
   align-self: center;
-  margin-top: -24px; /* tâm khối nội dung cao hơn tâm vòng tròn ~12px như design */
+  margin-top: 19px; /* tâm khối nội dung thấp hơn tâm vòng tròn ~10px như design */
 }
 
 .sg-eco__heading {
@@ -208,12 +209,13 @@ img { display: block; max-width: 100%; }
   align-items: flex-start;
   gap: 10px;
 }
-.sg-eco__icon { flex: none; width: 34px; height: 17px; transform-origin: 50% 100%; overflow: visible; }
+.sg-eco__icon { flex: none; width: 34px; height: 17px; margin-top: 3px; transform-origin: 50% 100%; overflow: visible; }
 
 .sg-eco__title {
   margin: 0;
-  color: var(--label);
-  font-size: clamp(20px, 1.667vw, 24px);
+  color: var(--gold-2);   /* chữ dùng gradient vàng qua .text-gold bên trong */
+  font-size: clamp(22px, 1.944vw, 28px);
+  text-wrap: balance;
   font-weight: var(--fw-medium);
   line-height: 1.35;
   letter-spacing: -0.01em;
@@ -246,6 +248,57 @@ img { display: block; max-width: 100%; }
   height: 100%;
   object-fit: cover;
 }
+
+/* ---------- Nút "Khám phá thêm" + 2 nút mũi tên (Figma 15:2074) ---------- */
+.sg-eco__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 40px;
+}
+.sg-eco__more {
+  display: inline-flex;
+  align-items: center;
+  min-height: 35.72px;
+  padding: 7.11px 14.22px;
+  border: 0.75px solid transparent;
+  border-radius: 2.13px;
+  /* nền đỏ toả từ giữa + viền vàng/đỏ chạy chéo như design */
+  background:
+    radial-gradient(182px 151px at 50% 50%, #b3332e 0%, #360301 100%) padding-box,
+    linear-gradient(10.9deg, #e1cc98 20%, #a73e39 46%, #e1cc98 76%) border-box;
+  box-shadow: inset 0 3px 2px rgba(255, 255, 255, 0.25);
+  color: #f7e6b8;
+  font-size: 18px;
+  font-weight: var(--fw-medium);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: filter 0.3s var(--ease), transform 0.3s var(--ease);
+}
+.sg-eco__more:hover { filter: brightness(1.14); }
+.sg-eco__more:active { transform: translateY(1px); }
+.sg-eco__more:focus-visible { outline: 2px solid var(--gold-1); outline-offset: 3px; }
+
+.sg-eco__nav { display: flex; gap: 10px; }
+.sg-eco__arrow {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #e2cd98;
+  cursor: pointer;
+  transition: background-color 0.3s var(--ease), color 0.3s var(--ease);
+}
+.sg-eco__arrow svg { display: block; width: 36px; height: 36px; }
+.sg-eco__arrow:hover { background: rgba(226, 205, 152, 0.14); color: #f7e6b8; }
+.sg-eco__arrow:focus-visible { outline: 2px solid var(--gold-1); outline-offset: 3px; }
 
 /* --k: tiến độ mép sóng (0 → 1). Một biến duy nhất điều khiển cả vùng mở ảnh, viền sáng và tia nắng,
    nên các lớp luôn khớp nhau từng khung hình. */
@@ -367,7 +420,7 @@ img { display: block; max-width: 100%; }
   position: absolute;
   left: 29.128%;
   top: 29.128%;
-  width: 41.83%;
+  width: 41.744%;   /* 367.35 / 880 – trống đồng mới */
   aspect-ratio: 1 / 1;
   pointer-events: none;
 }
@@ -438,8 +491,14 @@ img { display: block; max-width: 100%; }
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  color: var(--deep);
-  font-size: max(9px, 2.638cqw); /* 23.2px khi vòng = 880px */
+  /* Figma: gradient #FFC95D → #A40D05, phần thấy được trên chữ hoa là cam đỏ → đỏ sậm.
+     Nền mở rộng (padding) để không cắt dấu chấm dưới chữ Ị. */
+  padding-block: 0.32em;   /* đối xứng để chữ vẫn nằm đúng tâm trống */
+  background: linear-gradient(180deg, #d4712f 0.32em, #aa1a0c calc(100% - 0.32em));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: max(10px, 3.182cqw); /* 24.7px khi vòng = 776px */
   font-weight: var(--fw-semibold);
   line-height: 1.35;
   letter-spacing: -0.02em;
@@ -449,8 +508,20 @@ img { display: block; max-width: 100%; }
 
 @keyframes sg-spin { to { transform: rotate(360deg); } }
 
-.wheel__label { transition: opacity 0.35s var(--ease); }
-.wheel__label.is-hidden { opacity: 0; }
+/* Nhãn cong: chữ thật chạy theo đường tròn (SVG textPath), 24px ở bản 1440 như design.
+   viewBox 880 ứng với khung vòng 776px → 24px = 27.21 đơn vị. */
+.wheel__words { overflow: visible; }
+.wheel__word {
+  fill: var(--label);
+  font-family: var(--font);
+  font-size: 27.21px;
+  font-weight: var(--fw-medium);
+  letter-spacing: -0.01em;
+  text-anchor: middle;
+  dominant-baseline: central;
+  transition: opacity 0.35s var(--ease);
+}
+.wheel__word.is-hidden { opacity: 0; }
 
 .wheel__hit {
   position: absolute;
@@ -509,7 +580,7 @@ img { display: block; max-width: 100%; }
   .wheel__lines,
   .sg-intro__scroll { animation: none; }
   .wheel__seg,
-  .wheel__label,
+  .wheel__word,
   .sg-eco__panel { transition: none; }
 }
 
@@ -1165,14 +1236,30 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
               <span class="wheel__core-label trim">Du lịch</span>
             </div>
 
-            <!-- Nhãn cong (nhãn của mảng đang chọn sẽ ẩn, giống design) -->
-            <img class="wheel__layer wheel__label is-hidden" data-label="hang-khong" style="--x:65.3072;--y:14.81;--w:14.697" src="assets/img/label-hang-khong.webp" alt="" width="388" height="319">
-            <img class="wheel__layer wheel__label" data-label="bat-dong-san" style="--x:81.6444;--y:51.3257;--w:6.8939" src="assets/img/label-bat-dong-san.webp" alt="" width="182" height="470">
-            <img class="wheel__layer wheel__label" data-label="giai-tri" style="--x:37.8408;--y:83.9201;--w:26.25" src="assets/img/label-giai-tri.webp" alt="" width="693" height="122">
-            <img class="wheel__layer wheel__label" data-label="dien-anh" style="--x:9.3955;--y:47.9582;--w:10.2273" src="assets/img/label-dien-anh.webp" alt="" width="270" height="703">
-            <img class="wheel__layer wheel__label" data-label="y-te" style="--x:24.0074;--y:17.4817;--w:5.0758" src="assets/img/label-y-te.webp" alt="" width="134" height="141">
-            <img class="wheel__layer" style="--x:43.5023;--y:-2.171;--w:12.4621" src="assets/img/label-tai-chinh.webp" alt="Tài chính" width="329" height="75">
-            <img class="wheel__layer" style="--x:43.9231;--y:98.8464;--w:13.1439" src="assets/img/label-xay-dung.webp" alt="Xây dựng" width="347" height="82">
+            <!-- WORDS:START – nhãn cong (chữ thật theo đường tròn, sinh bằng tools/build_labels.py) -->
+            <svg class="wheel__fill wheel__words" viewBox="0 0 880 880" data-words>
+            <defs>
+            <path id="wl-0" d="M179.23 234.38A331.13 331.13 0 0 1 700.88 642.37"/>
+            <path id="wl-1" d="M356.08 759.22A331.13 331.13 0 0 0 524.44 118.73"/>
+            <path id="wl-2" d="M109.53 464.00A331.13 331.13 0 0 0 769.96 414.81"/>
+            <path id="wl-3" d="M340.77 135.14A320.00 320.00 0 0 0 537.18 744.25"/>
+            <path id="wl-4" d="M317.62 105.95A355.14 355.14 0 0 0 559.84 773.65"/>
+            <path id="wl-5" d="M179.49 643.60A331.13 331.13 0 0 1 699.20 233.15"/>
+            <path id="wl-6" d="M-12.45 432.39A450.65 450.65 0 0 1 888.78 444.35"/>
+            <path id="wl-7" d="M-12.28 453.22A450.65 450.65 0 0 0 888.63 426.67"/>
+            </defs>
+            <g aria-hidden="true">
+            <text class="wheel__word is-hidden" data-label="hang-khong"><textPath href="#wl-0" startOffset="50%">HÀNG KHÔNG</textPath></text>
+            <text class="wheel__word" data-label="bat-dong-san"><textPath href="#wl-1" startOffset="50%">BẤT ĐỘNG SẢN</textPath></text>
+            <text class="wheel__word" data-label="giai-tri"><textPath href="#wl-2" startOffset="50%">GIẢI TRÍ NGHỈ DƯỠNG</textPath></text>
+            <text class="wheel__word" data-label="dien-anh"><textPath href="#wl-3" startOffset="50%">ĐIỆN ẢNH &amp;</textPath></text>
+            <text class="wheel__word" data-label="dien-anh"><textPath href="#wl-4" startOffset="50%">NGHỆ THUẬT BIỂU DIỄN</textPath></text>
+            <text class="wheel__word" data-label="y-te"><textPath href="#wl-5" startOffset="50%">Y TẾ</textPath></text>
+            </g>
+            <text class="wheel__word"><textPath href="#wl-6" startOffset="50%">TÀI CHÍNH</textPath></text>
+            <text class="wheel__word"><textPath href="#wl-7" startOffset="50%">XÂY DỰNG</textPath></text>
+          </svg>
+            <!-- WORDS:END -->
 
             <!-- Vùng bấm: JS sinh 5 path theo góc của từng mảng -->
             <svg class="wheel__hit" viewBox="0 0 880 880" role="tablist" aria-label="05 lĩnh vực chủ chốt" data-hit></svg>
@@ -1199,7 +1286,7 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
                   <path d="M11.434 15.5086L0 17L11.434 18.4914L2.27757 25.5L12.9254 21.0746L8.5 31.7224L15.5086 22.566L17 34L18.4914 22.566L25.5 31.7224L21.0746 21.0746L31.7224 25.5L22.566 18.4914L34 17L22.566 15.5086L31.7224 8.5L21.0746 12.9254L25.5 2.27757L18.4914 11.434L17 0L15.5086 11.434L8.5 2.27757L12.9254 12.9254L2.27757 8.5L11.434 15.5086Z" fill="url(#sg-icon-grad)"/>
                 </g>
               </svg>
-              <h3 class="sg-eco__title trim" data-title>Hàng không</h3>
+              <h3 class="sg-eco__title trim"><span class="text-gold" data-title>Hàng không</span></h3>
             </div>
             <p class="sg-eco__desc" data-desc>Du lịch là lĩnh vực mũi nhọn, giữ vai trò dẫn dắt toàn bộ hệ sinh thái Sun Group. Từ chiến lược thương hiệu đến từng trải nghiệm liền mạch, mọi kết nối đều hướng tới mục tiêu gia tăng sức hấp dẫn và giá trị cho mỗi điểm đến, góp phần nâng tầm du lịch Việt Nam.</p>
             </div>
@@ -1213,6 +1300,27 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
               <span class="sg-eco__ring" data-ring aria-hidden="true"></span>
               <span class="sg-eco__sparkles" data-sparkles aria-hidden="true"></span>
             </figure>
+          </div>
+
+          <!-- Nút "Khám phá thêm" + chuyển lĩnh vực trước / sau -->
+          <div class="sg-eco__actions">
+            <a class="sg-eco__more" href="#" data-more aria-label="Khám phá thêm về Hàng không">Khám phá thêm</a>
+            <div class="sg-eco__nav">
+              <button class="sg-eco__arrow" type="button" data-prev aria-label="Lĩnh vực trước" aria-controls="eco-panel">
+                <svg viewBox="0 0 36 36" fill="none" aria-hidden="true">
+                  <rect x="0.5" y="0.5" width="35" height="35" rx="17.5" stroke="currentColor"/>
+                  <path d="M22.6654 18.5H23.1654V17.5H22.6654V18V18.5ZM13.332 17.5C13.0559 17.5 12.832 17.7239 12.832 18C12.832 18.2761 13.0559 18.5 13.332 18.5V18V17.5ZM22.6654 18V17.5H13.332V18V18.5H22.6654V18Z" fill="currentColor"/>
+                  <path d="M17.9987 22.6654L13.332 17.9987L17.9987 13.332" stroke="currentColor" stroke-linecap="square" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <button class="sg-eco__arrow" type="button" data-next aria-label="Lĩnh vực tiếp theo" aria-controls="eco-panel">
+                <svg viewBox="0 0 36 36" fill="none" aria-hidden="true">
+                  <rect x="0.5" y="0.5" width="35" height="35" rx="17.5" stroke="currentColor"/>
+                  <path d="M13.3346 18.5H12.8346V17.5H13.3346V18V18.5ZM22.668 17.5C22.9441 17.5 23.168 17.7239 23.168 18C23.168 18.2761 22.9441 18.5 22.668 18.5V18V17.5ZM13.3346 18V17.5H22.668V18V18.5H13.3346V18Z" fill="currentColor"/>
+                  <path d="M18.0013 22.6654L22.668 17.9987L18.0013 13.332" stroke="currentColor" stroke-linecap="square" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -1452,6 +1560,8 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
    - Hover vào một mảng: mảng sáng lên (xem trước)
    - Click / Enter / Space: chọn mảng, nội dung bên cạnh đổi theo với hiệu ứng "Nhịp trống"
    - Phím mũi tên: chuyển qua lại giữa các mảng
+   - 2 nút mũi tên dưới ảnh: sang lĩnh vực trước / sau (theo chiều kim đồng hồ, quay vòng)
+   - Nút "Khám phá thêm": link riêng của từng lĩnh vực (trường url trong SECTORS)
 */
 (function () {
   'use strict';
@@ -1459,12 +1569,14 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
   // Thứ tự theo chiều kim đồng hồ, bắt đầu từ mảng trên-phải.
   // start: góc bắt đầu (độ, tính từ hướng 3 giờ, theo chiều kim đồng hồ), mỗi mảng 72°.
   // TODO(content): mô tả của 4 lĩnh vực sau "Hàng không" đang là nội dung tạm – thay bằng content thật.
+  // TODO(content): url – link trang chi tiết của từng lĩnh vực cho nút "Khám phá thêm" (đang để '#').
   var SECTORS = [
     {
       id: 'hang-khong',
       name: 'Hàng không',
       start: -90.45,
       desc: 'Du lịch là lĩnh vực mũi nhọn, giữ vai trò dẫn dắt toàn bộ hệ sinh thái Sun Group. Từ chiến lược thương hiệu đến từng trải nghiệm liền mạch, mọi kết nối đều hướng tới mục tiêu gia tăng sức hấp dẫn và giá trị cho mỗi điểm đến, góp phần nâng tầm du lịch Việt Nam.',
+      url: '#',
       image: 'assets/img/photo-hang-khong.webp',
       alt: 'Máy bay cất cánh trên đường băng'
     },
@@ -1473,6 +1585,7 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
       name: 'Bất động sản',
       start: -18.45,
       desc: 'Bất động sản được phát triển song hành cùng hạ tầng du lịch, kiến tạo những đô thị, khu nghỉ dưỡng và công trình mang dấu ấn kiến trúc riêng. Mỗi dự án đều hướng tới việc nâng cao chất lượng sống cho cư dân, đồng thời góp phần thay đổi diện mạo của từng điểm đến.',
+      url: '#',
       image: 'assets/img/photo-bat-dong-san.webp',
       alt: 'Toà tháp cao tầng bên sông lúc hoàng hôn'
     },
@@ -1481,6 +1594,7 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
       name: 'Giải trí nghỉ dưỡng',
       start: 53.55,
       desc: 'Hệ thống công viên chủ đề, khu vui chơi và khu nghỉ dưỡng đẳng cấp mang đến những trải nghiệm trọn vẹn cho mọi lứa tuổi. Từ không gian giải trí sôi động đến kỳ nghỉ thư thái, mỗi hành trình đều góp phần đưa các điểm đến Việt Nam vươn tầm thế giới.',
+      url: '#',
       image: 'assets/img/photo-giai-tri.webp',
       alt: 'Pháo hoa rực rỡ trên khu nghỉ dưỡng ven biển về đêm'
     },
@@ -1489,6 +1603,7 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
       name: 'Điện ảnh & nghệ thuật biểu diễn',
       start: 125.55,
       desc: 'Những chương trình nghệ thuật, lễ hội và show diễn đặc sắc được đầu tư công phu, góp phần làm giàu đời sống văn hoá tại mỗi điểm đến. Từ sân khấu thực cảnh đến các sự kiện quy mô lớn, mỗi đêm diễn đều mang đến bản sắc riêng và sức sống mới cho du lịch.',
+      url: '#',
       image: 'assets/img/photo-dien-anh.webp',
       alt: 'Nhà hát mái vòm bên hồ lúc chiều tà'
     },
@@ -1497,6 +1612,7 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
       name: 'Y tế',
       start: 197.55,
       desc: 'Lĩnh vực y tế được đầu tư với mong muốn mang đến dịch vụ chăm sóc sức khoẻ chất lượng cao, ứng dụng công nghệ hiện đại cùng đội ngũ chuyên môn tận tâm. Đây là nền tảng để nâng cao chất lượng sống của cộng đồng, đồng thời hoàn thiện trải nghiệm cho du khách.',
+      url: '#',
       image: 'assets/img/photo-y-te.webp',
       alt: 'Bác sĩ làm việc trong phòng mổ hiện đại'
     }
@@ -1512,6 +1628,10 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
   var hit = wheel.querySelector('[data-hit]');
   var panel = document.querySelector('[data-panel]');
   var titleEl = panel.querySelector('[data-title]');
+  var titleBox = titleEl.closest('.sg-eco__title') || titleEl;   // khối để chạy hiệu ứng (chữ là span gradient bên trong)
+  var moreEl = document.querySelector('[data-more]');
+  var prevBtn = document.querySelector('[data-prev]');
+  var nextBtn = document.querySelector('[data-next]');
   var descEl = panel.querySelector('[data-desc]');
   var imgEl = panel.querySelector('[data-image]');
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -1715,6 +1835,11 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
     });
     if (imgEl.getAttribute('src') !== s.image) imgEl.src = s.image;
     imgEl.alt = s.alt;
+    if (typeof fitTitle === 'function') fitTitle();
+    if (moreEl) {
+      moreEl.setAttribute('href', s.url || '#');
+      moreEl.setAttribute('aria-label', 'Khám phá thêm về ' + s.name);
+    }
   }
 
   function strikeDrum() {
@@ -1820,7 +1945,7 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
     ], { duration: 1300, delay: T0 + 60, easing: 'ease-out', fill: 'both' });
 
     // Tiêu đề: trượt nhẹ từ phía vòng tròn, từ mờ sang nét
-    play(titleEl, [
+    play(titleBox, [
       { opacity: 0, transform: 'translateX(-32px)', filter: 'blur(10px)' },
       { opacity: 1, transform: 'translateX(0)', filter: 'blur(0px)' }
     ], { duration: 1000, delay: T0 + 140, easing: EASE_OUT, fill: 'both' });
@@ -1836,10 +1961,23 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
 
   render(byId(activeId));
 
-  // ----- Giữ chiều cao khối chữ bằng nhau giữa các lĩnh vực -----
-  // Đo tiêu đề + mô tả của cả 5 lĩnh vực ở bề rộng hiện tại, lấy cao nhất làm min-height,
-  // nên khi chuyển qua lại ảnh bên dưới không bị nhảy (kể cả trên tablet/mobile).
+  // ----- 2 nút mũi tên: lĩnh vực trước / sau -----
+  function step(dir) {
+    var n = SECTORS.length, i = 0;
+    for (; i < n; i++) if (SECTORS[i].id === activeId) break;
+    select(SECTORS[(i + dir + n) % n].id);
+  }
+  if (prevBtn) prevBtn.addEventListener('click', function () { step(-1); });
+  if (nextBtn) nextBtn.addEventListener('click', function () { step(1); });
+
+  // ----- Giữ bố cục đứng yên giữa các lĩnh vực -----
+  // - Mô tả: đo cả 5 lĩnh vực ở bề rộng hiện tại, lấy cao nhất làm min-height.
+  // - Tiêu đề dài bị xuống 2 dòng (Điện ảnh & nghệ thuật biểu diễn): dòng thừa mọc lên trên
+  //   (vào khoảng trống dưới tiêu đề lớn) thay vì đẩy mô tả + ảnh xuống, nên khi chuyển lĩnh vực
+  //   ảnh và các nút bên dưới không bị nhảy, và với tiêu đề 1 dòng khoảng cách đúng như design.
   var textEl = panel.querySelector('[data-text]');
+  var titleRow = panel.querySelector('.sg-eco__title-row');
+  var oneLine = 0;
   function lockTextHeight() {
     if (!textEl || !textEl.offsetWidth) return;
     var probe = textEl.cloneNode(true);
@@ -1849,14 +1987,23 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
     panel.appendChild(probe);
     var t = probe.querySelector('[data-title]');
     var d = probe.querySelector('[data-desc]');
+    d.style.minHeight = '0';
+    var box = t.closest('.sg-eco__title') || t;
+    t.textContent = 'A';
+    oneLine = box.getBoundingClientRect().height;
     var max = 0;
     SECTORS.forEach(function (s) {
-      t.textContent = s.name;
       d.textContent = s.desc;
-      max = Math.max(max, probe.getBoundingClientRect().height);
+      max = Math.max(max, d.getBoundingClientRect().height);
     });
     panel.removeChild(probe);
-    textEl.style.minHeight = Math.ceil(max) + 'px';
+    descEl.style.minHeight = Math.ceil(max) + 'px';
+    fitTitle();
+  }
+  function fitTitle() {
+    if (!titleRow || !oneLine) return;
+    var extra = titleBox.getBoundingClientRect().height - oneLine;
+    titleRow.style.marginTop = extra > 1 ? -extra.toFixed(2) + 'px' : '';
   }
 
   var lastWidth = 0;

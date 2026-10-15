@@ -2,7 +2,7 @@
 
 HTML/CSS/JS thuần, không cần build. Thứ tự trên trang:
 
-1. **Section 1 – Về Sun Group + Hệ sinh thái** (Figma node `1:183`)
+1. **Section 1 – Về Sun Group + Hệ sinh thái** (Figma node `1:183`; phần vòng tròn theo frame "Update mới" `15:1921`)
 2. Section 2 – placeholder: div trắng cao 1080px (đang có người khác làm)
 3. **Section 3 – Viết nên bản giao hưởng cho mỗi vùng đất** (Figma page "section 3", frame `10:1692` + storyboard) – bản **bấm vào cục**
 4. Section 4 – placeholder: div trắng cao 1080px (đang có người khác làm)
@@ -59,6 +59,12 @@ Hoặc không dùng GitHub: `npx vercel` (preview) và `npx vercel --prod` (prod
   mép sóng, màu ảnh nở từ sắc đồng thau sang màu thật rồi một vệt sáng hoàng kim lướt qua; ngôi sao mặt trời xoay vào vị trí, tiêu đề lắng nét, mô tả lan theo từng chữ.
   Bấm liên tục vẫn mượt (hiệu ứng cũ bị huỷ và thay ngay). Toàn bộ code nằm trong khối `"NHỊP TRỐNG"` ở `<script>`.
 - Click / chạm (hoặc Tab + Enter, phím mũi tên): chọn mảng, nội dung bên phải đổi theo; nhãn cong của mảng đang chọn ẩn đi như design.
+- 2 nút mũi tên dưới ảnh: sang lĩnh vực trước / sau (quay vòng). Nút "Khám phá thêm" dẫn tới link riêng của từng lĩnh vực
+  (trường `url` trong mảng `SECTORS`, đang để `#`).
+- Cụm vòng tròn đã thu nhỏ theo frame "Update mới" (vòng 776px thay vì 880px ở bản 1440) nhưng chữ giữ nguyên size:
+  nhãn cong (Hàng không, Bất động sản…, Tài chính, Xây dựng) giờ là chữ thật chạy theo đường tròn (SVG textPath, 24px),
+  không còn là ảnh. Sửa chữ trực tiếp trong khối `WORDS:START … WORDS:END` của `index.html`.
+- Trống đồng mới (`assets/svg/medallion.svg`): vòng chim lạc, 4 vòng tròn, mặt trời 12 cánh; chữ "Du lịch" gradient cam đỏ, đứng yên khi trống xoay.
 - Trống đồng "Du lịch" ở giữa xoay chậm theo chiều kim đồng hồ; 2 vòng line trang trí (hồng + vàng) xoay ngược chiều.
   Chỉnh tốc độ bằng biến `--spin-drum`, `--spin-lines-outer`, `--spin-lines-inner` trong thẻ `<style>` của `index.html`.
 - Khối tiêu đề + mô tả luôn giữ chiều cao bằng lĩnh vực dài nhất ở bề rộng hiện tại, nên chuyển qua lại không bị giật.
@@ -107,3 +113,4 @@ Hoặc không dùng GitHub: `npx vercel` (preview) và `npx vercel --prod` (prod
   (đã canh đủ 5 dòng ở desktop như "Hàng không") → sửa trong `<script>` cuối `index.html` (mảng `SECTORS`).
   Mô tả của "Hàng không" đang lấy đúng text trong Figma. Content thật nên giữ khoảng 250–270 ký tự để vẫn 5 dòng.
 - Section 1: ảnh nội dung từng lĩnh vực: `assets/img/photo-*.webp` (tỉ lệ 437 × 270).
+- Section 1: link "Khám phá thêm" của từng lĩnh vực → trường `url` trong `SECTORS` (đang để `#`).

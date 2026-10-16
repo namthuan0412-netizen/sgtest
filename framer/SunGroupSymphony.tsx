@@ -57,7 +57,7 @@ const CSS = `.sgf-sym { --font: "CDA Independence", "Be Vietnam Pro", "Segoe UI"
 .sgf-sym .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .sgf-sym .text-gold { background: linear-gradient(180deg, var(--gold-1) 0%, var(--gold-2) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-box-decoration-break: clone; box-decoration-break: clone; padding-block: 0.32em 0.12em; }
 .sgf-sym .trim { text-box: trim-both cap alphabetic; }
-.sgf-sym .sg-about { position: relative; overflow: hidden; background: radial-gradient(70.71% 70.71% at 50% 50%, var(--bg-center) 0%, var(--bg-edge) 100%); isolation: isolate; }
+.sgf-sym .sg-about { --bg-center: #10306b; --bg-edge: #0a1c40; --pink: #d4e0f6; --deep: #061633; position: relative; overflow: hidden; background: radial-gradient(70.71% 70.71% at 50% 50%, var(--bg-center) 0%, var(--bg-edge) 100%); isolation: isolate; }
 @keyframes sg-spin { to { transform: rotate(360deg); } }
 .sgf-sym { --sym-gold: linear-gradient(180deg, #fbe3a6 0%, #e8c495 48%, #c9984a 100%); }
 html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }

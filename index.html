@@ -98,6 +98,13 @@ img { display: block; max-width: 100%; }
    Wrapper – nền radial chung cho cả 2 phần (1440 × 1842)
    ========================================================= */
 .sg-about {
+  /* Tông xanh navy cho riêng section 1 (16/10). Section 3 vẫn giữ nền đỏ.
+     Hình đi kèm: compass-bg-navy.svg, ring-lines-outer-navy.svg, ring-dim-navy.webp, grooves-navy.webp
+     (tạo bằng tools/navy_assets.py – đổi sắc độ đỏ → xanh, giữ nguyên độ sáng). */
+  --bg-center: #10306b;
+  --bg-edge: #0a1c40;
+  --pink: #d4e0f6;
+  --deep: #061633;
   position: relative;
   overflow: hidden;
   background: radial-gradient(70.71% 70.71% at 50% 50%, var(--bg-center) 0%, var(--bg-edge) 100%);
@@ -272,10 +279,10 @@ img { display: block; max-width: 100%; }
   padding: 7.11px 14.22px;
   border: 0.75px solid transparent;
   border-radius: 2.13px;
-  /* nền đỏ toả từ giữa + viền vàng/đỏ chạy chéo như design */
+  /* nền xanh toả từ giữa + viền vàng/xanh chạy chéo (cùng cấu trúc design, đổi tông đỏ → navy) */
   background:
-    radial-gradient(182px 151px at 50% 50%, #b3332e 0%, #360301 100%) padding-box,
-    linear-gradient(10.9deg, #e1cc98 20%, #a73e39 46%, #e1cc98 76%) border-box;
+    radial-gradient(182px 151px at 50% 50%, #2e5db3 0%, #03153a 100%) padding-box,
+    linear-gradient(10.9deg, #e1cc98 20%, #3960a7 46%, #e1cc98 76%) border-box;
   box-shadow: inset 0 3px 2px rgba(255, 255, 255, 0.25);
   color: #f7e6b8;
   font-size: 18px;
@@ -502,7 +509,7 @@ img { display: block; max-width: 100%; }
   /* Figma: gradient #FFC95D → #A40D05, phần thấy được trên chữ hoa là cam đỏ → đỏ sậm.
      Nền mở rộng (padding) để không cắt dấu chấm dưới chữ Ị. */
   padding-block: 0.32em;   /* đối xứng để chữ vẫn nằm đúng tâm trống */
-  background: linear-gradient(180deg, #d4712f 0.32em, #aa1a0c calc(100% - 0.32em));
+  background: linear-gradient(180deg, #2b5fc4 0.32em, #0b2f7d calc(100% - 0.32em));   /* bản navy (gốc: #d4712f → #aa1a0c) */
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -1322,7 +1329,7 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
 
     <!-- ===== Phần 1: Intro ===== -->
     <div class="sg-intro">
-      <img class="sg-intro__compass" src="assets/svg/compass-bg.svg" alt="" aria-hidden="true" width="1312" height="1312">
+      <img class="sg-intro__compass" src="assets/svg/compass-bg-navy.svg" alt="" aria-hidden="true" width="1312" height="1312">
       <div class="sg-intro__inner">
         <p class="sg-intro__eyebrow">Về Sun Group</p>
         <h2 class="sg-intro__title trim" id="sg-intro-title">
@@ -1347,22 +1354,22 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
         <div class="sg-eco__visual">
           <div class="wheel" data-wheel>
             <!-- 2 vòng line trang trí: xoay ngược chiều với trống đồng -->
-            <img class="wheel__layer wheel__lines wheel__lines--outer" src="assets/svg/ring-lines-outer.svg" alt="" width="1100" height="1100">
+            <img class="wheel__layer wheel__lines wheel__lines--outer" src="assets/svg/ring-lines-outer-navy.svg" alt="" width="1100" height="1100">
             <img class="wheel__layer wheel__lines wheel__lines--inner" src="assets/svg/ring-lines-inner.svg" alt="" width="1100" height="1100">
-            <img class="wheel__fill" src="assets/img/ring-dim.webp" alt="" width="880" height="880">
+            <img class="wheel__fill" src="assets/img/ring-dim-navy.webp" alt="" width="880" height="880">
 
             <!-- Mảng ảnh sáng (active / hover) -->
-            <img class="wheel__layer wheel__seg is-active" data-seg="hang-khong" style="--x:49.1181;--y:3.3967;--w:45.2841" src="assets/img/seg-hang-khong.webp" alt="" width="797" height="677">
-            <img class="wheel__layer wheel__seg" data-seg="bat-dong-san" style="--x:65.8636;--y:34.7297;--w:30.7955" src="assets/img/seg-bat-dong-san.webp" alt="" width="542" height="934" loading="lazy">
-            <img class="wheel__layer wheel__seg" data-seg="giai-tri" style="--x:22.5181;--y:71.6931;--w:55.625" src="assets/img/seg-giai-tri.webp" alt="" width="979" height="439" loading="lazy">
-            <img class="wheel__layer wheel__seg" data-seg="dien-anh" style="--x:3.3968;--y:35.4447;--w:31.1364" src="assets/img/seg-dien-anh.webp" alt="" width="548" height="929" loading="lazy">
-            <img class="wheel__layer wheel__seg" data-seg="y-te" style="--x:5.4043;--y:3.3941;--w:44.8864" src="assets/img/seg-y-te.webp" alt="" width="790" height="684" loading="lazy">
+            <img class="wheel__layer wheel__seg is-active" data-seg="hang-khong" style="--x:49.1181;--y:3.3967;--w:45.2841" src="assets/img/seg-hang-khong-navy.webp" alt="" width="797" height="677">
+            <img class="wheel__layer wheel__seg" data-seg="bat-dong-san" style="--x:65.8636;--y:34.7297;--w:30.7955" src="assets/img/seg-bat-dong-san-navy.webp" alt="" width="542" height="934" loading="lazy">
+            <img class="wheel__layer wheel__seg" data-seg="giai-tri" style="--x:22.5181;--y:71.6931;--w:55.625" src="assets/img/seg-giai-tri-navy.webp" alt="" width="979" height="439" loading="lazy">
+            <img class="wheel__layer wheel__seg" data-seg="dien-anh" style="--x:3.3968;--y:35.4447;--w:31.1364" src="assets/img/seg-dien-anh-navy.webp" alt="" width="548" height="929" loading="lazy">
+            <img class="wheel__layer wheel__seg" data-seg="y-te" style="--x:5.4043;--y:3.3941;--w:44.8864" src="assets/img/seg-y-te-navy.webp" alt="" width="790" height="684" loading="lazy">
 
-            <img class="wheel__layer" style="--x:12.8798;--y:12.8799;--w:74.3007" src="assets/img/grooves.webp" alt="" width="850" height="850">
+            <img class="wheel__layer" style="--x:12.8798;--y:12.8799;--w:74.3007" src="assets/img/grooves-navy.webp" alt="" width="850" height="850">
 
             <svg class="wheel__fill wheel__circles" viewBox="0 0 880 880" fill="none" aria-hidden="true">
-              <circle cx="440.156" cy="440.156" r="416" stroke="#79514E" stroke-width="7"/>
-              <circle cx="439.656" cy="439.656" r="425.378" stroke="#79514E" stroke-width="3.24358"/>
+              <circle cx="440.156" cy="440.156" r="416" stroke="#4E5D79" stroke-width="7"/>
+              <circle cx="439.656" cy="439.656" r="425.378" stroke="#4E5D79" stroke-width="3.24358"/>
             </svg>
 
             <!-- Sóng âm khi gõ trống (JS chạy hiệu ứng) -->

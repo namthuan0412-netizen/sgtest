@@ -606,6 +606,9 @@ img { display: block; max-width: 100%; }
 /* Khoá cuộn trang khi xem chi tiết section 3 (giữ chỗ thanh cuộn để trang không bị xô) */
 html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
 
+/* TẠM ẨN section 5, 6, 7, 8 – các khối có thuộc tính data-tam-an trong index.html */
+[data-tam-an] { display: none !important; }
+
 /* =========================================================
    Section 3 – "Viết nên bản giao hưởng cho mỗi vùng đất"
    Desktop: cuộn dọc → dải 5 cục chạy ngang (section được ghim).
@@ -1526,8 +1529,9 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
   <!-- ===== Section 4: placeholder (có người khác làm) ===== -->
   <div class="sec-placeholder" aria-hidden="true"></div>
 
+  <!-- TẠM ẨN section 5 → 8 (data-tam-an + CSS display: none). Muốn hiện lại: xoá thuộc tính data-tam-an ở 4 khối dưới. -->
   <!-- ===== Section 5: Bản giao hưởng – bản cuộn (không cần bấm, mọi chuyển động bám theo cuộn) ===== -->
-  <section class="sym sym--scrub" id="ban-giao-huong-cuon" aria-labelledby="sym5-title" data-s5>
+  <section class="sym sym--scrub" data-tam-an id="ban-giao-huong-cuon" aria-labelledby="sym5-title" data-s5>
     <div class="sym__stage" data-s5-stage>
       <span class="sym__compass" aria-hidden="true"><img class="sym__drum" src="assets/svg/sym-drum.svg" alt="" width="805" height="805"></span>
 
@@ -1634,10 +1638,10 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
   </section>
 
   <!-- ===== Section 6: placeholder (có người khác làm) ===== -->
-  <div class="sec-placeholder" aria-hidden="true"></div>
+  <div class="sec-placeholder" data-tam-an aria-hidden="true"></div>
 
   <!-- ===== Section 7: Bản giao hưởng – lướt hết dải 5 cục rồi mới mở lần lượt 5 chủ đề (bám theo cuộn) ===== -->
-  <section class="sym sym--scrub sym--s7" id="ban-giao-huong-luot" aria-labelledby="sym7-title" data-s7>
+  <section class="sym sym--scrub sym--s7" data-tam-an id="ban-giao-huong-luot" aria-labelledby="sym7-title" data-s7>
     <div class="sym__stage" data-s7-stage>
       <span class="sym__compass" aria-hidden="true"><img class="sym__drum" src="assets/svg/sym-drum.svg" alt="" width="805" height="805"></span>
 
@@ -1745,7 +1749,7 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
   </section>
 
   <!-- ===== Section 8: placeholder (có người khác làm) ===== -->
-  <div class="sec-placeholder" aria-hidden="true"></div>
+  <div class="sec-placeholder" data-tam-an aria-hidden="true"></div>
 </main>
 
 <!-- Màn chi tiết của section 3 (toàn màn hình) -->

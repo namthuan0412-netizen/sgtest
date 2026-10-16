@@ -60,6 +60,7 @@ Hoặc không dùng GitHub: `npx vercel` (preview) và `npx vercel --prod` (prod
   rực sáng kèm 14 tia nắng (như ngôi sao 14 cánh giữa mặt trống đồng), hạt sáng lấp lánh rơi lại sau
   mép sóng, màu ảnh nở từ sắc đồng thau sang màu thật rồi một vệt sáng hoàng kim lướt qua; ngôi sao mặt trời xoay vào vị trí, tiêu đề lắng nét, mô tả lan theo từng chữ.
   Bấm liên tục vẫn mượt (hiệu ứng cũ bị huỷ và thay ngay). Toàn bộ code nằm trong khối `"NHỊP TRỐNG"` ở `<script>`.
+  Độ mạnh của "tiếng vang" (trống nảy, loé sáng, tia, sóng âm) chỉnh bằng biến `STRIKE` (0 → 1, đang 0.5 cho nhẹ).
 - Click / chạm (hoặc Tab + Enter, phím mũi tên): chọn mảng, nội dung bên phải đổi theo; nhãn cong của mảng đang chọn ẩn đi như design.
 - 2 nút mũi tên dưới ảnh: sang lĩnh vực trước / sau (quay vòng). Nút "Khám phá thêm" dẫn tới link riêng của từng lĩnh vực
   (trường `url` trong mảng `SECTORS`, đang để `#`).
@@ -85,6 +86,8 @@ Hoặc không dùng GitHub: `npx vercel` (preview) và `npx vercel --prod` (prod
   Cuộn ngược ở ảnh đầu tiên thì hình thu về đúng cục ban đầu.
 - Mỗi chuỗi nhiều chặng (mở cục, sang chủ đề, thoát) chạy theo một đường cong liền mạch qua các điểm mốc của
   storyboard (nội suy PCHIP + 1 easing chung), nên không có điểm dừng giữa các chặng.
+- Rê chuột lên các cục: con trỏ thành huy hiệu tròn "Khám phá thêm" (đỏ viền vàng như nút ở section 1) bám theo chuột,
+  nở ra khi vào cục, thu lại khi rời cục. Chỉ có trên máy dùng chuột; bàn phím / cảm ứng vẫn bấm bình thường.
 - Phím mũi tên / Page Up-Down / Space để chuyển, Esc hoặc nút × để thoát. Bật "giảm chuyển động" thì chỉ đổi ảnh, không chạy hiệu ứng.
 - **Mobile/tablet (< 1024px):** dải cục vuốt ngang tự nhiên, bấm vào mở màn chi tiết toàn màn hình, vuốt lên/trái để sang ảnh kế.
 - Code: CSS ở cuối thẻ `<style>`, JS ở khối `Section 3` cuối thẻ `<script>`. Dữ liệu chủ đề + ảnh nằm trong mảng `TOPICS`.

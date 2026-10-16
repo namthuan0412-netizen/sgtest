@@ -484,9 +484,9 @@ img { display: block; max-width: 100%; }
   vector-effect: non-scaling-stroke;
   opacity: 0;
 }
-.wave--line { stroke: #ffe284; stroke-width: 2; }
-.wave--dots { stroke: #f0d694; stroke-width: 3.5; stroke-linecap: round; stroke-dasharray: 0.01 11; }
-.wave--ticks { stroke: #d9b137; stroke-width: 1.25; stroke-dasharray: 12 8; }
+.wave--line { stroke: #ffe284; stroke-width: 1.4; }
+.wave--dots { stroke: #f0d694; stroke-width: 2.6; stroke-linecap: round; stroke-dasharray: 0.01 11; }
+.wave--ticks { stroke: #d9b137; stroke-width: 1; stroke-dasharray: 12 8; }
 
 .wheel__medallion {
   position: relative;
@@ -1064,6 +1064,61 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
   .sym-card__label { transition: none; }
   .sym__stage.is-return .sym-card,
   .sym__stage.is-return .sym__intro { animation: none; }
+}
+
+/* =========================================================
+   Con trỏ "Khám phá thêm" khi rê chuột lên các cục (section 3, chỉ máy có chuột)
+   Huy hiệu cùng chất liệu nút "Khám phá thêm" ở section 1: nền đỏ toả từ giữa, viền vàng mảnh.
+   ========================================================= */
+.sym.has-cursor .sym-card__btn { cursor: none; }
+.sym-cursor {
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+.sym-cursor__in {
+  position: absolute;
+  left: -60px;
+  top: -60px;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid rgba(225, 204, 152, 0.85);
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 38%, #b3332e 0%, #6e0f0c 62%, #360301 100%);
+  box-shadow: inset 0 3px 2px rgba(255, 255, 255, 0.22), 0 14px 34px rgba(25, 0, 3, 0.45);
+  color: #f7e6b8;
+  font-family: var(--font);
+  font-size: 15px;
+  font-weight: var(--fw-medium);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-align: center;
+  opacity: 0;
+  transform: scale(0.35);
+  /* rời cục: thu lại nhanh; vào cục: nở ra có chút nảy (khai báo ở .is-on) */
+  transition: opacity 0.22s cubic-bezier(0.4, 0, 1, 1), transform 0.26s cubic-bezier(0.4, 0, 1, 1);
+}
+.sym-cursor__star { width: 22px; height: 11px; display: block; }
+.sym-cursor.is-on .sym-cursor__in {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.34, 1.45, 0.5, 1);
+}
+.sym-cursor.is-on.is-press .sym-cursor__in { transform: scale(0.9); transition-duration: 0.15s; }
+.sym-cursor.is-instant .sym-cursor__in { transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  .sym-cursor__in,
+  .sym-cursor.is-on .sym-cursor__in { transition: opacity 0.15s linear; transform: none; }
 }
 
 /* =========================================================
@@ -2033,29 +2088,34 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
     }
   }
 
+  // Độ mạnh của "tiếng vang" khi gõ trống (0 → 1). Đã hạ xuống cho nhẹ, sang hơn; tăng lên nếu muốn mạnh lại.
+  var STRIKE = 0.5;
   function strikeDrum() {
+    var k = STRIKE;
+    // trống chỉ nhún rất nhẹ như vừa được chạm dùi
     play(core, [
       { transform: 'scale(1)' },
-      { transform: 'scale(0.93)', offset: 0.15 },
-      { transform: 'scale(1.045)', offset: 0.48 },
+      { transform: 'scale(' + (1 - 0.06 * k) + ')', offset: 0.16 },
+      { transform: 'scale(' + (1 + 0.035 * k) + ')', offset: 0.5 },
       { transform: 'scale(1)' }
-    ], { duration: 800, easing: 'cubic-bezier(0.3, 0, 0.2, 1)' });
-    play(glowEl, [{ opacity: 0 }, { opacity: 1, offset: 0.18 }, { opacity: 0 }],
-      { duration: 1200, easing: 'ease-out' });
+    ], { duration: 900, easing: 'cubic-bezier(0.3, 0, 0.2, 1)' });
+    play(glowEl, [{ opacity: 0 }, { opacity: 0.9 * k, offset: 0.2 }, { opacity: 0 }],
+      { duration: 1300, easing: 'ease-out' });
     play(burstEl, [
-      { opacity: 0, transform: 'rotate(-10deg) scale(0.82)' },
-      { opacity: 1, transform: 'rotate(-4deg) scale(0.98)', offset: 0.16 },
-      { opacity: 0, transform: 'rotate(12deg) scale(1.18)' }
-    ], { duration: 1400, easing: 'cubic-bezier(0.2, 0.7, 0.3, 1)' });
+      { opacity: 0, transform: 'rotate(-6deg) scale(0.88)' },
+      { opacity: 0.8 * k, transform: 'rotate(-2deg) scale(0.98)', offset: 0.18 },
+      { opacity: 0, transform: 'rotate(8deg) scale(1.1)' }
+    ], { duration: 1500, easing: 'cubic-bezier(0.2, 0.7, 0.3, 1)' });
     play(shockEl, [
-      { transform: 'scale(1)', opacity: 0.95 },
-      { transform: 'scale(3.4)', opacity: 0 }
-    ], { duration: 1300, easing: 'cubic-bezier(0.2, 0.75, 0.25, 1)' });
+      { transform: 'scale(1)', opacity: 0.8 * k },
+      { transform: 'scale(' + (1 + 2.4 * k + 0.4) + ')', opacity: 0 }
+    ], { duration: 1500, easing: 'cubic-bezier(0.2, 0.75, 0.25, 1)' });
+    // 3 vòng sóng âm: mờ hơn, lan ngắn hơn, chậm và thưa hơn – như dư âm thay vì tiếng nổ
     Array.prototype.forEach.call(waveEls, function (w, i) {
       play(w, [
-        { transform: 'scale(1)', opacity: 0.95 },
-        { transform: 'scale(3.3)', opacity: 0 }
-      ], { duration: 1600, delay: i * 170, easing: 'cubic-bezier(0.22, 0.8, 0.3, 1)', fill: 'backwards' });
+        { transform: 'scale(1)', opacity: 0.9 * k },
+        { transform: 'scale(' + (1 + 2.2 * k + 0.5) + ')', opacity: 0 }
+      ], { duration: 1900, delay: i * 220, easing: 'cubic-bezier(0.22, 0.8, 0.3, 1)', fill: 'backwards' });
     });
   }
 
@@ -2887,8 +2947,75 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
   closeBtn.addEventListener('click', requestClose);
 
   cards.forEach(function (card, i) {
-    card.querySelector('button').addEventListener('click', function () { open(i, 'card'); });
+    card.querySelector('button').addEventListener('click', function () { cursorHide(true); open(i, 'card'); });
   });
+
+  // ===================================================================
+  //  4. CON TRỎ "KHÁM PHÁ THÊM" khi rê chuột lên các cục (chỉ máy có chuột)
+  //  - Huy hiệu tròn đỏ viền vàng bám theo chuột, trôi nhẹ phía sau (làm mượt kiểu quickTo),
+  //    nở ra khi vào cục, thu lại khi rời cục; con trỏ gốc ẩn trên cục.
+  //  - Cuộn trang (dải chạy ngang) mà chuột đứng yên vẫn nhận đúng cục đang nằm dưới chuột.
+  //  - Bàn phím / cảm ứng không bị ảnh hưởng (nút vẫn bấm được, viền focus giữ nguyên).
+  // ===================================================================
+  var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+  var cur3 = null, cx = 0, cy = 0, tx3 = 0, ty3 = 0, craf = 0, cOn = false, cSeen = false;
+  function cursorBuild() {
+    if (cur3) return;
+    cur3 = document.createElement('div');
+    cur3.className = 'sym-cursor';
+    cur3.setAttribute('aria-hidden', 'true');
+    cur3.innerHTML = '<span class="sym-cursor__in"><svg class="sym-cursor__star" viewBox="0 0 34 17"><use href="#sym-star"/></svg>' +
+      '<span class="sym-cursor__text">Khám phá<br>thêm</span></span>';
+    document.body.appendChild(cur3);
+    root.classList.add('has-cursor');
+  }
+  function cursorPlace() {
+    cur3.style.transform = 'translate3d(' + cx.toFixed(1) + 'px,' + cy.toFixed(1) + 'px,0)';
+  }
+  function cursorTick() {
+    craf = 0;
+    var dx = tx3 - cx, dy = ty3 - cy;
+    if (reduce || Math.abs(dx) + Math.abs(dy) < 0.3) { cx = tx3; cy = ty3; }
+    else { cx += dx * 0.22; cy += dy * 0.22; craf = requestAnimationFrame(cursorTick); }
+    cursorPlace();
+  }
+  function overCard(x, y) {
+    var el = document.elementFromPoint(x, y);
+    return !!(el && el.closest && el.closest('[data-sym] .sym-card__btn'));
+  }
+  function cursorShow() {
+    if (cOn || isOpen) return;
+    cOn = true;
+    if (!cSeen) { cx = tx3; cy = ty3; cursorPlace(); cSeen = true; }   // lần đầu: xuất hiện ngay tại chuột
+    cur3.classList.add('is-on');
+  }
+  function cursorHide(instant) {
+    if (!cur3) return;
+    cOn = false;
+    cur3.classList.toggle('is-instant', !!instant);
+    cur3.classList.remove('is-on');
+    if (instant) { void cur3.offsetWidth; cur3.classList.remove('is-instant'); }
+  }
+  function cursorUpdate() {
+    if (overCard(tx3, ty3)) cursorShow(); else cursorHide(false);
+  }
+  if (finePointer.matches && !mqMobile.matches) {
+    cursorBuild();
+    document.addEventListener('pointermove', function (e) {
+      if (e.pointerType && e.pointerType !== 'mouse') return;
+      tx3 = e.clientX; ty3 = e.clientY;
+      if (!cSeen && !overCard(tx3, ty3)) return;
+      if (!craf) craf = requestAnimationFrame(cursorTick);
+      cursorUpdate();
+    }, { passive: true });
+    document.addEventListener('pointerdown', function (e) {
+      if (cOn && e.pointerType === 'mouse') { cur3.classList.add('is-press'); }
+    }, { passive: true });
+    document.addEventListener('pointerup', function () { if (cur3) cur3.classList.remove('is-press'); }, { passive: true });
+    document.documentElement.addEventListener('mouseleave', function () { cursorHide(false); });
+    // dải chạy ngang khi cuộn mà chuột đứng yên → kiểm tra lại cục dưới chuột
+    window.addEventListener('scroll', function () { if (cSeen && !isOpen) cursorUpdate(); }, { passive: true });
+  }
 })();
 
 /* =====================================================================

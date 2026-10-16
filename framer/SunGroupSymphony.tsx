@@ -61,6 +61,7 @@ const CSS = `.sgf-sym { --font: "CDA Independence", "Be Vietnam Pro", "Segoe UI"
 @keyframes sg-spin { to { transform: rotate(360deg); } }
 .sgf-sym { --sym-gold: linear-gradient(180deg, #fbe3a6 0%, #e8c495 48%, #c9984a 100%); }
 html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
+.sgf-sym [data-tam-an] { display: none !important; }
 .sgf-sym .sym { --u: min(calc(100vw / 1440), calc(100vh / 900)); --oy: calc((100vh - 900 * var(--u)) / 2); position: relative; background: radial-gradient(70.71% 70.71% at 50% 50%, #750d1b 0%, #4b0d18 100%); color: #fff; }
 .sgf-sym .sym__stage { position: sticky; top: 0; height: 100vh; overflow: hidden; }
 .sgf-sym .sym__compass { position: absolute; display: block; left: calc(-175 * var(--u)); top: calc(var(--oy) + 394 * var(--u)); width: calc(805 * var(--u)); height: auto; aspect-ratio: 1 / 1; max-width: none; border-radius: 50%; background: linear-gradient(180deg, #4d0e18 0%, #6a0d1a 100%); pointer-events: none; user-select: none; }
@@ -75,6 +76,11 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
 @keyframes sym-nudge { 50% { transform: translateX(6px); } }
 .sgf-sym .sym__viewport { position: absolute; z-index: 1; top: 0; bottom: 0; left: calc(556 * var(--u)); right: 0; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 calc(40 * var(--u))); mask-image: linear-gradient(90deg, transparent 0, #000 calc(40 * var(--u))); }
 .sgf-sym .sym__track { position: absolute; top: calc(var(--oy) + 67 * var(--u)); left: 0; display: flex; gap: calc(46 * var(--u)); width: max-content; margin: 0; padding: 0 calc(65 * var(--u)) 0 calc(48 * var(--u)); list-style: none; will-change: transform; }
+.sgf-sym .sym:not(.sym--scrub) { --sym-fade: calc(168 * var(--u)); }
+.sgf-sym .sym:not(.sym--scrub) .sym__viewport { left: calc(436 * var(--u)); -webkit-mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0.013) calc(var(--sym-fade) * 0.081), rgba(0, 0, 0, 0.049) calc(var(--sym-fade) * 0.155), rgba(0, 0, 0, 0.104) calc(var(--sym-fade) * 0.225), rgba(0, 0, 0, 0.175) calc(var(--sym-fade) * 0.29), rgba(0, 0, 0, 0.259) calc(var(--sym-fade) * 0.352), rgba(0, 0, 0, 0.352) calc(var(--sym-fade) * 0.41), rgba(0, 0, 0, 0.45) calc(var(--sym-fade) * 0.471), rgba(0, 0, 0, 0.55) calc(var(--sym-fade) * 0.529), rgba(0, 0, 0, 0.648) calc(var(--sym-fade) * 0.59), rgba(0, 0, 0, 0.741) calc(var(--sym-fade) * 0.648), rgba(0, 0, 0, 0.825) calc(var(--sym-fade) * 0.71), rgba(0, 0, 0, 0.896) calc(var(--sym-fade) * 0.775), rgba(0, 0, 0, 0.951) calc(var(--sym-fade) * 0.845), rgba(0, 0, 0, 0.987) calc(var(--sym-fade) * 0.919), rgba(0, 0, 0, 1) var(--sym-fade)); mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0.013) calc(var(--sym-fade) * 0.081), rgba(0, 0, 0, 0.049) calc(var(--sym-fade) * 0.155), rgba(0, 0, 0, 0.104) calc(var(--sym-fade) * 0.225), rgba(0, 0, 0, 0.175) calc(var(--sym-fade) * 0.29), rgba(0, 0, 0, 0.259) calc(var(--sym-fade) * 0.352), rgba(0, 0, 0, 0.352) calc(var(--sym-fade) * 0.41), rgba(0, 0, 0, 0.45) calc(var(--sym-fade) * 0.471), rgba(0, 0, 0, 0.55) calc(var(--sym-fade) * 0.529), rgba(0, 0, 0, 0.648) calc(var(--sym-fade) * 0.59), rgba(0, 0, 0, 0.741) calc(var(--sym-fade) * 0.648), rgba(0, 0, 0, 0.825) calc(var(--sym-fade) * 0.71), rgba(0, 0, 0, 0.896) calc(var(--sym-fade) * 0.775), rgba(0, 0, 0, 0.951) calc(var(--sym-fade) * 0.845), rgba(0, 0, 0, 0.987) calc(var(--sym-fade) * 0.919), rgba(0, 0, 0, 1) var(--sym-fade)); }
+.sgf-sym .sym:not(.sym--scrub) .sym__track { padding-left: calc(168 * var(--u)); }
+.sgf-sym .sym:not(.sym--scrub) .sym-card__btn { transform-origin: 100% 52%; will-change: transform, opacity; }
+.sgf-sym .sym:not(.sym--scrub) .sym-card__label { will-change: opacity; }
 .sgf-sym .sym-card { position: relative; flex: none; width: calc(624.1 * var(--u)); height: calc(739 * var(--u)); container-type: inline-size; }
 .sgf-sym .sym-card__btn { position: absolute; inset: 0; display: block; padding: 0; border: 0; background: none; color: inherit; font: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .sgf-sym .sym-card__btn:focus-visible { outline: 2px solid #ffe284; outline-offset: 6px; }
@@ -135,6 +141,7 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
 .sgf-sym .sym:not(.sym--scrub) .sym__viewport::-webkit-scrollbar { display: none; }
 .sgf-sym .sym:not(.sym--scrub) .sym__track { position: relative; top: auto; transform: none !important; gap: 16px; padding: 0 20px; }
 .sgf-sym .sym:not(.sym--scrub) .sym-card { width: min(78vw, 380px); height: auto; aspect-ratio: 624.1 / 739; scroll-snap-align: center; }
+.sgf-sym .sym:not(.sym--scrub) .sym-card__btn, .sgf-sym .sym:not(.sym--scrub) .sym-card__label { will-change: auto; }
 .sgf-sym .sym-caption__inner { left: 20px; right: 20px; bottom: 56px; flex-direction: column; align-items: flex-start; gap: 14px; }
 .sgf-sym .sym-caption__title { max-width: 100%; font-size: clamp(22px, 6.4vw, 30px); }
 .sgf-sym .sym-caption__desc { width: auto; max-width: 100%; }
@@ -316,9 +323,11 @@ function initSymphony(host, portal, opts) {
       track.style.transform = '';
       cur = target = 0;
       stage.classList.remove('is-end');
+      clearFade();
       return;
     }
     pinned = true;
+    measureCards();
     var H = window.innerHeight;
     travel = Math.max(0, track.offsetWidth - viewport.clientWidth);
     root.style.height = (H + travel) + 'px';
@@ -331,6 +340,7 @@ function initSymphony(host, portal, opts) {
     track.style.transform = '';
     cur = target = 0;
     stage.classList.remove('is-end');
+    clearFade();
     if (mqMobile.matches) { root.classList.remove('is-canvas'); root.style.removeProperty('--u'); root.style.removeProperty('--oy'); return; }
     var w = root.clientWidth || 1440;
     root.classList.add('is-canvas');
@@ -359,7 +369,51 @@ function initSymphony(host, portal, opts) {
     else { cur += d * 0.14; raf = requestAnimationFrame(tick); }
     paint();
   }
-  function paint() { track.style.transform = 'translate3d(' + cur.toFixed(2) + 'px,0,0)'; }
+  function paint() {
+    track.style.transform = 'translate3d(' + cur.toFixed(2) + 'px,0,0)';
+    fadeCards();
+  }
+
+  // ---------- Cục rời mép trái: tan dần theo cuộn (kiểu scrub của ScrollTrigger / useTransform) ----------
+  // Tiến độ rời e của mỗi cục = quãng mép trái cục đã đi qua vị trí đứng của cục 1, chia cho 1 bề rộng cục.
+  // e: 0 → 1 ánh xạ (đường cong smoothstep, bám thẳng theo cuộn) sang:
+  //   độ mờ cả cục 1 → 0, thu nhỏ 1 → 0.9 về phía mép phải (cục như lùi ra xa),
+  //   tên chủ đề mờ trước (xong ở e ≈ 0.45) để chữ không bao giờ bị cắt ngang.
+  // Chỉ dùng opacity + transform → chạy trên compositor, không gây reflow.
+  var cardX = [], cardW = 1, restX = 0, fadeE = [];
+  var btns = cards.map(function (c) { return c.querySelector('.sym-card__btn'); });
+  var labels = cards.map(function (c) { return c.querySelector('[data-card-label]'); });
+  function smooth(t) { return t * t * (3 - 2 * t); }
+  function measureCards() {
+    cardX = cards.map(function (c) { return c.offsetLeft; });
+    cardW = cards[0] ? cards[0].offsetWidth || 1 : 1;
+    restX = cardX[0] || 0;
+    fadeE = [];
+  }
+  function fadeCards() {
+    if (!pinned) return;
+    for (var i = 0; i < cards.length; i++) {
+      var e = clamp((restX - (cardX[i] + cur)) / cardW, 0, 1);
+      e = Math.round(e * 1000) / 1000;
+      if (e === fadeE[i]) continue;
+      fadeE[i] = e;
+      var k = smooth(e), kl = smooth(clamp(e / 0.45, 0, 1));
+      var b = btns[i], l = labels[i];
+      if (e === 0) {
+        b.style.opacity = ''; b.style.transform = ''; b.style.pointerEvents = ''; l.style.opacity = '';
+        continue;
+      }
+      b.style.opacity = (1 - k).toFixed(3);
+      b.style.transform = reduce ? '' : 'scale(' + (1 - 0.1 * k).toFixed(4) + ')';
+      b.style.pointerEvents = e > 0.6 ? 'none' : '';
+      l.style.opacity = (1 - kl).toFixed(3);
+    }
+  }
+  function clearFade() {
+    fadeE = [];
+    btns.forEach(function (b) { b.style.opacity = ''; b.style.transform = ''; b.style.pointerEvents = ''; });
+    labels.forEach(function (l) { l.style.opacity = ''; });
+  }
 
   on(window, 'scroll', function () { update(false); }, { passive: true });
   on(window, 'resize', measure);
@@ -821,6 +875,7 @@ function initSymphony(host, portal, opts) {
   //  3. ĐIỀU HƯỚNG
   // ===================================================================
   function cardVisible(i) {
+    if (pinned && fadeE[i] > 0.3) return false;   // cục đang tan: không "nhấc" từ cục mờ
     var r = cards[i].getBoundingClientRect();
     return r.right > 0 && r.left < window.innerWidth && r.bottom > 0 && r.top < window.innerHeight;
   }

@@ -125,6 +125,8 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
 .sgf-sym .sym-caption__title span:not(.text-gold) { font-weight: var(--fw-medium); }
 .sgf-sym .sym-caption__desc { margin: 0; width: calc(372px * var(--s)); max-width: 42%; color: #f8f2e9; font-size: max(13px, calc(14px * var(--s))); line-height: 1.5; }
 .sgf-sym .sym-caption__line { position: absolute; left: calc(66.5px * var(--s)); bottom: calc(56px * var(--s)); width: calc(477px * var(--s)); height: 2px; background: linear-gradient(90deg, rgba(246, 215, 114, 0) 0%, #f6d772 100%); transform-origin: 0 50%; }
+.sgf-sym .sym-detail .sym-caption__line { overflow: hidden; background: linear-gradient(90deg, rgba(246, 215, 114, 0) 0%, rgba(246, 215, 114, 0.22) 100%); }
+.sgf-sym .sym-caption__fill { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(246, 215, 114, 0) 0%, #f6d772 100%); transform: scaleX(0); transform-origin: 0 50%; will-change: transform; }
 .sgf-sym .sym-close { position: absolute; z-index: 8; top: 24px; right: 24px; width: 44px; height: 44px; padding: 0; border: 1px solid rgba(232, 196, 149, 0.55); border-radius: 50%; background: rgba(40, 6, 10, 0.25); color: #f6dc9a; cursor: pointer; backdrop-filter: blur(4px); transition: background-color 0.3s, border-color 0.3s; }
 .sgf-sym .sym-close:hover { background: rgba(40, 6, 10, 0.55); border-color: #f6dc9a; }
 .sgf-sym .sym-close:focus-visible { outline: 2px solid #ffe284; outline-offset: 3px; }
@@ -272,7 +274,7 @@ function buildDetail(d: any): string {
       <p class="sym-caption__title trim" data-cap><span>${esc(d.titleA)} </span><span class="text-gold">${esc(d.titleGold)}</span><span> ${esc(d.titleB)}</span></p>
       <p class="sym-caption__desc" data-cap>${esc(d.description)}</p>
     </div>
-    <span class="sym-caption__line" data-cap-line></span>
+    <span class="sym-caption__line" data-cap-line><span class="sym-caption__fill" data-cap-fill></span></span>
   </div>
   <button class="sym-close" type="button" data-close aria-label="${esc(d.closeLabel)}">
     <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
@@ -437,7 +439,7 @@ function initSymphony(host, portal, opts) {
   var caption = detail.querySelector('[data-caption]');
   var capShade = caption.querySelector('[data-cap-shade]');
   var capParts = [].slice.call(caption.querySelectorAll('[data-cap]'));
-  var capLine = caption.querySelector('[data-cap-line]');
+  var capFill = caption.querySelector('[data-cap-fill]');
   var closeBtn = detail.querySelector('[data-close]');
   var live = detail.querySelector('[data-live]');
 
@@ -630,7 +632,7 @@ function initSymphony(host, portal, opts) {
   function captionIn() {
     cancelAll(capAnims);
     caption.style.opacity = '1';
-    if (reduce || !canAnimate) return Promise.resolve();
+    if (reduce || !canAnimate) { setLine(lineTarget(), 0); return Promise.resolve(); }
     play(capShade, [{ opacity: 0 }, { opacity: 1 }], { duration: 700, easing: 'ease-out', fill: 'backwards' }, capAnims);
     capParts.forEach(function (el, i) {
       play(el, [
@@ -638,10 +640,25 @@ function initSymphony(host, portal, opts) {
         { opacity: 1, transform: 'none', filter: 'blur(0px)' }
       ], { duration: 900, delay: 120 + i * 110, easing: EOUT, fill: 'backwards' }, capAnims);
     });
-    var l = play(capLine, [{ transform: 'scaleX(0)' }, { transform: 'scaleX(1)' }],
-      { duration: 1100, delay: 420, easing: EOUT, fill: 'backwards' }, capAnims);
+    // thanh vàng: vừa vào chủ đề → chạy từ 0 lên (ảnh hiện tại / số ảnh)
+    var l = setLine(lineTarget(), 1100, 420, EOUT, 0);
     return done(l);
   }
+
+  // ---------- Thanh vàng = tiến độ của chủ đề đang xem ----------
+  // n ảnh → ảnh k chiếm (k + 1) / n. Ví dụ 2 ảnh: vào ảnh 1 chạy 0 → 50%, sang ảnh 2 chạy 50% → 100%;
+  // lùi về ảnh 1 thì thu lại 50%. Sang chủ đề mới bắt đầu lại từ 0. Chỉ dùng transform (scaleX).
+  var lineP = 0;
+  function lineTarget() { var n = TOPICS[T].images.length; return n ? (K + 1) / n : 1; }
+  function setLine(p, dur, delay, ease, from) {
+    var a = from == null ? lineP : from;
+    lineP = p;
+    capFill.style.transform = 'scaleX(' + p.toFixed(4) + ')';
+    if (!dur || reduce || !canAnimate || Math.abs(a - p) < 1e-4) return null;
+    return play(capFill, [{ transform: 'scaleX(' + a.toFixed(4) + ')' }, { transform: 'scaleX(' + p.toFixed(4) + ')' }],
+      { duration: dur, delay: delay || 0, easing: ease || EOUT, fill: 'backwards' }, capAnims);
+  }
+  function resetLine() { lineP = 0; capFill.style.transform = 'scaleX(0)'; }
   function captionOut() {
     if (caption.style.opacity !== '1') return Promise.resolve();
     if (reduce || !canAnimate) { caption.style.opacity = '0'; return Promise.resolve(); }
@@ -760,6 +777,7 @@ function initSymphony(host, portal, opts) {
       slide = neu;
       var a = play(neu, [{ clipPath: dir > 0 ? 'inset(0 0 0 100%)' : 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0 0 0)' }],
         { duration: D, easing: ESLIDE });
+      setLine((k + 1) / TOPICS[T].images.length, D, 0, ESLIDE);   // thanh vàng chạy cùng nhịp đổi ảnh
       neu.firstChild.animate([{ transform: 'translateX(' + 5 * dir + '%) scale(1.05)' }, { transform: 'none' }],
         { duration: D + 300, easing: EOUT });
       if (old) {
@@ -842,6 +860,7 @@ function initSymphony(host, portal, opts) {
       detail.hidden = true;
       bg.style.opacity = '0';
       caption.style.opacity = '0';
+      resetLine();
       full.innerHTML = '';
       slide = null;
       [win, head, panel].forEach(function (el) { el.style.visibility = 'hidden'; });

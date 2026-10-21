@@ -1292,6 +1292,291 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
   background: radial-gradient(70.71% 70.71% at 50% 50%, #6c0d1a 0%, #4b0d18 100%);
   will-change: transform;
 }
+/* =========================================================
+   Section 9 – "Kiến tạo hệ sinh thái trải nghiệm liền mạch, từ bầu trời tới mặt đất"
+   Figma: node 40:1820 ("Mới"), khung 1440 × 900.
+   - Không ghim: lướt dọc là qua section sau luôn.
+   - Dải 6 cục tự chạy: cứ 3 giây cục kế trượt sang trái; khối chữ bên trái đứng yên.
+   - Kéo chuột / vuốt / vuốt ngang trackpad để xem các cục đang bị che (JS: src/s9.js).
+   - Cục đang đứng đầu dải (vị trí 604u) mở phần mô tả; các cục khác chỉ hiện tên.
+   ========================================================= */
+.s9 {
+  --u: min(calc(100vw / 1440), calc(100vh / 900));
+  --oy: 0px;
+  --s9-fade: calc(120 * var(--u));
+  position: relative;
+  background: radial-gradient(70.71% 70.71% at 50% 50%, #750d1b 0%, #4b0d18 100%);
+  color: #fff;
+  overflow: hidden;
+}
+.s9__stage {
+  position: relative;
+  height: calc(900 * var(--u));
+}
+
+/* Trống đồng chìm (dùng chung kiểu với section 3; Figma để 80% độ đậm) */
+.s9__compass { opacity: 0.8; }
+
+/* Quầng tối mờ dưới đáy (Figma: Ellipse 250, #3D0401, blur 164) */
+.s9__glow {
+  position: absolute;
+  z-index: 0;
+  left: calc(-274 * var(--u));
+  top: calc(606 * var(--u));
+  width: calc(2237 * var(--u));
+  height: calc(678 * var(--u));
+  background: radial-gradient(closest-side, rgba(61, 4, 1, 0.95) 0%, rgba(61, 4, 1, 0.85) 38%, rgba(61, 4, 1, 0.45) 68%, rgba(61, 4, 1, 0) 100%);
+  pointer-events: none;
+}
+
+/* ---------- Khối chữ bên trái (đứng yên) ---------- */
+.s9__intro {
+  position: absolute;
+  z-index: 3;
+  left: calc(64 * var(--u));
+  top: calc(105 * var(--u));
+  width: calc(410 * var(--u));
+}
+.s9__title {
+  margin: 0;
+  font-size: max(22px, calc(36 * var(--u)));
+  font-weight: var(--fw-regular);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.s9__title > span { display: block; }
+.s9__title-a { color: #f6d5d4; font-weight: var(--fw-medium); }
+.s9__desc {
+  margin: calc(40 * var(--u)) 0 0;
+  color: #f8f2e9;
+  font-size: max(13px, calc(16 * var(--u)));
+  line-height: 1.5;
+}
+/* Nút "Khám phá hệ sinh thái": nền vàng đồng toả từ giữa, viền kem, bóng sáng phía trên (Figma 40:1373) */
+.s9__btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 35.72px;
+  margin-top: calc(40 * var(--u));
+  padding: 7.11px 14.22px;
+  border: 0.75px solid #fff7e4;
+  border-radius: 2.13px;
+  background: radial-gradient(237.74px 151.47px at 50% 50%, #f7e6b8 0%, #c7ad8a 25%, #af9173 37.5%, #96755c 50%, #7e5846 62.5%, #663c2f 75%, #4e2018 87.5%, #42110c 93.75%, #360301 100%);
+  box-shadow: inset 0 3px 2px rgba(255, 255, 255, 0.25);
+  color: #4e0e19;
+  font-size: 18px;
+  font-weight: var(--fw-medium);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: filter 0.3s var(--ease), transform 0.3s var(--ease);
+}
+.s9__btn:hover { filter: brightness(1.08); }
+.s9__btn:active { transform: translateY(1px); }
+.s9__btn:focus-visible { outline: 2px solid var(--gold-1); outline-offset: 3px; }
+
+/* ---------- Dải cục ---------- */
+/* Vùng nhìn bắt đầu ngay sau khối chữ (484u); dải lùi vào 120u nên cục đầu đứng đúng 604u như design.
+   Mép trái mờ dần theo đường cong ease-in-out (giống section 3) → cục trôi ra tan dần, không bị cắt. */
+.s9__viewport {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  bottom: 0;
+  left: calc(484 * var(--u));
+  right: 0;
+  overflow: hidden;
+  cursor: grab;
+  touch-action: pan-y;               /* vuốt dọc vẫn cuộn trang; vuốt ngang do JS xử lý */
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0.013) calc(var(--s9-fade) * 0.081), rgba(0, 0, 0, 0.049) calc(var(--s9-fade) * 0.155), rgba(0, 0, 0, 0.104) calc(var(--s9-fade) * 0.225), rgba(0, 0, 0, 0.175) calc(var(--s9-fade) * 0.29), rgba(0, 0, 0, 0.259) calc(var(--s9-fade) * 0.352), rgba(0, 0, 0, 0.352) calc(var(--s9-fade) * 0.41), rgba(0, 0, 0, 0.45) calc(var(--s9-fade) * 0.471), rgba(0, 0, 0, 0.55) calc(var(--s9-fade) * 0.529), rgba(0, 0, 0, 0.648) calc(var(--s9-fade) * 0.59), rgba(0, 0, 0, 0.741) calc(var(--s9-fade) * 0.648), rgba(0, 0, 0, 0.825) calc(var(--s9-fade) * 0.71), rgba(0, 0, 0, 0.896) calc(var(--s9-fade) * 0.775), rgba(0, 0, 0, 0.951) calc(var(--s9-fade) * 0.845), rgba(0, 0, 0, 0.987) calc(var(--s9-fade) * 0.919), rgba(0, 0, 0, 1) var(--s9-fade));
+  mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0.013) calc(var(--s9-fade) * 0.081), rgba(0, 0, 0, 0.049) calc(var(--s9-fade) * 0.155), rgba(0, 0, 0, 0.104) calc(var(--s9-fade) * 0.225), rgba(0, 0, 0, 0.175) calc(var(--s9-fade) * 0.29), rgba(0, 0, 0, 0.259) calc(var(--s9-fade) * 0.352), rgba(0, 0, 0, 0.352) calc(var(--s9-fade) * 0.41), rgba(0, 0, 0, 0.45) calc(var(--s9-fade) * 0.471), rgba(0, 0, 0, 0.55) calc(var(--s9-fade) * 0.529), rgba(0, 0, 0, 0.648) calc(var(--s9-fade) * 0.59), rgba(0, 0, 0, 0.741) calc(var(--s9-fade) * 0.648), rgba(0, 0, 0, 0.825) calc(var(--s9-fade) * 0.71), rgba(0, 0, 0, 0.896) calc(var(--s9-fade) * 0.775), rgba(0, 0, 0, 0.951) calc(var(--s9-fade) * 0.845), rgba(0, 0, 0, 0.987) calc(var(--s9-fade) * 0.919), rgba(0, 0, 0, 1) var(--s9-fade));
+}
+.s9__viewport.is-dragging { cursor: grabbing; }
+.s9__track {
+  position: absolute;
+  top: calc(74 * var(--u));
+  left: 0;
+  right: 0;
+  height: calc(739 * var(--u));
+  margin: 0;
+  padding: 0 0 0 calc(120 * var(--u));   /* = vị trí đứng của cục đầu (JS đọc giá trị này) */
+  list-style: none;
+}
+
+/* Mỗi cục định vị bằng transform (JS) để chạy vòng tròn vô tận */
+.s9-card {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: calc(624.1 * var(--u));
+  height: calc(739 * var(--u));
+  container-type: inline-size;
+  transform-origin: 100% 52%;
+  will-change: transform, opacity;
+}
+.s9-card__link {
+  --s9k: calc(100cqw / 624.1);          /* 1px của design, tính theo bề rộng cục */
+  position: absolute;
+  inset: 0;
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  cursor: inherit;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-drag: none;
+}
+.s9-card__link:focus-visible { outline: 2px solid #ffe284; outline-offset: 6px; }
+
+/* Khung: nền đỏ sậm + quầng vàng mép trong + viền vàng → đỏ (Figma 40:1292) */
+.s9-card__frame {
+  position: absolute;
+  inset: -1px;
+  border: 2px solid;
+  border-image: linear-gradient(180deg, #e5c04f 0%, #9c545f 85.4%) 1;
+  background: #580717;
+  box-shadow: inset 0 0 calc(14 * var(--s9k)) #ffd34e;
+  pointer-events: none;
+}
+.s9-card__media {
+  position: absolute;
+  left: calc(9.03 * var(--s9k));
+  top: calc(9.03 * var(--s9k));
+  width: calc(606.04 * var(--s9k));
+  height: calc(720.93 * var(--s9k));
+  overflow: hidden;
+  background: #3a0710;
+}
+.s9-card__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  transition: transform 1.2s var(--ease);
+  -webkit-user-drag: none;
+}
+/* Lớp đỏ đậm dần xuống đáy để chữ nổi (Figma "mask") */
+.s9-card__shade {
+  position: absolute;
+  left: calc(9.03 * var(--s9k));
+  top: calc(9.03 * var(--s9k));
+  width: calc(606.04 * var(--s9k));
+  height: calc(720.93 * var(--s9k));
+  background: linear-gradient(180deg, rgba(88, 7, 23, 0) 17.25%, #4d000f 100%);
+  pointer-events: none;
+}
+.s9-card__logo {
+  position: absolute;
+  left: calc(9 * var(--s9k));
+  top: calc(9 * var(--s9k));
+  width: calc(159.2 * var(--s9k));
+  height: calc(80 * var(--s9k));
+  max-width: none;
+  object-fit: contain;
+  pointer-events: none;
+}
+.s9-card__logo--narrow { left: calc(25 * var(--s9k)); width: calc(101 * var(--s9k)); }
+
+/* Tên + mô tả: neo đáy, phần mô tả mở ra đẩy tên lên */
+.s9-card__body {
+  position: absolute;
+  left: calc(35 * var(--s9k));
+  bottom: calc(17 * var(--s9k));
+  width: calc(505 * var(--s9k));
+  padding-bottom: calc(20 * var(--s9k));
+  transition: transform 0.8s var(--ease);
+}
+.s9-card__head {
+  display: flex;
+  align-items: center;
+  gap: calc(10 * var(--s9k));
+}
+.s9-card__star { flex: none; width: calc(34 * var(--s9k)); height: calc(17 * var(--s9k)); display: block; }
+.s9-card__title {
+  font-size: calc(32 * var(--s9k));
+  font-weight: var(--fw-medium);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #e8c495;
+  background: linear-gradient(180deg, #ffe284 0%, #d9b137 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  padding-block: 0.3em 0.12em;
+  margin-block: -0.3em -0.12em;
+}
+/* Mô tả: thu/mở bằng grid-rows 0fr → 1fr (mượt, không cần đo chiều cao) */
+.s9-card__more {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.75s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.s9-card__more-in { min-height: 0; overflow: hidden; }
+.s9-card__desc {
+  display: block;
+  padding-top: calc(20 * var(--s9k));
+  color: #f8f2e9;
+  font-size: max(12px, calc(18 * var(--s9k)));
+  line-height: 1.5;
+  opacity: 0;
+  transform: translateY(calc(14 * var(--s9k)));
+  filter: blur(4px);
+  transition: opacity 0.35s ease-in, transform 0.45s ease-in, filter 0.35s ease-in;
+}
+.s9-card.is-active .s9-card__more { grid-template-rows: 1fr; }
+.s9-card.is-active .s9-card__desc {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+  transition: opacity 0.7s var(--ease) 0.25s, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.2s, filter 0.7s var(--ease) 0.25s;
+}
+@media (hover: hover) {
+  .s9__viewport:not(.is-dragging) .s9-card__link:hover .s9-card__media img { transform: scale(1.05); }
+  .s9__viewport:not(.is-dragging) .s9-card__link:hover .s9-card__body { transform: translateY(calc(-6 * var(--s9k))); }
+}
+
+/* =========================================================
+   Tablet / mobile: xếp dọc – chữ trên, dải cục dưới (vẫn tự chạy + vuốt)
+   ========================================================= */
+@media (max-width: 1023px) {
+  .s9 { --u: 1px; }
+  .s9__stage { height: auto; padding: 72px 0 88px; }
+  .s9__compass { left: -45%; top: auto; bottom: -25%; width: 110%; }
+  .s9__glow { display: none; }
+  .s9__intro { position: relative; left: auto; top: auto; width: auto; max-width: 520px; padding: 0 20px; }
+  .s9__title { font-size: clamp(22px, 6.4vw, 32px); white-space: normal; }
+  .s9__desc { margin-top: 18px; font-size: 14px; }
+  .s9__btn { margin-top: 24px; }
+  .s9__hint { position: relative; left: 20px; top: auto; display: block; margin-top: 24px; }
+  .s9__viewport {
+    position: relative;
+    left: auto;
+    margin-top: 32px;
+    height: calc(min(78vw, 380px) * 739 / 624.1);
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .s9__track { top: 0; height: 100%; padding-left: 20px; }
+  .s9-card { width: min(78vw, 380px); height: auto; aspect-ratio: 624.1 / 739; }
+  .s9-card__title { font-size: max(15px, calc(32 * var(--s9k))); }
+  .s9-card__desc { font-size: max(12px, calc(18 * var(--s9k))); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .s9__hint { animation: none; }
+  .s9-card__media img,
+  .s9-card__body,
+  .s9-card__more,
+  .s9-card__desc,
+  .s9-card.is-active .s9-card__desc { transition: none; }
+}
   </style>
 </head>
 <body>
@@ -1782,6 +2067,133 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
 
   <!-- ===== Section 8: placeholder (có người khác làm) ===== -->
   <div class="sec-placeholder" data-tam-an aria-hidden="true"></div>
+
+  <!-- ===== Section 9: Hệ sinh thái trải nghiệm – dải cục tự chạy 3 giây, kéo/vuốt ngang được, bấm cục mở trang con ===== -->
+  <section class="s9" id="he-sinh-thai-trai-nghiem" aria-labelledby="s9-title" aria-roledescription="carousel" data-s9>
+    <div class="s9__stage">
+      <span class="sym__compass s9__compass" aria-hidden="true"><img class="sym__drum" src="assets/svg/sym-drum.svg" alt="" width="805" height="805"></span>
+      <span class="s9__glow" aria-hidden="true"></span>
+
+      <div class="s9__intro">
+        <h2 class="s9__title trim" id="s9-title">
+          <span class="s9__title-a">Kiến tạo hệ sinh thái</span>
+          <span><span class="text-gold">trải nghiệm liền mạch,</span></span>
+          <span class="s9__title-a">từ bầu trời tới mặt đất</span>
+        </h2>
+        <p class="s9__desc">Sun Group không xây dựng những công trình đơn lẻ. Chúng tôi kiến tạo một hệ sinh thái trải nghiệm trọn vẹn, đem tới cho du khách một hành trình liền mạch từ bầu trời tới mặt đất, lấy thiên nhiên và văn hóa dân tộc làm nền tảng, mang thế giới đến Việt Nam và đưa Việt Nam ra thế giới.</p>
+        <!-- TODO(content): link "Khám phá hệ sinh thái" -->
+        <a class="s9__btn" href="#">Khám phá hệ sinh thái</a>
+      </div>
+      <span class="sym__hint s9__hint" aria-hidden="true">
+        <svg viewBox="0 0 24 18" fill="none" aria-hidden="true">
+          <path d="M1 17L6.1 10.2C6.63 9.49 6.63 8.51 6.1 7.8L1 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path opacity=".5" d="M9 17L14.1 10.2C14.63 9.49 14.63 8.51 14.1 7.8L9 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <path opacity=".3" d="M17 17L22.1 10.2C22.63 9.49 22.63 8.51 22.1 7.8L17 1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+
+      <div class="s9__viewport" data-s9-viewport>
+        <ul class="s9__track" data-s9-track>
+          <li class="s9-card is-active" data-s9-card>
+            <!-- TODO(content): link trang con của "Sun Group International Hospital" -->
+            <a class="s9-card__link" href="#" draggable="false" aria-label="Sun Group International Hospital – Kiến tạo biểu tượng">
+              <span class="s9-card__frame" aria-hidden="true"></span>
+              <span class="s9-card__media"><img src="assets/img/s9/card-photo.webp" alt="" width="608" height="722" draggable="false"></span>
+              <span class="s9-card__shade" aria-hidden="true"></span>
+              <img class="s9-card__logo" src="assets/img/s9/logo-sun-group-international-hospital.webp" alt="" width="319" height="160" draggable="false">
+              <span class="s9-card__body">
+                <span class="s9-card__head">
+                  <svg class="s9-card__star" viewBox="0 0 34 17" aria-hidden="true"><use href="#sym-star"/></svg>
+                  <span class="s9-card__title trim">Kiến tạo biểu tượng</span>
+                </span>
+                <span class="s9-card__more"><span class="s9-card__more-in"><span class="s9-card__desc">Bằng những công trình, sản phẩm và dịch vụ Chất lượng – Đẳng cấp – Khác biệt, Bằng những công trình, sản phẩm và dịch vụ Chất lượng – Đẳng cấp – Khác biệt, Bằng những công trình, sản phẩm và dịch vụ Chất lượng – Đẳng cấp – Khác biệt,</span></span></span>
+              </span>
+            </a>
+          </li>
+          <li class="s9-card" data-s9-card>
+            <!-- TODO(content): link trang con của "Sun World" -->
+            <a class="s9-card__link" href="#" draggable="false" aria-label="Sun World – Kiến tạo biểu tượng">
+              <span class="s9-card__frame" aria-hidden="true"></span>
+              <span class="s9-card__media"><img src="assets/img/s9/card-photo.webp" alt="" width="608" height="722" draggable="false"></span>
+              <span class="s9-card__shade" aria-hidden="true"></span>
+              <img class="s9-card__logo" src="assets/img/s9/logo-sun-world.webp" alt="" width="319" height="160" draggable="false">
+              <span class="s9-card__body">
+                <span class="s9-card__head">
+                  <svg class="s9-card__star" viewBox="0 0 34 17" aria-hidden="true"><use href="#sym-star"/></svg>
+                  <span class="s9-card__title trim">Kiến tạo biểu tượng</span>
+                </span>
+                <span class="s9-card__more"><span class="s9-card__more-in"><span class="s9-card__desc">Bằng những công trình, sản phẩm và dịch vụ Chất lượng – Đẳng cấp – Khác biệt, Bằng những công trình, sản phẩm và dịch vụ Chất lượng – Đẳng cấp – Khác biệt, Bằng những công trình, sản phẩm và dịch vụ Chất lượng – Đẳng cấp – Khác biệt,</span></span></span>
+              </span>
+            </a>
+          </li>
+          <li class="s9-card" data-s9-card>
+            <!-- TODO(content): link trang con của "Sun Property" -->
+            <a class="s9-card__link" href="#" draggable="false" aria-label="Sun Property – Kiến tạo biểu tượng">
+              <span class="s9-card__frame" aria-hidden="true"></span>
+              <span class="s9-card__media"><img src="assets/img/s9/card-photo.webp" alt="" width="608" height="722" draggable="false"></span>
+              <span class="s9-card__shade" aria-hidden="true"></span>
+              <img class="s9-card__logo" src="assets/img/s9/logo-sun-property.webp" alt="" width="319" height="160" draggable="false">
+              <span class="s9-card__body">
+                <span class="s9-card__head">
+                  <svg class="s9-card__star" viewBox="0 0 34 17" aria-hidden="true"><use href="#sym-star"/></svg>
+                  <span class="s9-card__title trim">Kiến tạo biểu tượng</span>
+                </span>
+                <span class="s9-card__more"><span class="s9-card__more-in"><span class="s9-card__desc">Bằng những công trình, sản phẩm và dịch vụ Chất lượng – Đẳng cấp – Khác biệt, Bằng những công trình, sản phẩm và dịch vụ Chất lượng – Đẳng cấp – Khác biệt, Bằng những công trình, sản phẩm và dịch vụ Chất lượng – Đẳng cấp – Khác biệt,</span></span></span>
+              </span>
+            </a>
+          </li>
+          <li class="s9-card" data-s9-card>
+            <!-- TODO(content): link trang con của "Sun PhuQuoc Airways" -->
+            <a class="s9-card__link" href="#" draggable="false" aria-label="Sun PhuQuoc Airways – Kiến tạo biểu tượng">
+              <span class="s9-card__frame" aria-hidden="true"></span>
+              <span class="s9-card__media"><img src="assets/img/s9/card-photo.webp" alt="" width="608" height="722" draggable="false" loading="lazy"></span>
+              <span class="s9-card__shade" aria-hidden="true"></span>
+              <img class="s9-card__logo s9-card__logo--narrow" src="assets/img/s9/logo-sun-phuquoc-airways.webp" alt="" width="202" height="160" draggable="false">
+              <span class="s9-card__body">
+                <span class="s9-card__head">
+                  <svg class="s9-card__star" viewBox="0 0 34 17" aria-hidden="true"><use href="#sym-star"/></svg>
+                  <span class="s9-card__title trim">Kiến tạo biểu tượng</span>
+                </span>
+                <span class="s9-card__more"><span class="s9-card__more-in"><span class="s9-card__desc">Bằng những công trình, sản phẩm và dịch vụ Chất lượng – Đẳng cấp – Khác biệt, Bằng những công trình, sản phẩm và dịch vụ Chất lượng – Đẳng cấp – Khác biệt, Bằng những công trình, sản phẩm và dịch vụ Chất lượng – Đẳng cấp – Khác biệt,</span></span></span>
+              </span>
+            </a>
+          </li>
+          <li class="s9-card" data-s9-card>
+            <!-- TODO(content): link trang con của "Sun Airport JSC (SAC)" -->
+            <a class="s9-card__link" href="#" draggable="false" aria-label="Sun Airport JSC (SAC) – Kiến tạo biểu tượng">
+              <span class="s9-card__frame" aria-hidden="true"></span>
+              <span class="s9-card__media"><img src="assets/img/s9/card-photo.webp" alt="" width="608" height="722" draggable="false" loading="lazy"></span>
+              <span class="s9-card__shade" aria-hidden="true"></span>
+              <img class="s9-card__logo s9-card__logo--narrow" src="assets/img/s9/logo-sac.webp" alt="" width="202" height="160" draggable="false">
+              <span class="s9-card__body">
+                <span class="s9-card__head">
+                  <svg class="s9-card__star" viewBox="0 0 34 17" aria-hidden="true"><use href="#sym-star"/></svg>
+                  <span class="s9-card__title trim">Kiến tạo biểu tượng</span>
+                </span>
+                <span class="s9-card__more"><span class="s9-card__more-in"><span class="s9-card__desc">Bằng những công trình, sản phẩm và dịch vụ Chất lượng – Đẳng cấp – Khác biệt, Bằng những công trình, sản phẩm và dịch vụ Chất lượng – Đẳng cấp – Khác biệt, Bằng những công trình, sản phẩm và dịch vụ Chất lượng – Đẳng cấp – Khác biệt,</span></span></span>
+              </span>
+            </a>
+          </li>
+          <li class="s9-card" data-s9-card>
+            <!-- TODO(content): link trang con của "Sun Paradise Land" -->
+            <a class="s9-card__link" href="#" draggable="false" aria-label="Sun Paradise Land – Kiến tạo biểu tượng">
+              <span class="s9-card__frame" aria-hidden="true"></span>
+              <span class="s9-card__media"><img src="assets/img/s9/card-photo.webp" alt="" width="608" height="722" draggable="false" loading="lazy"></span>
+              <span class="s9-card__shade" aria-hidden="true"></span>
+              <img class="s9-card__logo s9-card__logo--narrow" src="assets/img/s9/logo-sun-paradise-land.webp" alt="" width="202" height="160" draggable="false">
+              <span class="s9-card__body">
+                <span class="s9-card__head">
+                  <svg class="s9-card__star" viewBox="0 0 34 17" aria-hidden="true"><use href="#sym-star"/></svg>
+                  <span class="s9-card__title trim">Kiến tạo biểu tượng</span>
+                </span>
+                <span class="s9-card__more"><span class="s9-card__more-in"><span class="s9-card__desc">Bằng những công trình, sản phẩm và dịch vụ Chất lượng – Đẳng cấp – Khác biệt, Bằng những công trình, sản phẩm và dịch vụ Chất lượng – Đẳng cấp – Khác biệt, Bằng những công trình, sản phẩm và dịch vụ Chất lượng – Đẳng cấp – Khác biệt,</span></span></span>
+              </span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
 </main>
 
 <!-- Màn chi tiết của section 3 (toàn màn hình) -->
@@ -3995,6 +4407,273 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
   window.addEventListener('load', measure);
   measure();
+})();
+/* =====================================================================
+   Section 9 – dải cục "Hệ sinh thái trải nghiệm"
+   - Cứ 3 giây cục kế tiếp trượt sang trái (vòng tròn vô tận); khối chữ trái đứng yên.
+   - Kéo chuột / vuốt / vuốt ngang trackpad để xem các cục bị che; thả tay thì dải trôi theo
+     quán tính rồi hút về đúng một cục.
+   - Mọi chuyển động dùng chung MỘT lò xo giảm chấn tới hạn (spring, kiểu motion/framer):
+     vị trí và vận tốc luôn liền mạch – đang tự chạy mà nắm kéo, hay đang trôi mà kéo tiếp,
+     đều không giật. Chỉ đổi transform/opacity → chạy trên compositor.
+   - Cục rời vị trí đứng thì tan dần + lùi nhẹ (giống section 3), tên tan trước mô tả.
+   - Bấm cục = mở link trang con (không mở nếu vừa kéo).
+   - Tạm dừng tự chạy khi: rê chuột/focus trong dải, đang kéo, section khuất màn hình, tab ẩn,
+     người dùng bật "giảm chuyển động".
+   ===================================================================== */
+(function () {
+  'use strict';
+
+  var root = document.querySelector('[data-s9]');
+  if (!root) return;
+  var viewport = root.querySelector('[data-s9-viewport]');
+  var track = root.querySelector('[data-s9-track]');
+  var cards = [].slice.call(root.querySelectorAll('[data-s9-card]'));
+  var N = cards.length;
+  if (!viewport || !track || !N) return;
+
+  var links = cards.map(function (c) { return c.querySelector('a'); });
+  var bodies = cards.map(function (c) { return c.querySelector('.s9-card__body'); });
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var AUTOPLAY_MS = 3000;   // thời gian dừng ở mỗi cục
+  var GAP = 40;             // khoảng cách giữa 2 cục (px của design 1440)
+
+  function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
+  function smooth(t) { return t * t * (3 - 2 * t); }
+  function mod(a, n) { return ((a % n) + n) % n; }
+
+  // ---------- Hình học ----------
+  var cardW = 1, step = 1, restX = 0, loopW = 1, unit = 1;
+  function measure() {
+    var cs = getComputedStyle(track);
+    restX = parseFloat(cs.paddingLeft) || 0;
+    cardW = cards[0].offsetWidth || 1;
+    unit = cardW / 624.1;                                       // 1px design
+    var gap = window.matchMedia('(max-width: 1023px)').matches ? 16 : GAP * unit;
+    var idx = step > 1 ? pos / step : 0;                        // giữ nguyên cục đang xem khi đổi kích thước
+    step = cardW + gap;
+    loopW = N * step;
+    pos = target = idx * step;
+    vel = 0;
+    lastE = [];
+    render(true);
+  }
+
+  // ---------- Lò xo ----------
+  // pos: vị trí dải (px, tăng = dải trôi sang trái). target: đích. vel: px/giây.
+  var pos = 0, target = 0, vel = 0;
+  var SPRING = {
+    auto: { k: 64, c: 16 },     // tự chạy: chậm rãi, sang (ω≈8, giảm chấn tới hạn)
+    snap: { k: 150, c: 24.5 },  // thả tay: hút về cục, mượt và gọn
+    drag: { k: 900, c: 60 }     // đang kéo: bám tay nhưng vẫn êm (≈0.12s)
+  };
+  var spring = SPRING.auto;
+  var raf = 0, lastT = 0;
+
+  function kick() {
+    if (!raf) { lastT = 0; raf = requestAnimationFrame(frame); }
+  }
+  function frame(t) {
+    raf = 0;
+    var dt = lastT ? Math.min((t - lastT) / 1000, 1 / 30) : 1 / 60;
+    lastT = t;
+    if (reduce) { pos = target; vel = 0; }
+    else {
+      // tích phân bán ẩn, chia nhỏ bước cho ổn định với lò xo cứng
+      var n = Math.ceil(dt / (1 / 240)), h = dt / n;
+      for (var i = 0; i < n; i++) {
+        var a = -spring.k * (pos - target) - spring.c * vel;
+        vel += a * h;
+        pos += vel * h;
+      }
+    }
+    var settled = Math.abs(pos - target) < 0.3 && Math.abs(vel) < 8;
+    if (settled && !dragging) { pos = target; vel = 0; }
+    render(false);
+    if (!settled || dragging) raf = requestAnimationFrame(frame);
+    else { lastT = 0; onSettle(); }
+  }
+
+  // ---------- Vẽ ----------
+  var lastE = [], active = -1;
+  function render(force) {
+    for (var i = 0; i < N; i++) {
+      // vị trí tương đối so với chỗ đứng, gói vòng trong [-step, loopW - step)
+      var r = mod(i * step - pos + step, loopW) - step;
+      var e = r < 0 ? clamp(-r / cardW, 0, 1) : 0;
+      var k = smooth(e);
+      var s = reduce ? 1 : 1 - 0.1 * k;
+      var c = cards[i];
+      c.style.transform = 'translate3d(' + (restX + r).toFixed(2) + 'px,0,0)' + (k ? ' scale(' + s.toFixed(4) + ')' : '');
+      var eq = Math.round(e * 1000);
+      if (force || eq !== lastE[i]) {
+        lastE[i] = eq;
+        c.style.opacity = k ? (1 - k).toFixed(3) : '';
+        bodies[i].style.opacity = k ? (1 - smooth(clamp(e / 0.45, 0, 1))).toFixed(3) : '';
+        c.style.pointerEvents = e > 0.6 ? 'none' : '';
+        c.style.visibility = e >= 1 ? 'hidden' : '';
+      }
+    }
+    var a = mod(Math.round(pos / step), N);
+    if (a !== active) {
+      if (active >= 0) cards[active].classList.remove('is-active');
+      cards[a].classList.add('is-active');
+      active = a;
+    }
+  }
+
+  function goTo(idxPos, mode) {
+    spring = SPRING[mode] || SPRING.auto;
+    target = idxPos * step;
+    kick();
+  }
+
+  // ---------- Tự chạy ----------
+  var timer = 0, inView = false, hovering = false, focusIn = false, dragging = false;
+  function canAuto() { return !reduce && inView && !hovering && !focusIn && !dragging && !document.hidden; }
+  function schedule() {
+    clearTimeout(timer);
+    timer = 0;
+    if (!canAuto()) return;
+    timer = setTimeout(function () {
+      timer = 0;
+      if (!canAuto()) return;
+      goTo(Math.round(target / step) + 1, 'auto');
+    }, AUTOPLAY_MS);
+  }
+  function onSettle() {
+    // giữ số đo gọn trong một vòng để không trôi số mãi
+    if (Math.abs(pos) > loopW * 4) {
+      var shift = Math.round(pos / loopW) * loopW;
+      pos -= shift; target -= shift;
+    }
+    schedule();
+  }
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      inView = entries[0].isIntersecting;
+      schedule();
+    }, { threshold: 0.35 }).observe(root);
+  } else { inView = true; }
+  document.addEventListener('visibilitychange', schedule);
+  viewport.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') { hovering = true; schedule(); } });
+  viewport.addEventListener('pointerleave', function (e) { if (e.pointerType === 'mouse') { hovering = false; schedule(); } });
+
+  // ---------- Kéo / vuốt ----------
+  var startX = 0, startY = 0, startPos = 0, moved = false, pid = null, samples = [], suppressClick = false;
+  var DRAG_PX = 6;
+
+  viewport.addEventListener('pointerdown', function (e) {
+    if (e.button !== 0 || pid !== null) return;
+    pid = e.pointerId;
+    startX = e.clientX; startY = e.clientY;
+    startPos = pos;                // nắm đúng chỗ đang thấy, kể cả khi dải đang trôi
+    moved = false;
+    samples = [{ t: e.timeStamp, x: e.clientX }];
+  });
+  viewport.addEventListener('pointermove', function (e) {
+    if (e.pointerId !== pid) return;
+    var dx = e.clientX - startX, dy = e.clientY - startY;
+    if (!moved) {
+      if (Math.abs(dx) < DRAG_PX) return;
+      if (Math.abs(dy) > Math.abs(dx)) { pid = null; return; }   // đang cuộn dọc → nhường trang
+      moved = true;
+      dragging = true;
+      clearTimeout(timer);
+      try { viewport.setPointerCapture(pid); } catch (err) { /* bỏ qua */ }
+      viewport.classList.add('is-dragging');
+      startX = e.clientX;          // bỏ đoạn ngưỡng để không giật
+      startPos = target = pos;
+      spring = SPRING.drag;
+    }
+    target = startPos - (e.clientX - startX);
+    samples.push({ t: e.timeStamp, x: e.clientX });
+    if (samples.length > 6) samples.shift();
+    kick();
+  });
+  function release(e) {
+    if (e.pointerId !== pid) return;
+    pid = null;
+    if (!moved) return;
+    dragging = false;
+    viewport.classList.remove('is-dragging');
+    try { viewport.releasePointerCapture(e.pointerId); } catch (err) { /* bỏ qua */ }
+    // vận tốc thả tay (px/ms) từ ~100ms cuối
+    var v = 0, a = samples[0], b = samples[samples.length - 1];
+    for (var i = samples.length - 1; i >= 0; i--) { if (b.t - samples[i].t > 100) break; a = samples[i]; }
+    if (b.t > a.t) v = (b.x - a.x) / (b.t - a.t);
+    var throwPx = clamp(-v * 260, -step * 2, step * 2);   // quán tính, tối đa 2 cục
+    var idx = Math.round((target + throwPx) / step);
+    spring = SPRING.snap;
+    target = idx * step;
+    suppressClick = true;
+    setTimeout(function () { suppressClick = false; }, 0);
+    kick();
+  }
+  viewport.addEventListener('pointerup', release);
+  viewport.addEventListener('pointercancel', function (e) {
+    if (e.pointerId !== pid) return;
+    pid = null;
+    if (!moved) return;
+    dragging = false;
+    viewport.classList.remove('is-dragging');
+    goTo(Math.round(target / step), 'snap');
+  });
+  // vừa kéo xong thì không mở link; link chưa có (href="#") thì bấm không làm gì
+  viewport.addEventListener('click', function (e) {
+    if (suppressClick || moved) { e.preventDefault(); e.stopPropagation(); moved = false; return; }
+    var a = e.target.closest && e.target.closest('a');
+    if (a && a.getAttribute('href') === '#') e.preventDefault();
+  }, true);
+  viewport.addEventListener('dragstart', function (e) { e.preventDefault(); });
+
+  // Vuốt ngang bằng trackpad / chuột có cuộn ngang (vuốt dọc vẫn cuộn trang bình thường)
+  var wheelT = 0;
+  viewport.addEventListener('wheel', function (e) {
+    if (Math.abs(e.deltaX) <= Math.abs(e.deltaY) || Math.abs(e.deltaX) < 1) return;
+    e.preventDefault();
+    e.stopPropagation();           // không để smooth scroll của trang bắt sự kiện này
+    clearTimeout(timer);
+    clearTimeout(wheelT);
+    spring = SPRING.drag;
+    target += e.deltaMode === 1 ? e.deltaX * 16 : e.deltaX;
+    kick();
+    wheelT = setTimeout(function () { goTo(Math.round(target / step), 'snap'); }, 140);
+  }, { passive: false });
+
+  // ---------- Bàn phím ----------
+  links.forEach(function (a, i) {
+    a.addEventListener('focus', function () {
+      // chỉ xử lý focus bằng bàn phím (bấm chuột / bắt đầu kéo cũng làm link nhận focus)
+      var kb = true;
+      try { kb = a.matches(':focus-visible'); } catch (err) { /* trình duyệt cũ */ }
+      if (!kb) return;
+      focusIn = true;
+      clearTimeout(timer);
+      // đưa cục được focus về chỗ đứng (đi đường ngắn nhất trên vòng)
+      var cur = Math.round(target / step);
+      var d = mod(i - cur, N);
+      if (d > N / 2) d -= N;
+      if (d) goTo(cur + d, 'snap');
+    });
+    a.addEventListener('blur', function () { focusIn = false; schedule(); });
+    a.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        var next = mod(i + (e.key === 'ArrowRight' ? 1 : -1), N);
+        links[next].focus({ preventScroll: true });
+      }
+    });
+  });
+
+  // ---------- Khởi động ----------
+  var rt = 0;
+  window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(measure, 120); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+  measure();
+  schedule();
 })();
 </script>
 </body>

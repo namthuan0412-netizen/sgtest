@@ -593,7 +593,7 @@ img { display: block; max-width: 100%; }
 }
 
 /* =========================================================
-   Section 2 & 4 – placeholder (đang có người khác làm)
+   Section 2, 4 – placeholder (đang có người khác làm); Section 10 – khối trắng tạm
    ========================================================= */
 .sec-placeholder {
   height: 1080px;
@@ -606,7 +606,7 @@ img { display: block; max-width: 100%; }
 /* Khoá cuộn trang khi xem chi tiết section 3 (giữ chỗ thanh cuộn để trang không bị xô) */
 html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
 
-/* TẠM ẨN section 5, 6, 7, 8 – các khối có thuộc tính data-tam-an trong index.html */
+/* TẠM ẨN section 3, 4, 5, 6, 7, 8 – các khối có thuộc tính data-tam-an trong index.html */
 [data-tam-an] { display: none !important; }
 
 /* =========================================================
@@ -1396,7 +1396,8 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
   -webkit-mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0.013) calc(var(--s9-fade) * 0.081), rgba(0, 0, 0, 0.049) calc(var(--s9-fade) * 0.155), rgba(0, 0, 0, 0.104) calc(var(--s9-fade) * 0.225), rgba(0, 0, 0, 0.175) calc(var(--s9-fade) * 0.29), rgba(0, 0, 0, 0.259) calc(var(--s9-fade) * 0.352), rgba(0, 0, 0, 0.352) calc(var(--s9-fade) * 0.41), rgba(0, 0, 0, 0.45) calc(var(--s9-fade) * 0.471), rgba(0, 0, 0, 0.55) calc(var(--s9-fade) * 0.529), rgba(0, 0, 0, 0.648) calc(var(--s9-fade) * 0.59), rgba(0, 0, 0, 0.741) calc(var(--s9-fade) * 0.648), rgba(0, 0, 0, 0.825) calc(var(--s9-fade) * 0.71), rgba(0, 0, 0, 0.896) calc(var(--s9-fade) * 0.775), rgba(0, 0, 0, 0.951) calc(var(--s9-fade) * 0.845), rgba(0, 0, 0, 0.987) calc(var(--s9-fade) * 0.919), rgba(0, 0, 0, 1) var(--s9-fade));
   mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 0, rgba(0, 0, 0, 0.013) calc(var(--s9-fade) * 0.081), rgba(0, 0, 0, 0.049) calc(var(--s9-fade) * 0.155), rgba(0, 0, 0, 0.104) calc(var(--s9-fade) * 0.225), rgba(0, 0, 0, 0.175) calc(var(--s9-fade) * 0.29), rgba(0, 0, 0, 0.259) calc(var(--s9-fade) * 0.352), rgba(0, 0, 0, 0.352) calc(var(--s9-fade) * 0.41), rgba(0, 0, 0, 0.45) calc(var(--s9-fade) * 0.471), rgba(0, 0, 0, 0.55) calc(var(--s9-fade) * 0.529), rgba(0, 0, 0, 0.648) calc(var(--s9-fade) * 0.59), rgba(0, 0, 0, 0.741) calc(var(--s9-fade) * 0.648), rgba(0, 0, 0, 0.825) calc(var(--s9-fade) * 0.71), rgba(0, 0, 0, 0.896) calc(var(--s9-fade) * 0.775), rgba(0, 0, 0, 0.951) calc(var(--s9-fade) * 0.845), rgba(0, 0, 0, 0.987) calc(var(--s9-fade) * 0.919), rgba(0, 0, 0, 1) var(--s9-fade));
 }
-.s9__viewport.is-dragging { cursor: grabbing; }
+.s9__viewport.is-dragging,
+.s9__viewport.is-dragging .s9-card__link { cursor: grabbing; }
 .s9__track {
   position: absolute;
   top: calc(74 * var(--u));
@@ -1426,22 +1427,32 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
   display: block;
   color: inherit;
   text-decoration: none;
-  cursor: inherit;
+  cursor: pointer;                      /* cục bấm được → bàn tay chỉ; chỗ trống trong dải vẫn là "grab" */
   -webkit-tap-highlight-color: transparent;
   -webkit-user-drag: none;
 }
 .s9-card__link:focus-visible { outline: 2px solid #ffe284; outline-offset: 6px; }
 
-/* Khung: nền đỏ sậm + quầng vàng mép trong + viền vàng → đỏ (Figma 40:1292) */
+/* Khung: nền đỏ sậm + viền vàng → đỏ (Figma 40:1292).
+   Quầng vàng mép trong (inner shadow #ffd34e, blur 14) chỉ hiện khi hover / focus bàn phím:
+   đặt ở ::after và chỉ đổi opacity → mượt, không vẽ lại box-shadow mỗi khung hình */
 .s9-card__frame {
   position: absolute;
   inset: -1px;
   border: 2px solid;
   border-image: linear-gradient(180deg, #e5c04f 0%, #9c545f 85.4%) 1;
   background: #580717;
-  box-shadow: inset 0 0 calc(14 * var(--s9k)) #ffd34e;
   pointer-events: none;
 }
+.s9-card__frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 calc(14 * var(--s9k)) #ffd34e;
+  opacity: 0;
+  transition: opacity 0.35s ease-out;
+}
+.s9-card__link:focus-visible .s9-card__frame::after { opacity: 1; transition-duration: 0.5s; }
 .s9-card__media {
   position: absolute;
   left: calc(9.03 * var(--s9k));
@@ -1540,6 +1551,7 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
 @media (hover: hover) {
   .s9__viewport:not(.is-dragging) .s9-card__link:hover .s9-card__media img { transform: scale(1.05); }
   .s9__viewport:not(.is-dragging) .s9-card__link:hover .s9-card__body { transform: translateY(calc(-6 * var(--s9k))); }
+  .s9__viewport:not(.is-dragging) .s9-card__link:hover .s9-card__frame::after { opacity: 1; transition: opacity 0.5s var(--ease); }
 }
 
 /* =========================================================
@@ -1760,8 +1772,9 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
   <!-- ===== Section 2: placeholder (có người khác làm) ===== -->
   <div class="sec-placeholder" aria-hidden="true"></div>
 
+  <!-- TẠM ẨN section 3, 4 (data-tam-an). Muốn hiện lại: xoá thuộc tính data-tam-an ở 2 khối dưới. -->
   <!-- ===== Section 3: Bản giao hưởng ===== -->
-  <section class="sym" id="ban-giao-huong" aria-labelledby="sym-title" data-sym>
+  <section class="sym" data-tam-an id="ban-giao-huong" aria-labelledby="sym-title" data-sym>
     <div class="sym__stage" data-sym-stage>
       <span class="sym__compass" aria-hidden="true"><img class="sym__drum" src="assets/svg/sym-drum.svg" alt="" width="805" height="805"></span>
 
@@ -1844,7 +1857,7 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
   </section>
 
   <!-- ===== Section 4: placeholder (có người khác làm) ===== -->
-  <div class="sec-placeholder" aria-hidden="true"></div>
+  <div class="sec-placeholder" data-tam-an aria-hidden="true"></div>
 
   <!-- TẠM ẨN section 5 → 8 (data-tam-an + CSS display: none). Muốn hiện lại: xoá thuộc tính data-tam-an ở 4 khối dưới. -->
   <!-- ===== Section 5: Bản giao hưởng – bản cuộn (không cần bấm, mọi chuyển động bám theo cuộn) ===== -->
@@ -2095,8 +2108,8 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
       <div class="s9__viewport" data-s9-viewport>
         <ul class="s9__track" data-s9-track>
           <li class="s9-card is-active" data-s9-card>
-            <!-- TODO(content): link trang con của "Sun Group International Hospital" -->
-            <a class="s9-card__link" href="#" draggable="false" aria-label="Sun Group International Hospital – Kiến tạo biểu tượng">
+            <!-- TODO(content): đang trỏ tới trang tạm trang-con.html – thay bằng link trang con thật của "Sun Group International Hospital" -->
+            <a class="s9-card__link" href="trang-con.html?c=sun-group-international-hospital" draggable="false" aria-label="Sun Group International Hospital – Kiến tạo biểu tượng">
               <span class="s9-card__frame" aria-hidden="true"></span>
               <span class="s9-card__media"><img src="assets/img/s9/card-photo.webp" alt="" width="608" height="722" draggable="false"></span>
               <span class="s9-card__shade" aria-hidden="true"></span>
@@ -2111,8 +2124,8 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
             </a>
           </li>
           <li class="s9-card" data-s9-card>
-            <!-- TODO(content): link trang con của "Sun World" -->
-            <a class="s9-card__link" href="#" draggable="false" aria-label="Sun World – Kiến tạo biểu tượng">
+            <!-- TODO(content): đang trỏ tới trang tạm trang-con.html – thay bằng link trang con thật của "Sun World" -->
+            <a class="s9-card__link" href="trang-con.html?c=sun-world" draggable="false" aria-label="Sun World – Kiến tạo biểu tượng">
               <span class="s9-card__frame" aria-hidden="true"></span>
               <span class="s9-card__media"><img src="assets/img/s9/card-photo.webp" alt="" width="608" height="722" draggable="false"></span>
               <span class="s9-card__shade" aria-hidden="true"></span>
@@ -2127,8 +2140,8 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
             </a>
           </li>
           <li class="s9-card" data-s9-card>
-            <!-- TODO(content): link trang con của "Sun Property" -->
-            <a class="s9-card__link" href="#" draggable="false" aria-label="Sun Property – Kiến tạo biểu tượng">
+            <!-- TODO(content): đang trỏ tới trang tạm trang-con.html – thay bằng link trang con thật của "Sun Property" -->
+            <a class="s9-card__link" href="trang-con.html?c=sun-property" draggable="false" aria-label="Sun Property – Kiến tạo biểu tượng">
               <span class="s9-card__frame" aria-hidden="true"></span>
               <span class="s9-card__media"><img src="assets/img/s9/card-photo.webp" alt="" width="608" height="722" draggable="false"></span>
               <span class="s9-card__shade" aria-hidden="true"></span>
@@ -2143,8 +2156,8 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
             </a>
           </li>
           <li class="s9-card" data-s9-card>
-            <!-- TODO(content): link trang con của "Sun PhuQuoc Airways" -->
-            <a class="s9-card__link" href="#" draggable="false" aria-label="Sun PhuQuoc Airways – Kiến tạo biểu tượng">
+            <!-- TODO(content): đang trỏ tới trang tạm trang-con.html – thay bằng link trang con thật của "Sun PhuQuoc Airways" -->
+            <a class="s9-card__link" href="trang-con.html?c=sun-phuquoc-airways" draggable="false" aria-label="Sun PhuQuoc Airways – Kiến tạo biểu tượng">
               <span class="s9-card__frame" aria-hidden="true"></span>
               <span class="s9-card__media"><img src="assets/img/s9/card-photo.webp" alt="" width="608" height="722" draggable="false" loading="lazy"></span>
               <span class="s9-card__shade" aria-hidden="true"></span>
@@ -2159,8 +2172,8 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
             </a>
           </li>
           <li class="s9-card" data-s9-card>
-            <!-- TODO(content): link trang con của "Sun Airport JSC (SAC)" -->
-            <a class="s9-card__link" href="#" draggable="false" aria-label="Sun Airport JSC (SAC) – Kiến tạo biểu tượng">
+            <!-- TODO(content): đang trỏ tới trang tạm trang-con.html – thay bằng link trang con thật của "Sun Airport JSC (SAC)" -->
+            <a class="s9-card__link" href="trang-con.html?c=sac" draggable="false" aria-label="Sun Airport JSC (SAC) – Kiến tạo biểu tượng">
               <span class="s9-card__frame" aria-hidden="true"></span>
               <span class="s9-card__media"><img src="assets/img/s9/card-photo.webp" alt="" width="608" height="722" draggable="false" loading="lazy"></span>
               <span class="s9-card__shade" aria-hidden="true"></span>
@@ -2175,8 +2188,8 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
             </a>
           </li>
           <li class="s9-card" data-s9-card>
-            <!-- TODO(content): link trang con của "Sun Paradise Land" -->
-            <a class="s9-card__link" href="#" draggable="false" aria-label="Sun Paradise Land – Kiến tạo biểu tượng">
+            <!-- TODO(content): đang trỏ tới trang tạm trang-con.html – thay bằng link trang con thật của "Sun Paradise Land" -->
+            <a class="s9-card__link" href="trang-con.html?c=sun-paradise-land" draggable="false" aria-label="Sun Paradise Land – Kiến tạo biểu tượng">
               <span class="s9-card__frame" aria-hidden="true"></span>
               <span class="s9-card__media"><img src="assets/img/s9/card-photo.webp" alt="" width="608" height="722" draggable="false" loading="lazy"></span>
               <span class="s9-card__shade" aria-hidden="true"></span>
@@ -2194,6 +2207,9 @@ html.sym-lock { overflow: hidden; scrollbar-gutter: stable; }
       </div>
     </div>
   </section>
+
+  <!-- ===== Section 10: khối trắng cao 1080px (tạm) ===== -->
+  <div class="sec-placeholder" data-s10 aria-hidden="true"></div>
 </main>
 
 <!-- Màn chi tiết của section 3 (toàn màn hình) -->
